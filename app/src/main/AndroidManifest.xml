@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EmiratesAuctionV2">
-        <activity android:name=".presentation.popularPeopleList.PopularrPeopleListActivity">
+        <activity android:name=".features.popularPeoples.ui.PopularPeopleListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -2,9 +2,9 @@ package com.ea.emiratesauction.common.di
 
 
 
-import com.ea.emiratesauction.common.network_layer.layer_dependencies.NetworkManagerImp
-import com.ea.emiratesauction.data.network.PopularPeopleListRepoImp
-import com.ea.emiratesauction.domain.usecases.GetPopularPeopleListUseCase
+import com.ea.emiratesauction.network_layer.NetworkManagerImp
+import com.ea.emiratesauction.data.repository.PopularPeopleListRepoImp
+import com.ea.emiratesauction.features.popularPeoples.domain.usecase.GetPopularPeopleListUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
