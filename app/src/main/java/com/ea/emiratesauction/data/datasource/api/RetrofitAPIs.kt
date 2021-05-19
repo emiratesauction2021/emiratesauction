@@ -1,6 +1,7 @@
 package com.ea.emiratesauction.data.datasource.api
 
 import com.ea.emiratesauction.common.utils.ApiEndPoints
+import com.ea.emiratesauction.data.datasource.api.model.BaseDataModel
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
@@ -17,39 +18,36 @@ interface RetrofitAPIs {
 
     @POST
     @JvmSuppressWildcards
-    suspend fun  requestPOSTMethod(
+    suspend fun requestPOSTMethod(
             @Url url: String,
             @Body params: Any,
             @HeaderMap headers: Map<String, Any>
-    ): Response<Any>
+    ): Response<BaseDataModel<Any>>
 
     @GET
     @JvmSuppressWildcards
-    suspend fun  requestGETMethod(
+    suspend fun requestGETMethod(
             @Url url: String,
             @QueryMap(encoded = true) params: Map<String, Any>,
             @HeaderMap headers: Map<String, Any>
-    ): Response<Any>
+    ): Response<BaseDataModel<Any>>
 
     @PUT
-    suspend fun<T>  requestPUTMethod(
+    suspend fun requestPUTMethod(
             @Url url: String,
             @Body params: Any,
             @HeaderMap headers: Map<String, Any>
-    ): Response<T>
+    ): Response<BaseDataModel<Any>>
 
     @DELETE
-    suspend fun<T>  requestDELETEMethod(
+    suspend fun requestDELETEMethod(
             @Url url: String,
             @Body params: Any,
             @HeaderMap headers: Map<String, String>
-    ):Response<T>
-
+    ): Response<BaseDataModel<Any>>
 
 
     companion object {
-
-        operator fun invoke(){
-        }
+        operator fun invoke() {}
     }
 }

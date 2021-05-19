@@ -2,8 +2,9 @@ package com.ea.emiratesauction.data.datasource.api
 
 import android.util.Log
 import com.ea.emiratesauction.common.base.domain.RequestTarget
-import com.ea.emiratesauction.common.utils.ApiEndPoints
-import com.ea.emiratesauction.network_layer.model.ResponseStatus
+import com.ea.emiratesauction.data.datasource.api.model.ApiErrorModel
+import com.ea.emiratesauction.data.datasource.api.model.BaseDataModel
+import com.ea.emiratesauction.data.datasource.api.model.ResponseErrorCode
 import com.ea.emiratesauction.network_layer.model.RequestMethod
 import com.ea.emiratesauction.network_layer.ResultWrapper
 import com.ea.emiratesauction.network_layer.interfaces.NetworkManager
@@ -25,30 +26,40 @@ class RetrofitBuilder @Inject constructor(
         val mGCOnvert: GsonConverterFactory,
         val mCallAdapter: CoroutineCallAdapterFactory
 ) : NetworkManager {
+
+    private var currentBaseUrl = ""
+    private var retrofit: RetrofitAPIs? = null
+
     val TAG = "RetrofitBuilder"
     override suspend fun <T> callRequest(mTarget: RequestTarget<T>): ResultWrapper<T> {
 
-        val retrofit = Retrofit.Builder()
-                .client(okkHttpclient)
-                .baseUrl(mTarget.baseUrl.baseUrl)
-                .addConverterFactory(mGCOnvert)
-                .addCallAdapterFactory(mCallAdapter)
-                .build()
-                .create(RetrofitAPIs::class.java)
+        if (!currentBaseUrl.equals(mTarget.baseUrl.baseUrl)|| retrofit!=null) {
+            currentBaseUrl = mTarget.baseUrl.baseUrl
+            retrofit = Retrofit.Builder()
+                    .client(okkHttpclient)
+                    .baseUrl(mTarget.baseUrl.baseUrl)
+                    .addConverterFactory(mGCOnvert)
+                    .addCallAdapterFactory(mCallAdapter)
+                    .build()
+                    .create(RetrofitAPIs::class.java)
+
+        }
 
 
         if (mTarget.requestType == RequestMethod.GET) {
-            val response = retrofit.requestGETMethod(
+            val response = retrofit!!.requestGETMethod(
                     url = mTarget.endPointUrl,
                     headers = mTarget.headersMap,
                     params = mTarget.requestParams
             )
             Log.d(TAG, response.toString())
 
+
+
             return wrapResponse(response, mTarget.responseClassType)
         } else if (mTarget.requestType == RequestMethod.POST) {
 
-            val response = retrofit.requestPOSTMethod(
+            val response = retrofit!!.requestPOSTMethod(
                     url = mTarget.endPointUrl,
                     headers = mTarget.headersMap,
                     params = mTarget.requestParams
@@ -59,53 +70,71 @@ class RetrofitBuilder @Inject constructor(
         }
     }
 
-    private fun <T> wrapResponse(responseData: Response<Any>, responseClass: Class<T>): ResultWrapper<T> {
+    private fun <T> wrapResponse(responseData: Response<BaseDataModel<Any>>, responseClass: Class<T>): ResultWrapper<T> {
         try {
 
-            return if (responseData.code().equals(ResponseStatus.SUCCESS.status)) {
+            return if (responseData.isSuccessful) {
 
-                val x = mapToObject<T>(responseData.body()!!, responseClass)
+                val mData = responseData.body()!!
 
-                ResultWrapper.Success(x)
-//                var responseData = response.body() as BaseDataWrapper<Any>
-//                if (responseData.code!!.equals(ResponseStatus.SUCCESS.status)) {
-//                    ResultWrapper.Success(response.body()!!)
-//                } else {
-//                    if (responseData.code!! != ResponseStatus.AUTHORIZATION.status) {
-////                        var errorResponse = ErrorResponse(responseData.message)
-//                        ResultWrapper.CustomError(responseData.code, responseData.message)
+                if (mData.status) {
+                    val x = mapToObject(mData.data, responseClass)
+                    ResultWrapper.Success(x)
+
+                } else {
+                    val errorCode = when (responseData.body()!!.code) {
+                        ResponseErrorCode.INTERNAL_INTERNET_CONNECTION_LOST.code -> ResponseErrorCode.INTERNAL_INTERNET_CONNECTION_LOST
+                        ResponseErrorCode.INTERNAL_NO_RESPONSE.code -> ResponseErrorCode.INTERNAL_NO_RESPONSE
+                        else -> ResponseErrorCode.SOME_ERROR_HAPPEN
+                    }
+                    ResultWrapper.Fail(ApiErrorModel(errorCode, mData.message, mData.data))
+                }
+
+
+            } else {
+                HandleHTTPErrors(responseData.code(), responseData.message())
+            }
+        } catch (throwable: Throwable) {
+
+            return HandleHTTPErrors(responseData.code(), responseData.message())
+//
+//            when (throwable) {
+//                is IOException -> ResultWrapper.NetworkError
+//                is HttpException -> {
+//                    val code = throwable.code()
+//                    if (code != ResponseStatus.AUTHORIZATION.status) {
+//                        ResultWrapper.CustomError(code, throwable.message())
 //                    } else {
 //                        ResultWrapper.AuthorizationError
 //                    }
-//
 //                }
-            } else if (responseData.code().equals(ResponseStatus.AUTHORIZATION.status)) {
-                ResultWrapper.AuthorizationError
-            } else {
-                ResultWrapper.ServerError
-            }
-        } catch (throwable: Throwable) {
-            return when (throwable) {
-                is IOException -> ResultWrapper.NetworkError
-                is HttpException -> {
-                    val code = throwable.code()
-                    if (code != ResponseStatus.AUTHORIZATION.status) {
-//                        val errorResponse = convertErrorBody(throwable)
-                        ResultWrapper.CustomError(code, throwable.message())
-                    } else {
-                        ResultWrapper.AuthorizationError
-                    }
-                }
-                else -> {
-                    ResultWrapper.CustomError(null, null)
-                }
-            }
+//                else -> {
+//                    ResultWrapper.CustomError(null, null)
+//                }
+//            }
         }
 
     }
 
-    fun <T> mapToObject(map: Any, type: Class<T>): T {
-        // if (map == null) return null
+    private fun <T> HandleHTTPErrors(code: Int, message: String?): ResultWrapper<T> {
+        val errorCode = when (code) {
+
+            ResponseErrorCode.NOT_FOUND.code -> ResponseErrorCode.NOT_FOUND
+
+            ResponseErrorCode.NO_CONNECTION_ERROR.code -> ResponseErrorCode.NO_CONNECTION_ERROR
+
+            ResponseErrorCode.SERVER_NOT_REACHABLE.code -> ResponseErrorCode.SERVER_NOT_REACHABLE
+
+            ResponseErrorCode.UNAUTHORIZED.code -> ResponseErrorCode.UNAUTHORIZED
+
+            else -> ResponseErrorCode.SOME_ERROR_HAPPEN
+        }
+        return ResultWrapper.Fail(ApiErrorModel(errorCode, message, null))
+    }
+
+
+    fun <T> mapToObject(map: Any?, type: Class<T>): T? {
+        if (map == null) return null
         val gson = Gson()
         val json = gson.toJson(map)
         return gson.fromJson(json, type)

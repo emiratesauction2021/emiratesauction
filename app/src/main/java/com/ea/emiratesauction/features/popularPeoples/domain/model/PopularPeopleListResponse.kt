@@ -7,7 +7,4 @@ data class PopularPeopleListResponse (
     val total_results: Int,
     val total_pages: Int,
      val results: List<PopularPerson>?=null
-):Serializable{
-
-
-}
+):Serializable

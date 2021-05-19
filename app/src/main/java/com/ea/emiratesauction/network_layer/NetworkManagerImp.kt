@@ -6,15 +6,15 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class NetworkManagerImp @Inject constructor(private val retrofitBuilder: NetworkManager) : NetworkManager {
+class NetworkManagerImp @Inject constructor(private val rectClientBuilder: NetworkManager) : NetworkManager {
 
     companion object {
         const val TAG = "TAGRetrofit"
     }
 
     override suspend fun <T> callRequest(mTarget: RequestTarget<T>): ResultWrapper<T> {
-       val x =  retrofitBuilder.callRequest<T>(mTarget)
-        return x
+       return rectClientBuilder.callRequest<T>(mTarget)
+
     }
 
 

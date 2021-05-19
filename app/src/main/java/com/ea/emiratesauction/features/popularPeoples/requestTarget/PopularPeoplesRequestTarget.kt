@@ -22,6 +22,4 @@ class PopularPeoplesRequestTarget: RequestTarget<PopularPeopleListResponse>(Popu
             field = value
         }
 
-    override val headersMap: Map<String, Any>
-        get() = super.headersMap
 }

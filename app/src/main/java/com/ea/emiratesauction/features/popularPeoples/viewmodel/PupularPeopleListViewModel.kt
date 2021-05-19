@@ -16,7 +16,7 @@ import com.ea.emiratesauction.features.popularPeoples.domain.usecase.GetPopularP
 
 
 class PupularPeopleListViewModel @ViewModelInject constructor(private val getPopularPeopleListUseCase: GetPopularPeopleListUseCase) :
-    BaseViewModel() {
+        BaseViewModel() {
 
     fun getPopularPeopleList() {
         val requestParams = hashMapOf<String, Any>()
@@ -25,25 +25,29 @@ class PupularPeopleListViewModel @ViewModelInject constructor(private val getPop
         requestParams["page"] = 1
 
         getPopularPeopleListUseCase.execute(
-            PopularPeoplesRequestTarget().apply {
-                this.requestParams = requestParams
-            }
+                PopularPeoplesRequestTarget().apply {
+                    this.requestParams = requestParams
+                }
         )
                 .flowOn(Dispatchers.IO)
-            .onEach {
+                .onEach {
 
-                when(it){
-                    is ResultWrapper.Success ->{
-                        Log.e("modelResponse", it.value.toString() )
-                        Log.v("coroutine viewModel", Thread.currentThread().name)
+                    when (it) {
+                        is ResultWrapper.Success -> {
+                            Log.e("modelResponse", it.value.toString())
+                            Log.v("coroutine viewModel", Thread.currentThread().name)
+                        }
 
+                        is ResultWrapper.Fail -> {
+                            val error = ValidateError(it)
+                            if (error != null) {
+                                // handle internal error
+                            }
+                        }
                     }
-                }
 
 
-
-
-            }.launchIn(viewModelScope)
+                }.launchIn(viewModelScope)
 
     }
 }
