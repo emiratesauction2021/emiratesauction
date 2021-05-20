@@ -13,7 +13,7 @@ class NetworkManagerImp @Inject constructor(private val rectClientBuilder: Netwo
     }
 
     override suspend fun <T> callRequest(mTarget: RequestTarget<T>): ResultWrapper<T> {
-       return rectClientBuilder.callRequest<T>(mTarget)
+        return rectClientBuilder.callRequest<T>(mTarget)
 
     }
 

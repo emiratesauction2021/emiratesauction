@@ -24,9 +24,11 @@ class PupularPeopleListViewModel @ViewModelInject constructor(private val getPop
         requestParams["language"] = AppConstants.LANGUAGE_US
         requestParams["page"] = 1
 
+
+
         getPopularPeopleListUseCase.execute(
                 PopularPeoplesRequestTarget().apply {
-                    this.requestParams = requestParams
+                    this.requestQueryParams = requestParams
                 }
         )
                 .flowOn(Dispatchers.IO)

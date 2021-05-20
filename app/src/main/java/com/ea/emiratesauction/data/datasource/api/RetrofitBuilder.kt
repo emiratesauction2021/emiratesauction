@@ -11,11 +11,9 @@ import com.ea.emiratesauction.network_layer.interfaces.NetworkManager
 import com.google.gson.Gson
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient
-import retrofit2.HttpException
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.IOException
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -33,7 +31,7 @@ class RetrofitBuilder @Inject constructor(
     val TAG = "RetrofitBuilder"
     override suspend fun <T> callRequest(mTarget: RequestTarget<T>): ResultWrapper<T> {
 
-        if (!currentBaseUrl.equals(mTarget.baseUrl.baseUrl)|| retrofit!=null) {
+        if (!currentBaseUrl.equals(mTarget.baseUrl.baseUrl) || retrofit != null) {
             currentBaseUrl = mTarget.baseUrl.baseUrl
             retrofit = Retrofit.Builder()
                     .client(okkHttpclient)
@@ -50,7 +48,7 @@ class RetrofitBuilder @Inject constructor(
             val response = retrofit!!.requestGETMethod(
                     url = mTarget.endPointUrl,
                     headers = mTarget.headersMap,
-                    params = mTarget.requestParams
+                    hParams = mTarget.requestQueryParams
             )
             Log.d(TAG, response.toString())
 
@@ -62,7 +60,8 @@ class RetrofitBuilder @Inject constructor(
             val response = retrofit!!.requestPOSTMethod(
                     url = mTarget.endPointUrl,
                     headers = mTarget.headersMap,
-                    params = mTarget.requestParams
+                    bParams = mTarget.requestBodyParams,
+                    hParams = mTarget.requestQueryParams
             )
             return wrapResponse(response, mTarget.responseClassType)
         } else {
@@ -71,7 +70,6 @@ class RetrofitBuilder @Inject constructor(
     }
 
     private fun <T> wrapResponse(responseData: Response<BaseDataModel<Any>>, responseClass: Class<T>): ResultWrapper<T> {
-        try {
 
             return if (responseData.isSuccessful) {
 
@@ -94,26 +92,6 @@ class RetrofitBuilder @Inject constructor(
             } else {
                 HandleHTTPErrors(responseData.code(), responseData.message())
             }
-        } catch (throwable: Throwable) {
-
-            return HandleHTTPErrors(responseData.code(), responseData.message())
-//
-//            when (throwable) {
-//                is IOException -> ResultWrapper.NetworkError
-//                is HttpException -> {
-//                    val code = throwable.code()
-//                    if (code != ResponseStatus.AUTHORIZATION.status) {
-//                        ResultWrapper.CustomError(code, throwable.message())
-//                    } else {
-//                        ResultWrapper.AuthorizationError
-//                    }
-//                }
-//                else -> {
-//                    ResultWrapper.CustomError(null, null)
-//                }
-//            }
-        }
-
     }
 
     private fun <T> HandleHTTPErrors(code: Int, message: String?): ResultWrapper<T> {

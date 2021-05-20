@@ -76,4 +76,6 @@ object AppModule {
     @Provides
     fun provideNetworkManager(retrofitBuilder: RetrofitBuilder) = NetworkManagerImp(retrofitBuilder)
 
+
+
 }

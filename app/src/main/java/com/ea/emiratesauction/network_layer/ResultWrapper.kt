@@ -7,3 +7,5 @@ sealed class ResultWrapper<out T>{
 
     data class Fail(val error: ApiErrorModel) : ResultWrapper<Nothing>()
 }
+
+

@@ -20,7 +20,8 @@ interface RetrofitAPIs {
     @JvmSuppressWildcards
     suspend fun requestPOSTMethod(
             @Url url: String,
-            @Body params: Any,
+            @Body bParams: Any,
+            @QueryMap(encoded = true) hParams: Map<String, Any>,
             @HeaderMap headers: Map<String, Any>
     ): Response<BaseDataModel<Any>>
 
@@ -28,7 +29,7 @@ interface RetrofitAPIs {
     @JvmSuppressWildcards
     suspend fun requestGETMethod(
             @Url url: String,
-            @QueryMap(encoded = true) params: Map<String, Any>,
+            @QueryMap(encoded = true) hParams: Map<String, Any>,
             @HeaderMap headers: Map<String, Any>
     ): Response<BaseDataModel<Any>>
 
