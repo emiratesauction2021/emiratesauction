@@ -1,34 +1,35 @@
 package com.ea.emiratesauction.common.base.ui
 
 import androidx.lifecycle.ViewModel
+import com.ea.emiratesauction.data.datasource.api.model.InternalNetworkErrorInterface
 import com.ea.emiratesauction.data.datasource.api.model.ResponseErrorCode
 import com.ea.emiratesauction.network_layer.ResultWrapper
 
 abstract class BaseViewModel : ViewModel() {
 
 
-    fun ValidateError(error:ResultWrapper.Fail): ResultWrapper.Fail?{
-        when(error.error.errorCode){
+    fun <T : InternalNetworkErrorInterface> ValidateError(responseError: ResultWrapper.Fail<T>): ResultWrapper.Fail<T>? {
+        when (responseError.errorHappen) {
 
-            ResponseErrorCode.INTERNAL_NO_RESPONSE,
-                ResponseErrorCode.INTERNAL_INTERNET_CONNECTION_LOST->{
-                    return error
-                }
+            ResponseErrorCode.INTERNAL_SERVER_ERROR -> {
 
-            ResponseErrorCode.NO_CONNECTION_ERROR ->{
+                return responseError
+            }
+
+            ResponseErrorCode.NO_CONNECTION_ERROR -> {
                 // Handle it
                 return null
             }
 
-            ResponseErrorCode.NOT_FOUND ->{
+            ResponseErrorCode.NOT_FOUND -> {
                 // Handle it
                 return null
             }
-            ResponseErrorCode.SERVER_NOT_REACHABLE ->{
+            ResponseErrorCode.SERVER_NOT_REACHABLE -> {
                 // Handle it
                 return null
             }
-            ResponseErrorCode.UNAUTHORIZED ->{
+            ResponseErrorCode.UNAUTHORIZED -> {
                 // Handle it
                 return null
             }

@@ -1,6 +1,7 @@
 package com.ea.emiratesauction.features.popularPeoples.viewmodel
 
 import android.util.Log
+import android.widget.Toast
 import androidx.hilt.lifecycle.ViewModelInject
 import com.ea.emiratesauction.common.base.ui.BaseViewModel
 import kotlinx.coroutines.Dispatchers
@@ -17,18 +18,20 @@ import com.ea.emiratesauction.features.popularPeoples.domain.usecase.GetPopularP
 
 class PupularPeopleListViewModel @ViewModelInject constructor(private val getPopularPeopleListUseCase: GetPopularPeopleListUseCase) :
         BaseViewModel() {
+    val PupTAG = "Pupular"
 
-    fun getPopularPeopleList() {
+    fun getPopularPeopleList(testVal:String) {
         val requestParams = hashMapOf<String, Any>()
-        requestParams["api_key"] = ApiEndPoints.API_KEY
-        requestParams["language"] = AppConstants.LANGUAGE_US
-        requestParams["page"] = 1
+//        requestParams["api_key"] = ApiEndPoints.API_KEY
+//        requestParams["language"] = AppConstants.LANGUAGE_US
+//        requestParams["page"] = 1
 
+        requestParams["test"] = testVal
 
 
         getPopularPeopleListUseCase.execute(
                 PopularPeoplesRequestTarget().apply {
-                    this.requestQueryParams = requestParams
+                    this.requestBodyParams = requestParams
                 }
         )
                 .flowOn(Dispatchers.IO)
@@ -36,14 +39,18 @@ class PupularPeopleListViewModel @ViewModelInject constructor(private val getPop
 
                     when (it) {
                         is ResultWrapper.Success -> {
-                            Log.e("modelResponse", it.value.toString())
-                            Log.v("coroutine viewModel", Thread.currentThread().name)
+                            val n = it.value.list
+                            Log.e(PupTAG,"Success Response with return data of list ${n!!.size}")
+
                         }
 
                         is ResultWrapper.Fail -> {
                             val error = ValidateError(it)
                             if (error != null) {
-                                // handle internal error
+                                Log.e(PupTAG,"Internal Fail Response with return data errorz = ${it.error!!.errorz} and " +
+                                        "errorzcode = ${it.error!!.errorzcode} ")
+                            }else{
+                                Log.e(PupTAG,"External Fail error with error")
                             }
                         }
                     }

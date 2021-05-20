@@ -2,11 +2,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello Fragment" />
+  <Button
+      android:id="@+id/TestSucBtn"
+      android:layout_width="match_parent"
+      android:layout_marginTop="100dp"
+      android:text="Test success"
+      android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/TestfailBtn"
 
+        android:layout_width="match_parent"
+        android:layout_marginTop="100dp"
+        android:text="Test Fail"
+
+        android:layout_height="wrap_content"/>
+<!--    <Button-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_marginTop="100dp"-->
+<!--        -->
+<!--        android:layout_height="wrap_content"/>-->
 </LinearLayout>

@@ -7,6 +7,7 @@ import com.ea.emiratesauction.R
 import com.ea.emiratesauction.common.base.ui.BaseFragment
 import com.ea.emiratesauction.features.popularPeoples.viewmodel.PupularPeopleListViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_pupular_people_list.*
 
 @AndroidEntryPoint
 class PupularPeopleListFragment : BaseFragment() {
@@ -24,7 +25,13 @@ class PupularPeopleListFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getPopularPeopleList()
+        TestSucBtn.setOnClickListener {
+            viewModel.getPopularPeopleList("asdasd")
+        }
+
+        TestfailBtn.setOnClickListener {
+            viewModel.getPopularPeopleList("fail")
+        }
     }
 
     override fun subscribeObservers() {

@@ -1,7 +1,7 @@
 package com.ea.emiratesauction.common.di
 
 import com.ea.emiratesauction.data.datasource.api.RetrofitBuilder
-import com.ea.emiratesauction.network_layer.NetworkManagerImp
+import com.ea.emiratesauction.network_layer.NetworkProviderImp
 import com.ea.emiratesauction.data.datasource.api.RetrofitAPIs
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Module
@@ -74,7 +74,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideNetworkManager(retrofitBuilder: RetrofitBuilder) = NetworkManagerImp(retrofitBuilder)
+    fun provideNetworkManager(retrofitBuilder: RetrofitBuilder) = NetworkProviderImp(retrofitBuilder)
 
 
 

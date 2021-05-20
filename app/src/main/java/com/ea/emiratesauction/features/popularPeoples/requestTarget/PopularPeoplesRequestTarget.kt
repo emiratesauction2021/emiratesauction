@@ -1,36 +1,23 @@
 package com.ea.emiratesauction.features.popularPeoples.requestTarget
 
-import com.ea.emiratesauction.common.base.domain.RequestTarget
+import com.ea.emiratesauction.common.base.domain.BaseNetworkRequest
 import com.ea.emiratesauction.network_layer.model.RequestMethod
 import com.ea.emiratesauction.common.utils.ApiEndPoints
-import com.ea.emiratesauction.features.popularPeoples.domain.model.PopularPeopleListResponse
+import com.ea.emiratesauction.network_layer.model.BaseUrlType
 import java.lang.Exception
 
-class PopularPeoplesRequestTarget: RequestTarget<PopularPeopleListResponse>(PopularPeopleListResponse::class.java){
-
+class PopularPeoplesRequestTarget: BaseNetworkRequest(){
+    override val baseUrl: BaseUrlType
+        get() = BaseUrlType.MOCK
 
     override val endPointUrl: String
-        get() = ApiEndPoints.POPULAR_PEOPLE_ENDPOINT_URL
+        get() = ApiEndPoints.MOCK_POPULAR_PEOPLE_ENDPOINT_URL
 
     override val requestType: RequestMethod
-        get() = RequestMethod.GET
+        get() = RequestMethod.POST
 
     override var requestQueryParams: Map<String, Any> = hashMapOf()
-        get() {
-            return field
-        }
-        set(value) {
-            if (requestType == RequestMethod.POST)
-            field = value
-            else
-                throw Exception("Please select post method")
-        }
+
     override var requestBodyParams: Map<String, Any> = hashMapOf()
-        get() {
-            return field
-        }
-        set(value) {
-            field = value
-        }
 
 }

@@ -2,7 +2,7 @@ package com.ea.emiratesauction.common.di
 
 
 
-import com.ea.emiratesauction.network_layer.NetworkManagerImp
+import com.ea.emiratesauction.network_layer.NetworkProviderImp
 import com.ea.emiratesauction.data.repository.PopularPeopleListRepoImp
 import com.ea.emiratesauction.features.popularPeoples.domain.usecase.GetPopularPeopleListUseCase
 import dagger.Module
@@ -20,6 +20,6 @@ object ActivityModule {
 
 
     @Provides
-    fun providePopularPeopleListRepo(mNetworkManager: NetworkManagerImp) = PopularPeopleListRepoImp(mNetworkManager)
+    fun providePopularPeopleListRepo(mNetworkManager: NetworkProviderImp) = PopularPeopleListRepoImp(mNetworkManager)
 
 }
