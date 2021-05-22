@@ -42,10 +42,10 @@ class PupularPeopleListViewModel @ViewModelInject constructor(private val getPop
                         }
 
                         is RequestResult.Fail -> {
-                            val error = ValidateError(it)
+                            val error = validateError(it)
                             if (error != null) {
-                                Log.e(PupTAG,"Internal Fail Response with return data errorz = ${it.error!!.errorz} and " +
-                                        "errorzcode = ${it.error!!.errorzcode} ")
+                                Log.e(PupTAG,"Internal Fail Response with return data errorz = ${it.networkError.error!!.errorz} and " +
+                                        "errorzcode = ${it.networkError.error!!.errorzcode} ")
                             }else{
                                 Log.e(PupTAG,"External Fail error with error")
                             }

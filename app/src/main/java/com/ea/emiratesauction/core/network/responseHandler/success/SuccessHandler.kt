@@ -1,6 +1,7 @@
 package com.ea.emiratesauction.core.network.responseHandler.success
 
 import com.ea.emiratesauction.core.network.internalError.InternalNetworkErrorInterface
+import com.ea.emiratesauction.core.network.internalError.NetworkError
 import com.ea.emiratesauction.core.network.objectMapper.ObjectMapper
 import com.ea.emiratesauction.core.network.responseHandler.failure.ErrorHandler
 import com.ea.emiratesauction.core.network.result.RequestResult
@@ -19,11 +20,11 @@ class SuccessHandler {
                         val successMappedData = ObjectMapper.mapToObject(responseData, successModel)
                         RequestResult.Success(successMappedData)
                     } else {
-                        RequestResult.Fail(NetworkErrors.INTERNAL_REQUEST_ERROR, error)
+                        RequestResult.Fail(NetworkError(NetworkErrors.INTERNAL_REQUEST_ERROR, error))
                     }
                 }
             } else {
-                return RequestResult.Fail(NetworkErrors.NO_RESPONSE, null)
+                return RequestResult.Fail(NetworkError(NetworkErrors.NO_RESPONSE, null))
             }
         }
     }

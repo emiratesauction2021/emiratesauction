@@ -9,8 +9,8 @@ import com.ea.emiratesauction.core.network.result.RequestResult
 abstract class BaseViewModel : ViewModel() {
 
 
-    fun <T : InternalNetworkErrorInterface> ValidateError(responseError: RequestResult.Fail<T>): RequestResult.Fail<T>? {
-        when (responseError.errorType) {
+    fun <E : InternalNetworkErrorInterface> validateError(responseError: RequestResult.Fail<E>): RequestResult.Fail<E>? {
+        when (responseError.networkError.errorType) {
 
             NetworkErrors.INTERNAL_REQUEST_ERROR -> {
 

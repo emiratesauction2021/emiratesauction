@@ -1,6 +1,7 @@
 package com.ea.emiratesauction.core.network.responseHandler.failure
 
 import com.ea.emiratesauction.core.network.internalError.InternalNetworkErrorInterface
+import com.ea.emiratesauction.core.network.internalError.NetworkError
 import com.ea.emiratesauction.core.network.objectMapper.ObjectMapper
 import com.ea.emiratesauction.core.network.result.RequestResult
 import com.ea.emiratesauction.core.network.networkErrors.NetworkErrors
@@ -24,7 +25,7 @@ class ErrorHandler {
                 else -> NetworkErrors.GENERIC_HTTP_ERROR
             }
 
-            return RequestResult.Fail(errorCode, null)
+            return RequestResult.Fail(NetworkError(errorCode, null))
         }
 
         fun <E : InternalNetworkErrorInterface>checkForInternalError(responseData: Any, errorModel: Class<E>): E? {
