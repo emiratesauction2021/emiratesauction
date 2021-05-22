@@ -1,43 +1,43 @@
 package com.ea.emiratesauction.common.base.ui
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.ea.emiratesauction.data.datasource.api.model.InternalNetworkErrorInterface
-import com.ea.emiratesauction.data.datasource.api.model.ResponseErrorCode
-import com.ea.emiratesauction.network_layer.ResultWrapper
+import com.ea.emiratesauction.core.network.internalError.InternalNetworkErrorInterface
+import com.ea.emiratesauction.core.network.networkErrors.NetworkErrors
+import com.ea.emiratesauction.core.network.result.RequestResult
 
 abstract class BaseViewModel : ViewModel() {
 
 
-    fun <T : InternalNetworkErrorInterface> ValidateError(responseError: ResultWrapper.Fail<T>): ResultWrapper.Fail<T>? {
-        when (responseError.errorHappen) {
+    fun <T : InternalNetworkErrorInterface> ValidateError(responseError: RequestResult.Fail<T>): RequestResult.Fail<T>? {
+        when (responseError.errorType) {
 
-            ResponseErrorCode.INTERNAL_SERVER_ERROR -> {
+            NetworkErrors.INTERNAL_REQUEST_ERROR -> {
 
                 return responseError
             }
 
-            ResponseErrorCode.NO_CONNECTION_ERROR -> {
+            NetworkErrors.NO_INTERNET_CONNECTION -> {
                 // Handle it
                 return null
             }
 
-            ResponseErrorCode.NOT_FOUND -> {
+            NetworkErrors.NOT_FOUND -> {
                 // Handle it
                 return null
             }
-            ResponseErrorCode.SERVER_NOT_REACHABLE -> {
+            NetworkErrors.SERVER_NOT_REACHABLE -> {
                 // Handle it
                 return null
             }
-            ResponseErrorCode.UNAUTHORIZED -> {
+            NetworkErrors.UNAUTHORIZED -> {
                 // Handle it
                 return null
             }
 
             else -> {
 
-                // Handle Some Error Happen
-
+                Log.e("Base","Error And It's Not Handled !!!")
                 return null
             }
         }

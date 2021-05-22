@@ -1,4 +1,4 @@
-package com.ea.emiratesauction.data.datasource.api.model
+package com.ea.emiratesauction.core.network.internalError
 
 import java.io.Serializable
 

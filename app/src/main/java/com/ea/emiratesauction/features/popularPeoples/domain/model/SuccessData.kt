@@ -1,6 +1,6 @@
 package com.ea.emiratesauction.features.popularPeoples.domain.model
 
-import com.ea.emiratesauction.data.datasource.api.model.InternalNetworkErrorInterface
+import com.ea.emiratesauction.core.network.internalError.InternalNetworkErrorInterface
 
 data class SuccessData(
         override val status: Boolean,

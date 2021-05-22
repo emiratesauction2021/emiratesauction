@@ -1,7 +1,6 @@
 package com.ea.emiratesauction.features.popularPeoples.viewmodel
 
 import android.util.Log
-import android.widget.Toast
 import androidx.hilt.lifecycle.ViewModelInject
 import com.ea.emiratesauction.common.base.ui.BaseViewModel
 import kotlinx.coroutines.Dispatchers
@@ -9,10 +8,8 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import androidx.lifecycle.viewModelScope
-import com.ea.emiratesauction.network_layer.ResultWrapper
-import com.ea.emiratesauction.common.utils.AppConstants
+import com.ea.emiratesauction.core.network.result.RequestResult
 import com.ea.emiratesauction.features.popularPeoples.requestTarget.PopularPeoplesRequestTarget
-import com.ea.emiratesauction.common.utils.ApiEndPoints
 import com.ea.emiratesauction.features.popularPeoples.domain.usecase.GetPopularPeopleListUseCase
 
 
@@ -38,13 +35,13 @@ class PupularPeopleListViewModel @ViewModelInject constructor(private val getPop
                 .onEach {
 
                     when (it) {
-                        is ResultWrapper.Success -> {
+                        is RequestResult.Success -> {
                             val n = it.value.list
                             Log.e(PupTAG,"Success Response with return data of list ${n!!.size}")
 
                         }
 
-                        is ResultWrapper.Fail -> {
+                        is RequestResult.Fail -> {
                             val error = ValidateError(it)
                             if (error != null) {
                                 Log.e(PupTAG,"Internal Fail Response with return data errorz = ${it.error!!.errorz} and " +

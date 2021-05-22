@@ -1,8 +1,8 @@
 package com.ea.emiratesauction.common.di
 
-import com.ea.emiratesauction.data.datasource.api.RetrofitBuilder
-import com.ea.emiratesauction.network_layer.NetworkProviderImp
-import com.ea.emiratesauction.data.datasource.api.RetrofitAPIs
+import com.ea.emiratesauction.core.network.managers.retrofitManager.RetrofitNetworkProvider
+import com.ea.emiratesauction.core.network.managers.defaultManager.NetworkManager
+import com.ea.emiratesauction.core.network.managers.retrofitManager.RetrofitAPIs
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Module
 import dagger.Provides
@@ -70,12 +70,17 @@ object AppModule {
     @Provides
     fun provideNetWorkBuilder( okkHttpclient: OkHttpClient,
                                mGCOnvert: GsonConverterFactory,
-                               mCallAdapter:CoroutineCallAdapterFactory) = RetrofitBuilder(okkHttpclient,mGCOnvert,mCallAdapter)
+                               mCallAdapter:CoroutineCallAdapterFactory) =
+        RetrofitNetworkProvider(
+            okkHttpclient,
+            mGCOnvert,
+            mCallAdapter
+        )
 
     @Singleton
     @Provides
-    fun provideNetworkManager(retrofitBuilder: RetrofitBuilder) = NetworkProviderImp(retrofitBuilder)
-
-
-
+    fun provideNetworkManager(networkProvider: RetrofitNetworkProvider) =
+        NetworkManager(
+            networkProvider
+        )
 }
