@@ -1,6 +1,9 @@
 package com.ea.emiratesauction.core.network.managers.defaultManager
 
-import com.ea.emiratesauction.common.base.domain.BaseNetworkRequest
+import com.ea.emiratesauction.core.constants.network.NetworkRequestParametersType
+import com.ea.emiratesauction.core.constants.network.RequestHTTPMethodType
+import com.ea.emiratesauction.core.constants.network.RequestParameterEncoding
+import com.ea.emiratesauction.core.network.request.BaseNetworkRequest
 import com.ea.emiratesauction.core.network.managers.interfaces.NetworkProvider
 import com.ea.emiratesauction.core.network.internalError.InternalNetworkErrorInterface
 import com.ea.emiratesauction.core.network.result.RequestResult
@@ -16,8 +19,8 @@ class NetworkManager @Inject constructor(private val networkProvider: NetworkPro
     }
 
     override suspend fun <T : Serializable, E : InternalNetworkErrorInterface> request(
-        request: BaseNetworkRequest, successModel: Class<T>,
-        errorModel: Class<E>
+            request: BaseNetworkRequest, successModel: Class<T>,
+            errorModel: Class<E>
     ): RequestResult<T, E> {
         return networkProvider.request(request, successModel, errorModel)
     }
@@ -26,5 +29,8 @@ class NetworkManager @Inject constructor(private val networkProvider: NetworkPro
         return networkProvider.request(request, successModel)
     }
 
+    override fun httpMethodValidator(parametersType: NetworkRequestParametersType, method: RequestHTTPMethodType, encoding: RequestParameterEncoding) {
+        return networkProvider.httpMethodValidator(parametersType, method, encoding)
+    }
 
 }

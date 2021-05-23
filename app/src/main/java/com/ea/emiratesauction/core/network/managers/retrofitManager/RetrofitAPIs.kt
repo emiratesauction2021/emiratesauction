@@ -2,6 +2,7 @@ package com.ea.emiratesauction.core.network.managers.retrofitManager
 
 import retrofit2.Response
 import retrofit2.http.*
+import java.util.concurrent.TimeUnit
 
 
 interface RetrofitAPIs {

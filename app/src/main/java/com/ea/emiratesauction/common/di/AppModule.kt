@@ -12,7 +12,6 @@ import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -42,13 +41,13 @@ object AppModule {
     fun provideOkHttpClient():OkHttpClient{
         val logging = HttpLoggingInterceptor()
         logging.level = HttpLoggingInterceptor.Level.BODY
-        val okkHttpclient = OkHttpClient.Builder()
-                .connectTimeout(2, TimeUnit.MINUTES)
-                .writeTimeout(2, TimeUnit.MINUTES) // write timeout
-                .readTimeout(2, TimeUnit.MINUTES)
+        return OkHttpClient.Builder()
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .writeTimeout(20, TimeUnit.SECONDS) // write timeout
+                .readTimeout(20, TimeUnit.SECONDS)
                 .addInterceptor(logging)
                 .connectionSpecs(
-                        Arrays.asList(
+                        listOf(
                                 ConnectionSpec.MODERN_TLS,
                                 ConnectionSpec.COMPATIBLE_TLS,
                                 ConnectionSpec.CLEARTEXT
@@ -59,7 +58,6 @@ object AppModule {
                 .retryOnConnectionFailure(true)
                 .cache(null)
                 .build()
-        return  okkHttpclient
     }
 
 
@@ -68,12 +66,12 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideNetWorkBuilder( okkHttpclient: OkHttpClient,
-                               mGCOnvert: GsonConverterFactory,
-                               mCallAdapter:CoroutineCallAdapterFactory) =
+    fun provideNetWorkBuilder(okkHttpclient: OkHttpClient,
+                              mGConvert: GsonConverterFactory,
+                              mCallAdapter:CoroutineCallAdapterFactory) =
         RetrofitNetworkProvider(
             okkHttpclient,
-            mGCOnvert,
+            mGConvert,
             mCallAdapter
         )
 

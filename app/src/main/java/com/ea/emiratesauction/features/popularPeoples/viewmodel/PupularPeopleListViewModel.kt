@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import androidx.lifecycle.viewModelScope
+import com.ea.emiratesauction.core.constants.network.NetworkRequestParametersType
 import com.ea.emiratesauction.core.network.result.RequestResult
 import com.ea.emiratesauction.features.popularPeoples.requestTarget.PopularPeoplesRequestTarget
 import com.ea.emiratesauction.features.popularPeoples.domain.usecase.GetPopularPeopleListUseCase
@@ -28,7 +29,7 @@ class PupularPeopleListViewModel @ViewModelInject constructor(private val getPop
 
         getPopularPeopleListUseCase.execute(
                 PopularPeoplesRequestTarget().apply {
-                    this.requestBodyParams = requestParams
+                    this.parameters = NetworkRequestParametersType.Standard(requestParams)
                 }
         )
                 .flowOn(Dispatchers.IO)

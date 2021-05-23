@@ -1,4 +1,4 @@
-package com.ea.emiratesauction.core.network.networkErrors
+package com.ea.emiratesauction.core.constants.network
 
 enum class NetworkErrors {
     // HTTP Errors

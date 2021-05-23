@@ -4,7 +4,7 @@ import com.ea.emiratesauction.core.network.internalError.InternalNetworkErrorInt
 import com.ea.emiratesauction.core.network.internalError.NetworkError
 import com.ea.emiratesauction.core.network.objectMapper.ObjectMapper
 import com.ea.emiratesauction.core.network.result.RequestResult
-import com.ea.emiratesauction.core.network.networkErrors.NetworkErrors
+import com.ea.emiratesauction.core.constants.network.NetworkErrors
 import java.io.Serializable
 
 class ErrorHandler {
