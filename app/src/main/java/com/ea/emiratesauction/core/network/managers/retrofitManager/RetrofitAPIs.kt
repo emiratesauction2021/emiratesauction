@@ -40,8 +40,8 @@ interface RetrofitAPIs {
 
 
     companion object {
-
         operator fun invoke(){
+
         }
     }
 }

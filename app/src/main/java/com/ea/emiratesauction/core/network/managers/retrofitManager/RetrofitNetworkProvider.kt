@@ -85,8 +85,7 @@ class RetrofitNetworkProvider @Inject constructor(
                 paramsType.bodyParams
             }
         }
-//        // Check for any violations in teh request setup
-//        this.httpMethodValidator(request.parameters, request.httpMethod, request.encoding)
+
         when (request.httpMethod) {
             RequestHTTPMethodType.GET -> {
                 retrofit?.let {

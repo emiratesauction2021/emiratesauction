@@ -5,13 +5,13 @@
 
     <application
         android:allowBackup="true"
-        android:name=".common.di.MainApplication"
+        android:name="com.ea.emiratesauction.core.common.di.MainApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EmiratesAuctionV2">
-        <activity android:name=".features.popularPeoples.ui.PopularPeopleListActivity">
+        <activity android:name=".features.test_toBeDeleted.ui.PopularPeopleListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

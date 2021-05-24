@@ -1,12 +1,8 @@
 package com.ea.emiratesauction.core.network.managers.interfaces
 
-import com.ea.emiratesauction.core.constants.network.NetworkRequestParametersType
-import com.ea.emiratesauction.core.constants.network.RequestHTTPMethodType
-import com.ea.emiratesauction.core.constants.network.RequestParameterEncoding
 import com.ea.emiratesauction.core.network.request.BaseNetworkRequest
 import com.ea.emiratesauction.core.network.internalError.InternalNetworkErrorInterface
 import com.ea.emiratesauction.core.network.result.RequestResult
-import com.ea.emiratesauction.core.utilities.network.NetworkValidator
 import java.io.Serializable
 
 
