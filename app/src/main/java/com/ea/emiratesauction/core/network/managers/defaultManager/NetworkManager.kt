@@ -12,25 +12,25 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class NetworkManager @Inject constructor(private val networkProvider: NetworkProvider) : NetworkProvider {
+class NetworkManager @Inject constructor(val networkProvider: NetworkProvider.ClientProvider) : NetworkProvider.NetworkLayerProvider(networkProvider) {
 
     companion object {
         const val TAG = "TAGRetrofit"
     }
 
     override suspend fun <T : Serializable, E : InternalNetworkErrorInterface> request(
-            request: BaseNetworkRequest, successModel: Class<T>,
-            errorModel: Class<E>
+        request: BaseNetworkRequest,
+        successModel: Class<T>,
+        errorModel: Class<E>
     ): RequestResult<T, E> {
-        return networkProvider.request(request, successModel, errorModel)
+
+        return super.request(request, successModel, errorModel)
     }
 
-    override suspend fun <T : Serializable> request(request: BaseNetworkRequest, successModel: Class<T>): RequestResult<T, InternalNetworkErrorInterface> {
-        return networkProvider.request(request, successModel)
+    override suspend fun <T : Serializable> request(
+        request: BaseNetworkRequest,
+        successModel: Class<T>
+    ): RequestResult<T, InternalNetworkErrorInterface> {
+        return super.request(request, successModel)
     }
-
-    override fun httpMethodValidator(parametersType: NetworkRequestParametersType, method: RequestHTTPMethodType, encoding: RequestParameterEncoding) {
-        return networkProvider.httpMethodValidator(parametersType, method, encoding)
-    }
-
 }

@@ -11,7 +11,9 @@ abstract class BaseNetworkRequest {
     abstract var endPoint: String
     abstract var parameters: NetworkRequestParametersType
     abstract var httpMethod: RequestHTTPMethodType
-    open var headers = DefaultNetworkRequestHeader()
+
+    open var headers:NetworkRequestHeaders = DefaultNetworkRequestHeader()
+
     open var encoding: RequestParameterEncoding = RequestParameterEncoding.JSON
         get() {
             return when (httpMethod) {

@@ -4,7 +4,9 @@ import com.ea.emiratesauction.core.network.request.BaseNetworkRequest
 import com.ea.emiratesauction.core.constants.network.RequestHTTPMethodType
 import com.ea.emiratesauction.common.utils.ApiEndPoints
 import com.ea.emiratesauction.core.constants.network.NetworkRequestParametersType
+import com.ea.emiratesauction.core.network.request.DefaultNetworkRequestHeader
 import com.ea.emiratesauction.core.network.request.Host
+import com.ea.emiratesauction.core.network.request.NetworkRequestHeaders
 
 class PopularPeoplesRequestTarget: BaseNetworkRequest(){
 

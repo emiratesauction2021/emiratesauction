@@ -29,7 +29,7 @@ class RetrofitNetworkProvider @Inject constructor(
     private val builderOkkHttpclient: OkHttpClient.Builder,
     private val gConvert: GsonConverterFactory,
     private val callAdapter: CoroutineCallAdapterFactory
-) : NetworkProvider {
+) : NetworkProvider.ClientProvider {
 
     private var currentBaseUrl = ""
     private var currentTimeOut: Long = 0
@@ -51,16 +51,6 @@ class RetrofitNetworkProvider @Inject constructor(
     ): RequestResult<T, InternalNetworkErrorInterface> {
         return this.makeRequest(request, successModel, InternalNetworkError::class.java)
     }
-
-    override fun httpMethodValidator(
-        parametersType: NetworkRequestParametersType,
-        method: RequestHTTPMethodType,
-        encoding: RequestParameterEncoding
-    ) {
-        NetworkValidator.httpMethodValidator(parametersType, method,encoding)
-
-    }
-
 
     private suspend fun <T : Serializable, E : InternalNetworkErrorInterface> makeRequest(
         request: BaseNetworkRequest, successModel: Class<T>,
@@ -97,8 +87,8 @@ class RetrofitNetworkProvider @Inject constructor(
                 paramsType.bodyParams
             }
         }
-        // Check for any violations in teh request setup
-        this.httpMethodValidator(request.parameters, request.httpMethod, request.encoding)
+//        // Check for any violations in teh request setup
+//        this.httpMethodValidator(request.parameters, request.httpMethod, request.encoding)
         when (request.httpMethod) {
             RequestHTTPMethodType.GET -> {
                 retrofit?.let {
@@ -115,7 +105,6 @@ class RetrofitNetworkProvider @Inject constructor(
             }
             RequestHTTPMethodType.POST -> {
                 retrofit?.let {
-                    val test = request.headers.getAllHeaders()
                     val response = it.requestPOSTMethod(
                         url = endPoint,
                         headers = request.headers.getAllHeaders(),
