@@ -26,49 +26,43 @@ object AppModule {
     fun provideRetrofitAPIs() = RetrofitAPIs
 
 
+    @Singleton
+    @Provides
+    fun provideGsonConverterFactory() = GsonConverterFactory.create()
 
     @Singleton
     @Provides
-    fun provideGsonConverterFactory() =  GsonConverterFactory.create()
-
-    @Singleton
-    @Provides
-    fun provideCallAdapterFactory() =   CoroutineCallAdapterFactory()
+    fun provideCallAdapterFactory() = CoroutineCallAdapterFactory()
 
 
     @Singleton
     @Provides
-    fun provideOkHttpClient():OkHttpClient{
+    fun provideOkHttpClient(): OkHttpClient.Builder {
         val logging = HttpLoggingInterceptor()
         logging.level = HttpLoggingInterceptor.Level.BODY
         return OkHttpClient.Builder()
-                .connectTimeout(20, TimeUnit.SECONDS)
-                .writeTimeout(20, TimeUnit.SECONDS) // write timeout
-                .readTimeout(20, TimeUnit.SECONDS)
-                .addInterceptor(logging)
-                .connectionSpecs(
-                        listOf(
-                                ConnectionSpec.MODERN_TLS,
-                                ConnectionSpec.COMPATIBLE_TLS,
-                                ConnectionSpec.CLEARTEXT
-                        )
+            .addInterceptor(logging)
+            .connectionSpecs(
+                listOf(
+                    ConnectionSpec.MODERN_TLS,
+                    ConnectionSpec.COMPATIBLE_TLS,
+                    ConnectionSpec.CLEARTEXT
                 )
-                .followRedirects(true)
-                .followSslRedirects(true)
-                .retryOnConnectionFailure(true)
-                .cache(null)
-                .build()
+            )
+            .followRedirects(true)
+            .followSslRedirects(true)
+            .retryOnConnectionFailure(true)
+            .cache(null)
     }
-
-
-
 
 
     @Singleton
     @Provides
-    fun provideNetWorkBuilder(okkHttpclient: OkHttpClient,
-                              mGConvert: GsonConverterFactory,
-                              mCallAdapter:CoroutineCallAdapterFactory) =
+    fun provideNetWorkBuilder(
+        okkHttpclient: OkHttpClient.Builder,
+        mGConvert: GsonConverterFactory,
+        mCallAdapter: CoroutineCallAdapterFactory
+    ) =
         RetrofitNetworkProvider(
             okkHttpclient,
             mGConvert,
@@ -78,7 +72,5 @@ object AppModule {
     @Singleton
     @Provides
     fun provideNetworkManager(networkProvider: RetrofitNetworkProvider) =
-        NetworkManager(
-            networkProvider
-        )
+        NetworkManager(networkProvider)
 }

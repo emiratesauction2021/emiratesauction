@@ -4,9 +4,11 @@ class ApiEndPoints {
     companion object  {
         val headersMap = hashMapOf<String, Any>("Accept-Language" to "en","accept" to "application/json", "Content-Type" to "application/json-patch+json")
 
+        val CusttomheadersMap = hashMapOf<String, Any>("Accept-Language" to "en","accept" to "application/json", "Content-Type" to "application/json-patch+json")
 
-
-        const val BASE_API_URL = "https://era---mock.getsandbox.com/"
+        val ACCEPT_LANGUAGE = "Accept-Language" to "en"
+         val ACCEPT = "accept" to "application/json"
+         val CONTENT_TYPE = "Content-Type" to "application/json-patch+json"
 
         const val BASE_IMAGE_URL = "https://image.tmdb.org/t/p/"
         const val API_KEY = "1cb2fc2b567d64f1a4a5c1e35bf70d30"

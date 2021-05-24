@@ -1,5 +1,7 @@
 package com.ea.emiratesauction.core.network.request
 
+import androidx.datastore.preferences.protobuf.Api
+import com.ea.emiratesauction.common.utils.ApiEndPoints
 import com.ea.emiratesauction.core.constants.network.RequestHTTPMethodType
 import com.ea.emiratesauction.core.constants.network.NetworkRequestParametersType
 import com.ea.emiratesauction.core.constants.network.RequestParameterEncoding
@@ -9,10 +11,10 @@ abstract class BaseNetworkRequest {
     abstract var endPoint: String
     abstract var parameters: NetworkRequestParametersType
     abstract var httpMethod: RequestHTTPMethodType
-    open var headers: Map<String, Any> = CommonHeaders().aaa()
+    open var headers = DefaultNetworkRequestHeader()
     open var encoding: RequestParameterEncoding = RequestParameterEncoding.JSON
         get() {
-            return when(httpMethod) {
+            return when (httpMethod) {
                 RequestHTTPMethodType.GET -> {
                     RequestParameterEncoding.URL
                 }
@@ -23,6 +25,7 @@ abstract class BaseNetworkRequest {
             }
         }
     open var baseURL: Host = Host.DEFAULT_BASE
-    open var timeOutSeconds: Double = 20.0
+    open var timeOutSeconds: Long = 20
 
 }
+

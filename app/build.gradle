@@ -26,6 +26,34 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+
+    flavorDimensions 'default'
+    productFlavors {
+        Dev {
+            dimension "default"
+            versionNameSuffix "-Dev"
+            applicationId "com.ea.emiratesauction"
+            buildConfigField "String", "BASE_URL", '"https://era---mock.getsandbox.com/"'
+            buildConfigField "String", "STORE_TYPE", '"Google"'
+        }
+        Live  {
+            dimension "default"
+            applicationId "com.eanew.emiratesauction"
+            versionNameSuffix "-Live"
+            buildConfigField "String", "BASE_URL", '"https://era---mock.getsandbox.com/"'
+            buildConfigField "String", "STORE_TYPE", '"Google"'
+        }
+
+        Mock {
+            dimension "default"
+            applicationId "com.eanew.emiratesauction"
+            versionNameSuffix "-Mock"
+            buildConfigField "String", "BASE_URL", '"https://era---mock.getsandbox.com/"'
+            buildConfigField "String", "STORE_TYPE", '"Google"'
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8

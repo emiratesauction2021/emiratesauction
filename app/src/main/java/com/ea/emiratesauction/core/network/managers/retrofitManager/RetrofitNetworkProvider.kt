@@ -1,15 +1,14 @@
 package com.ea.emiratesauction.core.network.managers.retrofitManager
 
 import android.util.Log
-import com.ea.emiratesauction.core.constants.network.NetworkRequestParameters
 import com.ea.emiratesauction.core.constants.network.NetworkRequestParametersType
 import com.ea.emiratesauction.core.network.request.BaseNetworkRequest
 import com.ea.emiratesauction.core.network.internalError.InternalNetworkError
 import com.ea.emiratesauction.core.network.internalError.InternalNetworkErrorInterface
 import com.ea.emiratesauction.core.constants.network.RequestHTTPMethodType
 import com.ea.emiratesauction.core.constants.network.RequestParameterEncoding
-import com.ea.emiratesauction.core.network.result.RequestResult
 import com.ea.emiratesauction.core.network.managers.interfaces.NetworkProvider
+import com.ea.emiratesauction.core.network.result.RequestResult
 import com.ea.emiratesauction.core.network.responseHandler.failure.ErrorHandler
 import com.ea.emiratesauction.core.network.responseHandler.success.SuccessHandler
 import com.ea.emiratesauction.core.utilities.network.NetworkUtility
@@ -27,34 +26,55 @@ import javax.inject.Inject
 
 @Suppress("UNCHECKED_CAST")
 class RetrofitNetworkProvider @Inject constructor(
-    private val okkHttpclient: OkHttpClient,
+    private val builderOkkHttpclient: OkHttpClient.Builder,
     private val gConvert: GsonConverterFactory,
     private val callAdapter: CoroutineCallAdapterFactory
 ) : NetworkProvider {
 
     private var currentBaseUrl = ""
+    private var currentTimeOut: Long = 0
+    private lateinit var okkHttpclient: OkHttpClient
     private var retrofit: RetrofitAPIs? = null
 
     val TAG = "RetrofitBuilder"
 
-    override suspend fun <T : Serializable,E : InternalNetworkErrorInterface> request(request: BaseNetworkRequest, successModel: Class<T>,
-                                                                                      errorModel: Class<E>): RequestResult<T, E> {
+    override suspend fun <T : Serializable, E : InternalNetworkErrorInterface> request(
+        request: BaseNetworkRequest, successModel: Class<T>,
+        errorModel: Class<E>
+    ): RequestResult<T, E> {
         return this.makeRequest(request, successModel, errorModel)
     }
 
     override suspend fun <T : Serializable> request(
-            request: BaseNetworkRequest,
-            successModel: Class<T>
+        request: BaseNetworkRequest,
+        successModel: Class<T>
     ): RequestResult<T, InternalNetworkErrorInterface> {
         return this.makeRequest(request, successModel, InternalNetworkError::class.java)
     }
 
-    override fun httpMethodValidator(parametersType: NetworkRequestParametersType, method: RequestHTTPMethodType, encoding: RequestParameterEncoding) {
-        NetworkValidator.httpMethodValidator(parametersType, method, encoding)
+    override fun httpMethodValidator(
+        parametersType: NetworkRequestParametersType,
+        method: RequestHTTPMethodType,
+        encoding: RequestParameterEncoding
+    ) {
+        NetworkValidator.httpMethodValidator(parametersType, method,encoding)
+
     }
 
-    private suspend fun <T : Serializable,E : InternalNetworkErrorInterface> makeRequest(request: BaseNetworkRequest, successModel: Class<T>,
-                                                                                         errorModel: Class<E>): RequestResult<T, E> {
+
+    private suspend fun <T : Serializable, E : InternalNetworkErrorInterface> makeRequest(
+        request: BaseNetworkRequest, successModel: Class<T>,
+        errorModel: Class<E>
+    ): RequestResult<T, E> {
+
+        if (request.timeOutSeconds != currentTimeOut) {
+            currentTimeOut = request.timeOutSeconds
+            okkHttpclient = builderOkkHttpclient.connectTimeout(request.timeOutSeconds, TimeUnit.SECONDS)
+                    .writeTimeout(request.timeOutSeconds, TimeUnit.SECONDS) // write timeout
+                    .readTimeout(request.timeOutSeconds, TimeUnit.SECONDS)
+                    .build()
+        }
+
         if (currentBaseUrl != request.baseURL.baseUrl || retrofit != null) {
             currentBaseUrl = request.baseURL.baseUrl
             retrofit = Retrofit.Builder()
@@ -67,11 +87,8 @@ class RetrofitNetworkProvider @Inject constructor(
 
         }
 
-        // Check for any violations in teh request setup
-        this.httpMethodValidator(request.parameters, request.httpMethod, request.encoding)
-
         var endPoint = request.endPoint
-        var parameters = when(val paramsType = request.parameters) {
+        var parameters = when (val paramsType = request.parameters) {
             is NetworkRequestParametersType.Standard -> {
                 paramsType.params
             }
@@ -80,31 +97,33 @@ class RetrofitNetworkProvider @Inject constructor(
                 paramsType.bodyParams
             }
         }
-
+        // Check for any violations in teh request setup
+        this.httpMethodValidator(request.parameters, request.httpMethod, request.encoding)
         when (request.httpMethod) {
             RequestHTTPMethodType.GET -> {
                 retrofit?.let {
                     val response = it.requestGETMethod(
-                            url = endPoint,
-                            headers = request.headers,
-                            params = parameters
+                        url = endPoint,
+                        headers = request.headers.getAllHeaders(),
+                        params = parameters
                     )
 
                     Log.d(TAG, response.toString())
 
-                    return wrapResponse(response, successModel,errorModel)
+                    return wrapResponse(response, successModel, errorModel)
                 }
             }
             RequestHTTPMethodType.POST -> {
                 retrofit?.let {
+                    val test = request.headers.getAllHeaders()
                     val response = it.requestPOSTMethod(
-                            url = endPoint,
-                            headers = request.headers,
-                            params = parameters
+                        url = endPoint,
+                        headers = request.headers.getAllHeaders(),
+                        params = parameters
                     )
                     Log.d(TAG, response.toString())
 
-                    return wrapResponse(response, successModel,errorModel)
+                    return wrapResponse(response, successModel, errorModel)
                 }
             }
             else -> {
@@ -115,10 +134,14 @@ class RetrofitNetworkProvider @Inject constructor(
         throw Exception("Retrofit is not initialized")
     }
 
-    private fun <T : Serializable,E : InternalNetworkErrorInterface> wrapResponse(responseData: Response<Any>, successModel: Class<T>, errorModel: Class<E>):
+    private fun <T : Serializable, E : InternalNetworkErrorInterface> wrapResponse(
+        responseData: Response<Any>,
+        successModel: Class<T>,
+        errorModel: Class<E>
+    ):
             RequestResult<T, E> {
 
-        return if(responseData.isSuccessful) {
+        return if (responseData.isSuccessful) {
             SuccessHandler.mapSuccessfulResponse(responseData.body(), successModel, errorModel)
         } else {
             ErrorHandler.handleHTTPErrors(responseData.code(), responseData.message())
