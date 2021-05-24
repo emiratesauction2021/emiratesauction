@@ -30,13 +30,13 @@ interface NetworkProvider {
 
 
 
-    abstract class NetworkLayerProvider(val clientProvider:NetworkProvider){
+    abstract class NetworkLayerProvider(val clientProvider:NetworkProvider):NetworkProvider{
 
         private fun CheckNetwork(parametersType: NetworkRequestParametersType, method: RequestHTTPMethodType, encoding: RequestParameterEncoding){
             NetworkValidator.httpMethodValidator(parametersType,method,encoding)
         }
 
-        open suspend fun <T : Serializable, E : InternalNetworkErrorInterface> request(
+        override suspend fun <T : Serializable, E : InternalNetworkErrorInterface> request(
             request: BaseNetworkRequest,
             successModel: Class<T>,
             errorModel: Class<E>
@@ -45,7 +45,7 @@ interface NetworkProvider {
             return clientProvider.request(request,successModel,errorModel)
         }
 
-        open  suspend fun <T : Serializable> request(
+        override  suspend fun <T : Serializable> request(
             request: BaseNetworkRequest,
             successModel: Class<T>
         ): RequestResult<T, InternalNetworkErrorInterface>{
