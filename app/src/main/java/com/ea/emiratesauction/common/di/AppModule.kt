@@ -1,7 +1,10 @@
 package com.ea.emiratesauction.common.di
 
-import com.ea.emiratesauction.core.network.managers.retrofitManager.RetrofitNetworkProvider
 import com.ea.emiratesauction.core.network.managers.defaultManager.NetworkManager
+import com.ea.emiratesauction.core.network.managers.retrofitManager.RetrofitNetworkProvider
+import com.ea.emiratesauction.core.network.managers.defaultManager.NetworkProvider
+import com.ea.emiratesauction.core.network.managers.interfaces.NetworkManagerInterface
+import com.ea.emiratesauction.core.network.managers.interfaces.NetworkProviderInterface
 import com.ea.emiratesauction.core.network.managers.retrofitManager.RetrofitAPIs
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Module
@@ -12,7 +15,6 @@ import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 
@@ -56,9 +58,20 @@ object AppModule {
     }
 
 
+
     @Singleton
     @Provides
-    fun provideNetWorkBuilder(
+    fun provideNetworkManager(networkProvider: NetworkProvider) = NetworkManager(networkProvider)
+
+    @Singleton
+    @Provides
+    fun provideNetworkProvider(networkProvider: RetrofitNetworkProvider) =
+        NetworkProvider(networkProvider)
+
+
+    @Singleton
+    @Provides
+    fun provideRetrofitBuilder(
         okkHttpclient: OkHttpClient.Builder,
         mGConvert: GsonConverterFactory,
         mCallAdapter: CoroutineCallAdapterFactory
@@ -69,8 +82,4 @@ object AppModule {
             mCallAdapter
         )
 
-    @Singleton
-    @Provides
-    fun provideNetworkManager(networkProvider: RetrofitNetworkProvider) =
-        NetworkManager(networkProvider)
 }

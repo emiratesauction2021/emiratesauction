@@ -3,34 +3,36 @@ package com.ea.emiratesauction.core.network.managers.defaultManager
 import com.ea.emiratesauction.core.constants.network.NetworkRequestParametersType
 import com.ea.emiratesauction.core.constants.network.RequestHTTPMethodType
 import com.ea.emiratesauction.core.constants.network.RequestParameterEncoding
+import com.ea.emiratesauction.core.network.managers.interfaces.NetworkManagerInterface
+import com.ea.emiratesauction.core.network.managers.interfaces.NetworkProviderInterface
+import com.ea.emiratesauction.core.network.managers.interfaces.NetworkValidatorInterface
 import com.ea.emiratesauction.core.network.request.BaseNetworkRequest
-import com.ea.emiratesauction.core.network.managers.interfaces.NetworkProvider
-import com.ea.emiratesauction.core.network.internalError.InternalNetworkErrorInterface
-import com.ea.emiratesauction.core.network.result.RequestResult
-import java.io.Serializable
-import javax.inject.Inject
-import javax.inject.Singleton
+import com.ea.emiratesauction.core.utilities.network.NetworkValidator
 
-@Singleton
-class NetworkManager @Inject constructor(val networkProvider: NetworkProvider.ClientProvider) : NetworkProvider.NetworkLayerProvider(networkProvider) {
+class NetworkManager(private val networkProvider: NetworkProviderInterface) :
+    NetworkManagerInterface {
 
-    companion object {
-        const val TAG = "TAGRetrofit"
+    override fun validate(request: BaseNetworkRequest): NetworkProviderInterface {
+
+        this.httpMethodValidator(
+            request.parameters,
+            request.httpMethod,
+            request.encoding
+        )
+
+        return networkProvider
     }
 
-    override suspend fun <T : Serializable, E : InternalNetworkErrorInterface> request(
-        request: BaseNetworkRequest,
-        successModel: Class<T>,
-        errorModel: Class<E>
-    ): RequestResult<T, E> {
-
-        return super.request(request, successModel, errorModel)
+    override fun httpMethodValidator(
+        parametersType: NetworkRequestParametersType,
+        method: RequestHTTPMethodType,
+        encoding: RequestParameterEncoding
+    ) {
+        NetworkValidator.httpMethodValidator(
+            parametersType,
+            method,
+            encoding
+        )
     }
 
-    override suspend fun <T : Serializable> request(
-        request: BaseNetworkRequest,
-        successModel: Class<T>
-    ): RequestResult<T, InternalNetworkErrorInterface> {
-        return super.request(request, successModel)
-    }
 }

@@ -6,13 +6,11 @@ import com.ea.emiratesauction.core.network.request.BaseNetworkRequest
 import com.ea.emiratesauction.core.network.internalError.InternalNetworkError
 import com.ea.emiratesauction.core.network.internalError.InternalNetworkErrorInterface
 import com.ea.emiratesauction.core.constants.network.RequestHTTPMethodType
-import com.ea.emiratesauction.core.constants.network.RequestParameterEncoding
-import com.ea.emiratesauction.core.network.managers.interfaces.NetworkProvider
+import com.ea.emiratesauction.core.network.managers.interfaces.NetworkProviderInterface
 import com.ea.emiratesauction.core.network.result.RequestResult
 import com.ea.emiratesauction.core.network.responseHandler.failure.ErrorHandler
 import com.ea.emiratesauction.core.network.responseHandler.success.SuccessHandler
 import com.ea.emiratesauction.core.utilities.network.NetworkUtility
-import com.ea.emiratesauction.core.utilities.network.NetworkValidator
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient
 import retrofit2.Response
@@ -29,7 +27,7 @@ class RetrofitNetworkProvider @Inject constructor(
     private val builderOkkHttpclient: OkHttpClient.Builder,
     private val gConvert: GsonConverterFactory,
     private val callAdapter: CoroutineCallAdapterFactory
-) : NetworkProvider.ClientProvider {
+) : NetworkProviderInterface {
 
     private var currentBaseUrl = ""
     private var currentTimeOut: Long = 0
