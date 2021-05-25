@@ -7,8 +7,11 @@ import com.ea.emiratesauction.core.network.managers.interfaces.NetworkManagerInt
 import com.ea.emiratesauction.core.network.managers.interfaces.NetworkProviderInterface
 import com.ea.emiratesauction.core.network.request.BaseNetworkRequest
 import com.ea.emiratesauction.core.utilities.network.NetworkValidator
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class NetworkManager(private val networkProvider: NetworkProviderInterface) :
+@Singleton
+class NetworkManager @Inject constructor(private val networkProvider: NetworkProviderInterface) :
     NetworkManagerInterface {
 
     override fun validate(request: BaseNetworkRequest): NetworkProviderInterface {
