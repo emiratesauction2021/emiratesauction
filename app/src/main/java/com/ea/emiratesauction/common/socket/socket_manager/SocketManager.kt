@@ -3,12 +3,12 @@ package com.ea.emiratesauction.common.socket.socket_manager
 
 import com.ea.emiratesauction.common.socket.SocketChannel
 import com.ea.emiratesauction.common.socket.socket_client.SocketClientInterface
+import javax.inject.Inject
 import kotlin.collections.ArrayList
 
-object SocketManager : SocketManagerInterface {
+class SocketManager @Inject constructor(val socketClientInterface: SocketClientInterface) : SocketManagerInterface {
 
     private var isStartingListen = false
-    private lateinit var socketClient: SocketClientInterface
     var socketListeners = mutableMapOf<String, ArrayList<SocketListenerInterface>>()
 
     init {
@@ -16,22 +16,19 @@ object SocketManager : SocketManagerInterface {
 
     override fun startListen() {
         if (!isStartingListen) {
-            socketClient.startListening()
+            socketClientInterface.startListening()
             isStartingListen = true
         }
     }
 
     override fun stopListen() {
         if (isStartingListen) {
-            socketClient.stopListening()
+            socketClientInterface.stopListening()
             isStartingListen = false
         }
     }
 
-    override fun setSocketClient(socketClientInterface: SocketClientInterface) {
-        stopListen()
-        this.socketClient = socketClientInterface
-    }
+
 
     override fun addListener(channel: SocketChannel, mSocketListener: SocketListenerInterface) {
 
@@ -40,7 +37,7 @@ object SocketManager : SocketManagerInterface {
             //
         } else { // if there is no channels found any more
             socketListeners.put(channel.name, arrayListOf(mSocketListener))
-            socketClient.subscribeToChannel(channel.name)
+            socketClientInterface.subscribeToChannel(channel.name)
             getResult(channel)
 
         }
@@ -52,12 +49,12 @@ object SocketManager : SocketManagerInterface {
             if (socketListeners.get(channel.name)!!.size > 0 && socketListeners.get(channel.name)!!.contains(mSocketListener))
                 socketListeners.get(channel.name)!!.remove(mSocketListener)
             else
-                socketClient.unSubscribeToChannel(channel.name)
+                socketClientInterface.unSubscribeToChannel(channel.name)
         }
     }
 
     override fun getResult(channel: SocketChannel) {
-        socketClient.getResult(object : SocketListenerInterface {
+        socketClientInterface.getResult(object : SocketListenerInterface {
             override fun <T> getSocketData(data: T) {
                 if (socketListeners.get(channel.name) != null && socketListeners.get(
                         channel.name

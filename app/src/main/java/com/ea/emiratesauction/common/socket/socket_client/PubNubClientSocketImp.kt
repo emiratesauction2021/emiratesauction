@@ -17,8 +17,8 @@ import com.pubnub.api.models.consumer.pubsub.objects.PNUserResult
 
 import java.util.*
 
-class PubNubClientSocketImp() : SocketClientInterface {
-    var pubNubClient: PubNubSocketClient? = null
+class PubNubClientSocketImp : SocketClientInterface {
+     var pubNubClient: PubNubSocketClient
 
     init {
         PubNubSocketClient.pnConfiguration.subscribeKey = BusinessConstants.PubNUB_SUBSCRIBE_KEY
@@ -29,7 +29,7 @@ class PubNubClientSocketImp() : SocketClientInterface {
     }
 
     override fun subscribeToChannel(channel: String) {
-        pubNubClient?.run {
+        pubNubClient.run {
             subscribe().channels(Arrays.asList(channel)).execute()
             configuration.connectTimeout = 10 * 60
         }
@@ -37,14 +37,14 @@ class PubNubClientSocketImp() : SocketClientInterface {
     }
 
     override fun unSubscribeToChannel(channel: String) {
-        pubNubClient?.run {
+        pubNubClient.run {
             unsubscribe().channels(Arrays.asList(channel)).execute()
         }
     }
 
     override fun getResult(mSocketListener: SocketListenerInterface) {
 
-        pubNubClient?.run {
+        pubNubClient.run {
             val mPubNubCallback = object : SubscribeCallback() {
                 override fun signal(pubnub: PubNub, pnSignalResult: PNSignalResult) {}
 
