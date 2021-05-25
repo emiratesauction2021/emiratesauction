@@ -17,7 +17,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.kt.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -46,7 +46,8 @@ dependencies { configuration ->
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
-
+    //pububnub
+    implementation group: 'com.pubnub', name: 'pubnub-gson', version: '4.29.2'
     setupUnitTest(configuration)
     setupCustomLib(configuration)
     setupNavigation(configuration)
@@ -58,12 +59,12 @@ dependencies { configuration ->
 }
 
 
-private static setupUnitTest(configuration){
+private static setupUnitTest(configuration) {
     configuration.androidTestImplementation "com.google.truth:truth:1.0.1"
     configuration.testImplementation "com.google.truth:truth:1.0.1"
     configuration.testImplementation 'junit:junit:4.+'
-    configuration.androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    configuration.androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    configuration.androidTestImplementation 'androidx.test.kt.ext:junit:1.1.2'
+    configuration.androidTestImplementation 'androidx.test.kt.espresso:espresso-core:3.3.0'
 }
 
 private static setupHilt(configuration) {
