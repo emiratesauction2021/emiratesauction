@@ -1,6 +1,6 @@
-package com.ea.emiratesauction.common.socket.socket_client
+package com.ea.emiratesauction.core.socket.socket_client
 
-import com.ea.emiratesauction.common.socket.socket_manager.SocketListenerInterface
+import com.ea.emiratesauction.core.socket.socket_manager.SocketListenerInterface
 
 interface SocketClientInterface  {
     fun startListening()

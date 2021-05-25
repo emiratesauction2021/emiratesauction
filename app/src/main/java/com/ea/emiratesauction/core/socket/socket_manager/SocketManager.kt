@@ -1,8 +1,8 @@
-package com.ea.emiratesauction.common.socket.socket_manager
+package com.ea.emiratesauction.core.socket.socket_manager
 
 
-import com.ea.emiratesauction.common.socket.SocketChannel
-import com.ea.emiratesauction.common.socket.socket_client.SocketClientInterface
+import com.ea.emiratesauction.core.socket.SocketChannel
+import com.ea.emiratesauction.core.socket.socket_client.SocketClientInterface
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 

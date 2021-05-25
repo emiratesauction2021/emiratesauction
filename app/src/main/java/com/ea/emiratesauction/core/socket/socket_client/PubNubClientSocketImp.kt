@@ -1,7 +1,7 @@
-package com.ea.emiratesauction.common.socket.socket_client
+package com.ea.emiratesauction.core.socket.socket_client
 
 import android.util.Log
-import com.ea.emiratesauction.common.socket.socket_manager.SocketListenerInterface
+import com.ea.emiratesauction.core.socket.socket_manager.SocketListenerInterface
 import com.ea.emiratesauction.common.utils.BusinessConstants
 import com.pubnub.api.PubNub
 import com.pubnub.api.callbacks.SubscribeCallback

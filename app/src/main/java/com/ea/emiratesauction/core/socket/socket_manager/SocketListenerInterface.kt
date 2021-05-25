@@ -1,4 +1,4 @@
-package com.ea.emiratesauction.common.socket.socket_manager
+package com.ea.emiratesauction.core.socket.socket_manager
 
 interface SocketListenerInterface {
     fun <T> getSocketData(data:T)
