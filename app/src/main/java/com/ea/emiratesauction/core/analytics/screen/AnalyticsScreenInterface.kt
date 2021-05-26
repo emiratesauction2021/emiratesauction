@@ -1,10 +1,10 @@
 package com.ea.emiratesauction.core.analytics.screen
 
-import com.ea.emiratesauction.core.analytics.providers.AnalyticsProvider
+import com.ea.emiratesauction.core.analytics.providers.AnalyticsProviderIdentifier
 
 interface AnalyticsScreenInterface {
 
-    var eventName: String
-    var params: Map<String, Any>
-    var providers: ArrayList<AnalyticsProvider>
+    var name: String
+    var attributes: ArrayList<Pair<String,Any>>
+    var providerIdentifiers: ArrayList<AnalyticsProviderIdentifier>
 }

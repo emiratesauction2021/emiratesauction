@@ -1,15 +1,20 @@
 package com.ea.emiratesauction.core.analytics.providers
 
-import com.ea.emiratesauction.core.analytics.UserIdentification
 import com.ea.emiratesauction.core.analytics.event.AnalyticsEventInterface
+import com.ea.emiratesauction.core.analytics.profile.ProfileIdentificationInterface
+import com.ea.emiratesauction.core.analytics.properties.BasePropertiesInterface
+import com.ea.emiratesauction.core.analytics.properties.ProfilePropertiesInterface
 import com.ea.emiratesauction.core.analytics.screen.AnalyticsScreenInterface
 
 interface AnalyticsProviderInterface {
-    var provider:AnalyticsProvider
-    var defaultParameters:Map<String, Any>
+    var providerID:AnalyticsProviderIdentifier
+    var defaultEventProperties:BasePropertiesInterface
+    var defaultScreenProperties:BasePropertiesInterface
 
-    fun setDefaultParameters(event:AnalyticsEventInterface)
     fun logEvent(event:AnalyticsEventInterface)
-    fun setUpIdentification(userIdentification: UserIdentification)
     fun trackScreen(screen: AnalyticsScreenInterface)
+
+    fun setupProfileIdentification(profileID:ProfileIdentificationInterface)
+    fun setProfileProperties(profileIdentification: ProfilePropertiesInterface)
+
 }

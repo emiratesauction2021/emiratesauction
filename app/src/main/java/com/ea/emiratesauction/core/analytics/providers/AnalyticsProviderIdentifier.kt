@@ -1,6 +1,6 @@
 package com.ea.emiratesauction.core.analytics.providers
 
-enum class AnalyticsProvider {
+enum class AnalyticsProviderIdentifier {
     firebase,mixpanel
 
 }

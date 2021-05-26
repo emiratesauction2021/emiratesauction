@@ -1,33 +1,40 @@
 package com.ea.emiratesauction.core.analytics.managers
 
-import com.ea.emiratesauction.core.analytics.UserIdentification
 import com.ea.emiratesauction.core.analytics.event.AnalyticsEventInterface
-import com.ea.emiratesauction.core.analytics.providers.AnalyticsProvider
+import com.ea.emiratesauction.core.analytics.profile.ProfileIdentificationInterface
+import com.ea.emiratesauction.core.analytics.properties.ProfilePropertiesInterface
+import com.ea.emiratesauction.core.analytics.providers.AnalyticsProviderIdentifier
 import com.ea.emiratesauction.core.analytics.providers.AnalyticsProviderInterface
 import com.ea.emiratesauction.core.analytics.screen.AnalyticsScreenInterface
-import javax.inject.Inject
 
-class AnalyticsManager @Inject constructor(private val providers: Map<AnalyticsProvider, AnalyticsProviderInterface>) :
+object AnalyticsManager :
     AnalyticsManagerInterface {
 
-    override fun setDefaultParameters(event: AnalyticsEventInterface) {
-        for (providersName in event.providers) {
-            providers.get(providersName)!!.setDefaultParameters(event)
-        }
+    private val providers = HashMap<AnalyticsProviderIdentifier, AnalyticsProviderInterface>()
+    override fun setAnalyticsProvider(providers: Map<AnalyticsProviderIdentifier, AnalyticsProviderInterface>) {
+        TODO("Not yet implemented")
     }
 
+
     override fun logEvent(event: AnalyticsEventInterface) {
-        for (providersName in event.providers) {
+        for (providersName in event.providerIdentifiers) {
             providers.get(providersName)!!.logEvent(event)
         }
     }
 
-    override fun setUpIdentification(userIdentification: UserIdentification) {
-        TODO("Not yet implemented")
-    }
 
     override fun trackScreen(screen: AnalyticsScreenInterface) {
         TODO("Not yet implemented")
+    }
+
+    override fun setUpProfileIdentification(profileIdentification: ProfileIdentificationInterface) {
+        TODO("Not yet implemented")
+    }
+
+    override fun setProfileProperties(properties: ProfilePropertiesInterface) {
+        for (providersName in properties.providersIdentifiers) {
+            providers.get(providersName)!!.setProfileProperties(properties)
+        }
     }
 
 

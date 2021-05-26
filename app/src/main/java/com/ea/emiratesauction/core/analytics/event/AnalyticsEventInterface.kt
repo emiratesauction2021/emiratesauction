@@ -1,11 +1,11 @@
 package com.ea.emiratesauction.core.analytics.event
 
-import com.ea.emiratesauction.core.analytics.providers.AnalyticsProvider
+import com.ea.emiratesauction.core.analytics.providers.AnalyticsProviderIdentifier
 
 interface AnalyticsEventInterface {
-    var eventName: String
-    var params: Map<String, Any>
-    var providers: ArrayList<AnalyticsProvider>
+    var name: String
+    var properties: Map<String, Any>
+    var providerIdentifiers: ArrayList<AnalyticsProviderIdentifier>
 }
 
 
