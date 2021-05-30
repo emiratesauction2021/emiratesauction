@@ -5,7 +5,16 @@ import com.ea.emiratesauction.core.network.internalError.InternalNetworkErrorInt
 import com.ea.emiratesauction.core.network.result.RequestResult
 import java.io.Serializable
 
-
+/**
+ * after check all validations
+ * @see NetworkManagerInterface
+ * then you will pass request parameter
+ * @see BaseNetworkRequest
+ * , Response model in success case
+ * and Response model in error case "it's optional"
+ * @see InternalNetworkErrorInterface
+ *
+ */
 interface NetworkProviderInterface {
 
     suspend fun <T : Serializable, E : InternalNetworkErrorInterface> request(

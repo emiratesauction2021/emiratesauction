@@ -1,7 +1,12 @@
 package com.ea.emiratesauction.core.utilities.network
-
+import com.ea.emiratesauction.core.constants.network.NetworkRequestParametersType
 import com.ea.emiratesauction.core.constants.network.NetworkRequestParameters
 import java.net.URLEncoder
+
+/**
+ * this class is used for make Combination of request type Composite
+ * @see NetworkRequestParametersType
+ */
 
 enum class EncodeType(val type: String){
     UTF_8("UTF-8")

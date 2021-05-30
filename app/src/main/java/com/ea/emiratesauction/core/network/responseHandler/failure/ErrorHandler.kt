@@ -7,9 +7,17 @@ import com.ea.emiratesauction.core.network.result.RequestResult
 import com.ea.emiratesauction.core.constants.network.NetworkErrors
 import java.io.Serializable
 
+/**
+ * this handler is to map data with return model
+ * here we know that error is fail then we will handle two cases
+ * @property handleHTTPErrors for external errors
+ * @property checkForInternalError for errors return from server response
+ */
+
 class ErrorHandler {
     companion object {
         fun <T : Serializable,E : InternalNetworkErrorInterface> handleHTTPErrors(code: Int, message: String?): RequestResult<T, E> {
+            // common External Errors
             val errorCode = when (code) {
 
                 400 -> NetworkErrors.BAD_REQUEST

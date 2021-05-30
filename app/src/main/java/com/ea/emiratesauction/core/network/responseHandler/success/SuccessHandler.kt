@@ -8,6 +8,13 @@ import com.ea.emiratesauction.core.network.result.RequestResult
 import com.ea.emiratesauction.core.constants.network.NetworkErrors
 import java.io.Serializable
 
+/**
+ * this handler is to map data with return model
+ * @param T and check if it success response with success data
+ * if it success wil return in Success Case
+ * else will return in fail case
+ * @see RequestResult
+ */
 class SuccessHandler {
     companion object {
         fun <T : Serializable,E : InternalNetworkErrorInterface> mapSuccessfulResponse(responseData: Any?, successModel: Class<T>, errorModel: Class<E>):

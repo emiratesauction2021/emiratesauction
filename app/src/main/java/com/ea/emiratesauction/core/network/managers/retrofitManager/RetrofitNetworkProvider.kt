@@ -29,10 +29,13 @@ class RetrofitNetworkProvider @Inject constructor(
     private val callAdapter: CoroutineCallAdapterFactory
 ) : NetworkProviderInterface {
 
+    // this used for to check if current Build is the same
     private var currentBaseUrl = ""
     private var currentTimeOut: Long = 0
     private lateinit var okkHttpclient: OkHttpClient
     private var retrofit: RetrofitAPIs? = null
+    //******************************************************
+
 
     val TAG = "RetrofitBuilder"
 
