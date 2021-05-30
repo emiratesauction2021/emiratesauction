@@ -4,9 +4,9 @@ typealias NetworkRequestParameters = Map<String, Any>
 
 /**
  * if request type is get or post with body parameters then use
- * @see Standard
+ * @property Standard
  * if request type is post with parameters in body and query will need to use
- * @see Composite
+ * @property Composite
  */
 sealed class NetworkRequestParametersType{
     data class Standard(var params: NetworkRequestParameters) : NetworkRequestParametersType()

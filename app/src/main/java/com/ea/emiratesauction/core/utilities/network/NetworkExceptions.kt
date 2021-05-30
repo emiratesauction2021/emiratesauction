@@ -1,4 +1,5 @@
 package com.ea.emiratesauction.core.utilities.network
+// type of returns exceptions
 
 object NetworkExceptions {
 
