@@ -19,8 +19,12 @@ class firebaseProvider: AnalyticsProviderInterface {
         set(value) {}
 
     override fun logEvent(event: AnalyticsEventInterface) {
-        TODO("Not yet implemented")
+        var params = HashMap<String, Any>()
+        params.putAll(defaultEventProperties.properties)
+        params.putAll(event.properties)
+
     }
+
 
     override fun trackScreen(screen: AnalyticsScreenInterface) {
         TODO("Not yet implemented")
