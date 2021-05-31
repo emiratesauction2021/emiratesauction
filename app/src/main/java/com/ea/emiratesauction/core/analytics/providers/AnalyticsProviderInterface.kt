@@ -6,6 +6,10 @@ import com.ea.emiratesauction.core.analytics.properties.BasePropertiesInterface
 import com.ea.emiratesauction.core.analytics.properties.ProfilePropertiesInterface
 import com.ea.emiratesauction.core.analytics.screen.AnalyticsScreenInterface
 
+/*
+define analytics provider client interface attributes and methods
+ */
+
 interface AnalyticsProviderInterface {
     var providerID:AnalyticsProviderIdentifier
     var defaultEventProperties:BasePropertiesInterface

@@ -6,7 +6,9 @@ import com.ea.emiratesauction.core.analytics.properties.ProfilePropertiesInterfa
 import com.ea.emiratesauction.core.analytics.providers.AnalyticsProviderIdentifier
 import com.ea.emiratesauction.core.analytics.providers.AnalyticsProviderInterface
 import com.ea.emiratesauction.core.analytics.screen.AnalyticsScreenInterface
-
+/*
+define analytics manager interface methods
+ */
 interface AnalyticsManagerInterface {
 
     fun setAnalyticsProvider( providers: Map<AnalyticsProviderIdentifier, AnalyticsProviderInterface>)

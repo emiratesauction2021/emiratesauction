@@ -6,14 +6,18 @@ import com.ea.emiratesauction.core.analytics.properties.BasePropertiesInterface
 import com.ea.emiratesauction.core.analytics.properties.ProfilePropertiesInterface
 import com.ea.emiratesauction.core.analytics.screen.AnalyticsScreenInterface
 
-class firebaseProvider: AnalyticsProviderInterface {
-
+class firebaseProvider : AnalyticsProviderInterface {
+    //define analytics provider
     override var providerID: AnalyticsProviderIdentifier
         get() = TODO("Not yet implemented")
         set(value) {}
+
+    //define default Event Properties
     override var defaultEventProperties: BasePropertiesInterface
         get() = TODO("Not yet implemented")
         set(value) {}
+
+    //define default Screen Properties
     override var defaultScreenProperties: BasePropertiesInterface
         get() = TODO("Not yet implemented")
         set(value) {}
