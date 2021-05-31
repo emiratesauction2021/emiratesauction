@@ -76,7 +76,7 @@ class PubNubClientSocketImp : RTMProviderInterface {
     override fun initialize() {
         PubNubSocketClient.pnConfiguration.subscribeKey = BusinessConstants.PubNUB_SUBSCRIBE_KEY
         PubNubSocketClient.pnConfiguration.publishKey = BusinessConstants.PubNUB_PUBLISH_KEY
-        PubNubSocketClient.pnConfiguration.secretKey = BusinessConstants.PubNUB_SECREATE_KEY
+        PubNubSocketClient.pnConfiguration.secretKey = BusinessConstants.PubNUB_SECRETE_KEY
         pubNubClient = PubNubSocketClient(PubNubSocketClient.pnConfiguration)
 
     }
@@ -91,7 +91,7 @@ class PubNubClientSocketImp : RTMProviderInterface {
 
     override fun subscribe(channel: RTMChannel) {
         pubNubClient.run {
-            subscribe().channels(Arrays.asList(channel.name.name)).execute()
+            subscribe().channels(Arrays.asList(channel.name.value)).execute()
             configuration.connectTimeout = 10 * 60
         }
 
@@ -99,7 +99,7 @@ class PubNubClientSocketImp : RTMProviderInterface {
 
     override fun unSubscribe(channel: RTMChannel) {
         pubNubClient.run {
-            unsubscribe().channels(Arrays.asList(channel.name.name)).execute()
+            unsubscribe().channels(Arrays.asList(channel.name.value)).execute()
         }
     }
 

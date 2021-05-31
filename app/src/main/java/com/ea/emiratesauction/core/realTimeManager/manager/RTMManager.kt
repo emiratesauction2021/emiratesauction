@@ -25,14 +25,14 @@ class RTMManager @Inject constructor(val provider: RTMProviderInterface) : RTMMa
     override fun listen(event: RTMEvent, dataCallBack: (Any) -> Unit) {
 
         if (currentEvents.contains(event)) {
-            eventListeners.get(Pair(event.name, event.channelData.name.name))!! += dataCallBack
+            eventListeners.get(Pair(event.name, event.channelData.name.value))!! += dataCallBack
 
         } else {
 
             val eventList = ArrayList<(Any) -> Unit>()
 
             eventList += dataCallBack
-            eventListeners[Pair(event.name, event.channelData.name.name)] = eventList
+            eventListeners[Pair(event.name, event.channelData.name.value)] = eventList
 
             provider.listen(event)
 

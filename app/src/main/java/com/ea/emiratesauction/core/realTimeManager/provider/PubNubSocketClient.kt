@@ -14,7 +14,7 @@ class PubNubSocketClient(initialConfig: PNConfiguration) : PubNub(initialConfig)
         fun invoke() = instance ?: synchronized(LOCK) {
             pnConfiguration.subscribeKey = BusinessConstants.PubNUB_SUBSCRIBE_KEY
             pnConfiguration.publishKey = BusinessConstants.PubNUB_PUBLISH_KEY
-            pnConfiguration.secretKey = BusinessConstants.PubNUB_SECREATE_KEY
+            pnConfiguration.secretKey = BusinessConstants.PubNUB_SECRETE_KEY
             instance ?:PubNub(pnConfiguration).also {
                     instance = it
                 }
@@ -22,7 +22,7 @@ class PubNubSocketClient(initialConfig: PNConfiguration) : PubNub(initialConfig)
         fun configPubNub(): PubNub {
             pnConfiguration.subscribeKey = BusinessConstants.PubNUB_SUBSCRIBE_KEY
             pnConfiguration.publishKey = BusinessConstants.PubNUB_PUBLISH_KEY
-            pnConfiguration.secretKey = BusinessConstants.PubNUB_SECREATE_KEY
+            pnConfiguration.secretKey = BusinessConstants.PubNUB_SECRETE_KEY
             return  PubNub(pnConfiguration)
         }
 

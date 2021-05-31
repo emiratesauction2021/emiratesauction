@@ -36,6 +36,11 @@ android {
             applicationId "com.ea.emiratesauction"
             buildConfigField "String", "BASE_URL", '"https://era---mock.getsandbox.com/"'
             buildConfigField "String", "STORE_TYPE", '"Google"'
+
+            buildConfigField "String", "PubNUB_SUBSCRIBE_KEY", '"sub-c-49010a26-3a18-11eb-b6eb-96faa39b9528"'
+            buildConfigField "String", "PubNUB_PUBLISH_KEY", '"pub-c-bf1cafb0-020e-43eb-b564-72cfb47b2c84"'
+            buildConfigField "String", "PubNUB_SECRETE_KEY", '"sec-c-MWQ1ZjlkNmYtYzllZC00ZWQ5LWI1YjMtNDIxMzE1NWMyZjY5"'
+
         }
         Live  {
             dimension "default"
@@ -43,6 +48,11 @@ android {
             versionNameSuffix "-Live"
             buildConfigField "String", "BASE_URL", '"https://era---mock.getsandbox.com/"'
             buildConfigField "String", "STORE_TYPE", '"Google"'
+
+            buildConfigField "String", "PubNUB_SUBSCRIBE_KEY", '"sub-c-49010a26-3a18-11eb-b6eb-96faa39b9528"'
+            buildConfigField "String", "PubNUB_PUBLISH_KEY", '"pub-c-bf1cafb0-020e-43eb-b564-72cfb47b2c84"'
+            buildConfigField "String", "PubNUB_SECRETE_KEY", '"sec-c-MWQ1ZjlkNmYtYzllZC00ZWQ5LWI1YjMtNDIxMzE1NWMyZjY5"'
+
         }
 
         Mock {
@@ -51,6 +61,11 @@ android {
             versionNameSuffix "-Mock"
             buildConfigField "String", "BASE_URL", '"https://era---mock.getsandbox.com/"'
             buildConfigField "String", "STORE_TYPE", '"Google"'
+
+            buildConfigField "String", "PubNUB_SUBSCRIBE_KEY", '"sub-c-49010a26-3a18-11eb-b6eb-96faa39b9528"'
+            buildConfigField "String", "PubNUB_PUBLISH_KEY", '"pub-c-bf1cafb0-020e-43eb-b564-72cfb47b2c84"'
+            buildConfigField "String", "PubNUB_SECRETE_KEY", '"sec-c-MWQ1ZjlkNmYtYzllZC00ZWQ5LWI1YjMtNDIxMzE1NWMyZjY5"'
+
         }
     }
 
