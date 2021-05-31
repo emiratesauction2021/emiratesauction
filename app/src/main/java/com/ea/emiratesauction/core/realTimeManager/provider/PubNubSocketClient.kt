@@ -1,4 +1,4 @@
-package com.ea.emiratesauction.core.socket.socket_client
+package com.ea.emiratesauction.core.realTimeManager.provider
 
 import com.ea.emiratesauction.common.utils.BusinessConstants
 import com.pubnub.api.PNConfiguration
