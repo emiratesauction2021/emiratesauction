@@ -21,6 +21,17 @@ import java.util.*
 
 
 class PubNubClientSocketImp : RTMProviderInterface {
+
+    override val isInitialized: Boolean
+        get() = _isInitialized
+
+    private var _isInitialized:Boolean=false
+
+    override val isConnected: Boolean
+        get() = _isConnected
+
+    private var _isConnected:Boolean=false
+
     override var responseListener: RTMProviderCallBack? = null
 
     lateinit var pubNubClient: PubNubSocketClient
@@ -47,11 +58,10 @@ class PubNubClientSocketImp : RTMProviderInterface {
 
                 override fun message(pubnub: PubNub, message: PNMessageResult) {
 
-                    if (responseListener==null){
+                    if (responseListener == null) {
                         throw Exception("Provider call back not implemented")
-                    }
-                    else{
-                        responseListener!!.onDataReceived(message.channel,"",message.message)
+                    } else {
+                        responseListener!!.onDataReceived(message.channel, "", message.message)
                     }
 
                     Log.e("message", message.message.toString());
@@ -74,6 +84,7 @@ class PubNubClientSocketImp : RTMProviderInterface {
     }
 
     override fun initialize() {
+        _isInitialized = true
         PubNubSocketClient.pnConfiguration.subscribeKey = BusinessConstants.PubNUB_SUBSCRIBE_KEY
         PubNubSocketClient.pnConfiguration.publishKey = BusinessConstants.PubNUB_PUBLISH_KEY
         PubNubSocketClient.pnConfiguration.secretKey = BusinessConstants.PubNUB_SECRETE_KEY
@@ -82,11 +93,11 @@ class PubNubClientSocketImp : RTMProviderInterface {
     }
 
     override fun connect() {
-        TODO("Not yet implemented")
+       _isConnected = true
     }
 
     override fun disconnect() {
-        TODO("Not yet implemented")
+        _isConnected = false
     }
 
     override fun subscribe(channel: RTMChannel) {
