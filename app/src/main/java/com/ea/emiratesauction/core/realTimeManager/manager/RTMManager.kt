@@ -14,6 +14,12 @@ import javax.inject.Inject
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
+/**
+ * R t m manager
+ *
+ * @property provider
+ * @constructor Create empty R t m manager
+ */
 class RTMManager @Inject constructor(val provider: RTMProviderInterface) : RTMManagerInterface,
     RTMProviderCallBack {
     val TAG = "RTMManager"
@@ -22,9 +28,15 @@ class RTMManager @Inject constructor(val provider: RTMProviderInterface) : RTMMa
         provider.responseListener = this
     }
 
+    /**
+     * Channels events
+     */
     private val channelsEvents =
         HashMap<RTMChannel, ArrayList<String>>()//array list contains channel's events
 
+    /**
+     * Event listeners
+     */
     private val eventListeners =
         HashMap<Pair<String, String>, ArrayList<RTMManagerCallBack>>()//first is event name, second is channel name
 
@@ -39,7 +51,11 @@ class RTMManager @Inject constructor(val provider: RTMProviderInterface) : RTMMa
             provider.connect()
     }
 
-
+    /**
+     * Subscribe
+     *
+     * @param channel
+     */
     override fun subscribe(channel: RTMChannel) {
         if (!channelsEvents.containsKey(channel)) {
             channelsEvents[channel] = ArrayList()
@@ -49,7 +65,12 @@ class RTMManager @Inject constructor(val provider: RTMProviderInterface) : RTMMa
         }
     }
 
-
+    /**
+     * Listen
+     *
+     * @param event
+     * @param dataCallBack
+     */
     override fun listen(event: RTMEvent, dataCallBack: RTMManagerCallBack) {
 
         if (eventListeners.contains(decodeKey(event))) {
@@ -69,6 +90,11 @@ class RTMManager @Inject constructor(val provider: RTMProviderInterface) : RTMMa
 
     }
 
+    /**
+     * Check channel events
+     *
+     * @param channel
+     */
     private fun checkChannelEvents(channel: RTMChannel) {
         val events = channelsEvents.get(channel)
         if (events == null || events.size <= 0) {
@@ -85,6 +111,12 @@ class RTMManager @Inject constructor(val provider: RTMProviderInterface) : RTMMa
         }
     }
 
+    /**
+     * Stop listen
+     *
+     * @param event
+     * @param callbackObject
+     */
     override fun stopListen(event: RTMEvent, callbackObject: RTMManagerCallBack) {
         if (eventListeners.containsKey(decodeKey(event))) {
             eventListeners.get(decodeKey(event))?.remove(callbackObject)
@@ -94,6 +126,11 @@ class RTMManager @Inject constructor(val provider: RTMProviderInterface) : RTMMa
         }
     }
 
+    /**
+     * Stop listen
+     *
+     * @param event
+     */
 
     override fun stopListen(event: RTMEvent) {
         if (eventListeners.containsKey(decodeKey(event))) {
@@ -104,7 +141,11 @@ class RTMManager @Inject constructor(val provider: RTMProviderInterface) : RTMMa
         }
     }
 
-
+    /**
+     * Un subscribe
+     *
+     * @param channel
+     */
     override fun unSubscribe(channel: RTMChannel) {
         val events = channelsEvents.get(channel)
         if (events != null) {
@@ -114,6 +155,10 @@ class RTMManager @Inject constructor(val provider: RTMProviderInterface) : RTMMa
         }
     }
 
+    /**
+     * Disconnect
+     *
+     */
     //we clear all channels and events
     override fun disconnect() {
         channelsEvents.clear()
@@ -121,7 +166,13 @@ class RTMManager @Inject constructor(val provider: RTMProviderInterface) : RTMMa
         provider.disconnect()
     }
 
-
+    /**
+     * On data received
+     *
+     * @param channelName
+     * @param eventName
+     * @param response
+     */
     // here we receive data from provider
     override fun onDataReceived(channelName: String, eventName: String, response: Any) {
         val key = decodeKey(null, eventName, channelName)
@@ -133,6 +184,14 @@ class RTMManager @Inject constructor(val provider: RTMProviderInterface) : RTMMa
         }
     }
 
+    /**
+     * Decode key
+     *
+     * @param event
+     * @param eventName
+     * @param channelName
+     * @return
+     */
     // this function is to keep logic in decode event or -event name and channel name- is one across manager
     private fun decodeKey(
         event: RTMEvent?,
