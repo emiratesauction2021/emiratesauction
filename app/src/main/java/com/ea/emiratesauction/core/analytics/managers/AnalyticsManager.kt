@@ -96,6 +96,4 @@ object AnalyticsManager : AnalyticsManagerInterface{
     override fun resetProviders() {
         this.providers.clear()
     }
-
-
 }
