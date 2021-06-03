@@ -1,20 +1,21 @@
 package com.ea.emiratesauction.core.analytics.managers
 
-import com.ea.emiratesauction.core.analytics.event.AnalyticsEventInterface
-import com.ea.emiratesauction.core.analytics.profile.ProfileIdentificationInterface
-import com.ea.emiratesauction.core.analytics.properties.ProfilePropertiesInterface
-import com.ea.emiratesauction.core.analytics.providers.AnalyticsProviderIdentifier
+import com.ea.emiratesauction.core.analytics.event.BaseAnalyticsEvent
+import com.ea.emiratesauction.core.analytics.managers.interfaces.AnalyticsManagerInterface
+import com.ea.emiratesauction.core.analytics.profile.identification.BaseAnalyticsProfileIdentification
+import com.ea.emiratesauction.core.analytics.profile.properties.BaseAnalyticsProfileProperties
+import com.ea.emiratesauction.core.constants.analytics.AnalyticsProviderIdentifier
 import com.ea.emiratesauction.core.analytics.providers.AnalyticsProviderInterface
-import com.ea.emiratesauction.core.analytics.screen.AnalyticsScreenInterface
+import com.ea.emiratesauction.core.analytics.screen.BaseAnalyticsScreen
+import java.lang.Exception
 
 /**
  * Analytics manager
  *
  * @constructor Create empty Analytics manager
  */
-object AnalyticsManager :
-    AnalyticsManagerInterface {
-    //define analytics provider
+object AnalyticsManager : AnalyticsManagerInterface{
+    // Define analytics provider
     private val providers = HashMap<AnalyticsProviderIdentifier, AnalyticsProviderInterface>()
 
     /**
@@ -22,8 +23,9 @@ object AnalyticsManager :
      *
      * @param providers
      */
-    override fun setAnalyticsProvider(providers: Map<AnalyticsProviderIdentifier, AnalyticsProviderInterface>) {
-        TODO("Not yet implemented")
+    override fun setAnalyticsProviders(providers: Map<AnalyticsProviderIdentifier, AnalyticsProviderInterface>) {
+        this.resetProviders()
+        this.providers.putAll(providers)
     }
 
     /**
@@ -31,9 +33,11 @@ object AnalyticsManager :
      *
      * @param event
      */
-    override fun logEvent(event: AnalyticsEventInterface) {
+    override fun logEvent(event: BaseAnalyticsEvent) {
         for (providersName in event.providerIdentifiers) {
-            providers.get(providersName)!!.logEvent(event)
+            providers[providersName]?.let {
+                it.logEvent(event)
+            } ?: throw Exception("Provider $providersName has not been initialized yet")
         }
     }
 
@@ -42,8 +46,12 @@ object AnalyticsManager :
      *
      * @param screen
      */
-    override fun trackScreen(screen: AnalyticsScreenInterface) {
-        TODO("Not yet implemented")
+    override fun trackScreen(screen: BaseAnalyticsScreen) {
+        for (providersName in screen.providerIdentifiers) {
+            providers[providersName]?.let {
+                it.trackScreen(screen)
+            } ?: throw Exception("Provider $providersName has not been initialized yet")
+        }
     }
 
     /**
@@ -51,19 +59,42 @@ object AnalyticsManager :
      *
      * @param profileIdentification
      */
-    override fun setUpProfileIdentification(profileIdentification: ProfileIdentificationInterface) {
-        TODO("Not yet implemented")
+    override fun setUpProfileIdentification(profileIdentification: BaseAnalyticsProfileIdentification) {
+        for (providersName in profileIdentification.providerIdentifiers) {
+            providers[providersName]?.let {
+                it.setupProfileIdentification(profileIdentification)
+            } ?: throw Exception("Provider $providersName has not been initialized yet")
+        }
     }
 
     /**
      * Set profile properties
      *
-     * @param properties
+     * @param profileProperties
      */
-    override fun setProfileProperties(properties: ProfilePropertiesInterface) {
-        for (providersName in properties.providersIdentifiers) {
-            providers.get(providersName)!!.setProfileProperties(properties)
+    override fun setProfileProperties(profileProperties: BaseAnalyticsProfileProperties) {
+        for (providersName in profileProperties.providerIdentifiers) {
+            providers[providersName]?.let {
+                it.setProfileProperties(profileProperties)
+            } ?: throw Exception("Provider $providersName has not been initialized yet")
         }
+    }
+
+    /**
+     * Set profile properties
+     *
+     * @param providerID
+     */
+    override fun removeProvider(providerID: AnalyticsProviderIdentifier) {
+        this.providers.remove(providerID)
+    }
+
+    /**
+     * Set profile properties
+     *
+     */
+    override fun resetProviders() {
+        this.providers.clear()
     }
 
 

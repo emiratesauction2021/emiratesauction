@@ -1,24 +1,25 @@
 package com.ea.emiratesauction.core.analytics.providers
 
-import com.ea.emiratesauction.core.analytics.event.AnalyticsEventInterface
-import com.ea.emiratesauction.core.analytics.profile.ProfileIdentificationInterface
-import com.ea.emiratesauction.core.analytics.properties.BasePropertiesInterface
-import com.ea.emiratesauction.core.analytics.properties.ProfilePropertiesInterface
-import com.ea.emiratesauction.core.analytics.screen.AnalyticsScreenInterface
+import com.ea.emiratesauction.core.analytics.event.BaseAnalyticsEvent
+import com.ea.emiratesauction.core.analytics.profile.identification.BaseAnalyticsProfileIdentification
+import com.ea.emiratesauction.core.analytics.defaultProperties.event.BaseAnalyticsDefaultEventProperties
+import com.ea.emiratesauction.core.analytics.defaultProperties.screen.BaseAnalyticsDefaultScreenProperties
+import com.ea.emiratesauction.core.analytics.profile.properties.BaseAnalyticsProfileProperties
+import com.ea.emiratesauction.core.analytics.screen.BaseAnalyticsScreen
+import com.ea.emiratesauction.core.constants.analytics.AnalyticsProviderIdentifier
 
-/*
-define analytics provider client interface attributes and methods
+/**
+Define analytics provider client interface attributes and methods
  */
 
 interface AnalyticsProviderInterface {
-    var providerID:AnalyticsProviderIdentifier
-    var defaultEventProperties:BasePropertiesInterface
-    var defaultScreenProperties:BasePropertiesInterface
+    var providerID: AnalyticsProviderIdentifier
+    var defaultEventProperties: BaseAnalyticsDefaultEventProperties
+    var defaultScreenProperties: BaseAnalyticsDefaultScreenProperties
 
-    fun logEvent(event:AnalyticsEventInterface)
-    fun trackScreen(screen: AnalyticsScreenInterface)
+    fun logEvent(eventBase:BaseAnalyticsEvent)
+    fun trackScreen(screenBase: BaseAnalyticsScreen)
 
-    fun setupProfileIdentification(profileID:ProfileIdentificationInterface)
-    fun setProfileProperties(profileIdentification: ProfilePropertiesInterface)
-
+    fun setupProfileIdentification(baseAnalyticsProfileID: BaseAnalyticsProfileIdentification)
+    fun setProfileProperties(baseAnalyticsProfileIdentification: BaseAnalyticsProfileProperties)
 }
