@@ -1,5 +1,8 @@
 package com.ea.emiratesauction.core.constants.network
 
+/**
+ * The Identifiers of the different HTTP errors and internal network errors which is used across the whole app
+ */
 enum class NetworkErrors {
     // HTTP Errors
     FORBIDDEN,

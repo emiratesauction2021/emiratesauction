@@ -4,11 +4,18 @@ import com.ea.emiratesauction.core.analytics.managers.interfaces.AnalyticsProper
 import com.ea.emiratesauction.core.constants.analytics.AnalyticsProviderIdentifier
 
 /**
- * Base Analytics Profile Properties
- *
- * @constructor Create empty Profile properties interface
+ * The abstract class which contains all the required parameters and properties to be linked with the user profile in an analytics provider
  */
 abstract class BaseAnalyticsProfileProperties {
+    /**
+     * The properties of a user to be linked with his profile
+     */
     abstract var properties: AnalyticsProperties
+
+    /**
+     * The provider identifiers which that event is supporting, by default it contains all the identifiers
+     *
+     * Note: Only update it if you want specific providers to fire this event
+     */
     open var providerIdentifiers: List<AnalyticsProviderIdentifier> = AnalyticsProviderIdentifier.values().toCollection(ArrayList())
 }

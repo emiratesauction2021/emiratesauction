@@ -3,6 +3,7 @@ package com.ea.emiratesauction.features.test_toBeDeleted.analytics
 import com.ea.emiratesauction.core.analytics.defaultProperties.event.BaseAnalyticsDefaultEventProperties
 import com.ea.emiratesauction.core.analytics.defaultProperties.screen.BaseAnalyticsDefaultScreenProperties
 import com.ea.emiratesauction.core.analytics.event.BaseAnalyticsEvent
+import com.ea.emiratesauction.core.analytics.managers.AnalyticsManager
 import com.ea.emiratesauction.core.analytics.managers.interfaces.AnalyticsProperties
 import com.ea.emiratesauction.core.analytics.profile.identification.BaseAnalyticsProfileIdentification
 import com.ea.emiratesauction.core.analytics.profile.properties.BaseAnalyticsProfileProperties
@@ -22,19 +23,19 @@ class FirebaseProvider : AnalyticsProviderInterface {
 
     override var defaultScreenProperties: BaseAnalyticsDefaultScreenProperties = DefaultScreenProperties()
 
-    override fun logEvent(eventBase: BaseAnalyticsEvent) {
+    override fun logEvent(event: BaseAnalyticsEvent) {
         TODO("Not yet implemented")
     }
 
-    override fun trackScreen(screenBase: BaseAnalyticsScreen) {
+    override fun trackScreen(screen: BaseAnalyticsScreen) {
         TODO("Not yet implemented")
     }
 
-    override fun setupProfileIdentification(baseAnalyticsProfileID: BaseAnalyticsProfileIdentification) {
+    override fun setupProfileIdentification(profileIdentification: BaseAnalyticsProfileIdentification) {
         TODO("Not yet implemented")
     }
 
-    override fun setProfileProperties(baseAnalyticsProfileIdentification: BaseAnalyticsProfileProperties) {
+    override fun setProfileProperties(profileProperties: BaseAnalyticsProfileProperties) {
         TODO("Not yet implemented")
     }
 
