@@ -1,4 +1,4 @@
-package com.ea.emiratesauction.core.constants.network
+package com.ea.emiratesauction.core.constants.network.errors
 
 /**
  * The Identifiers of the different HTTP errors and internal network errors which is used across the whole app

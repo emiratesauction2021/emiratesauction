@@ -1,4 +1,4 @@
-package com.ea.emiratesauction.core.network.internalError
+package com.ea.emiratesauction.core.network.internalError.interfaces
 
 import java.io.Serializable
 

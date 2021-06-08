@@ -1,6 +1,7 @@
-package com.ea.emiratesauction.core.network.internalError
+package com.ea.emiratesauction.core.network.internalError.errors
 
-import com.ea.emiratesauction.core.constants.network.NetworkErrors
+import com.ea.emiratesauction.core.constants.network.errors.NetworkErrors
+import com.ea.emiratesauction.core.network.internalError.interfaces.InternalNetworkErrorInterface
 
 /**
  * The network error which is passed from the network layer to the upper layers

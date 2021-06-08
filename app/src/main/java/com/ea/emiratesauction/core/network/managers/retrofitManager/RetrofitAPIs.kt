@@ -4,9 +4,19 @@ import retrofit2.Response
 import retrofit2.http.*
 import java.util.concurrent.TimeUnit
 
-
+/**
+ * Retrofit APIs Handles the different methods supported by the retrofit
+ */
 interface RetrofitAPIs {
-
+    /**
+     * Do a request using retrofit using POST HTTP method
+     *
+     * @param url The url of the endpoint
+     *
+     * @param params The parameters associated with the request
+     *
+     * @param headers The headers associated with the request
+     */
     @POST
     @JvmSuppressWildcards
     suspend fun  requestPOSTMethod(
@@ -15,6 +25,15 @@ interface RetrofitAPIs {
             @HeaderMap headers: Map<String, Any>
     ): Response<Any>
 
+    /**
+     * Do a request using retrofit using GET HTTP method
+     *
+     * @param url The url of the endpoint
+     *
+     * @param params The parameters associated with the request
+     *
+     * @param headers The headers associated with the request
+     */
     @GET
     @JvmSuppressWildcards
     suspend fun  requestGETMethod(
@@ -23,6 +42,15 @@ interface RetrofitAPIs {
             @HeaderMap headers: Map<String, Any>
     ): Response<Any>
 
+    /**
+     * Do a request using retrofit using PU HTTP method
+     *
+     * @param url The url of the endpoint
+     *
+     * @param params The parameters associated with the request
+     *
+     * @param headers The headers associated with the request
+     */
     @PUT
     suspend fun<T>  requestPUTMethod(
             @Url url: String,
@@ -30,6 +58,15 @@ interface RetrofitAPIs {
             @HeaderMap headers: Map<String, Any>
     ): Response<T>
 
+    /**
+     * Do a request using retrofit using DELETE HTTP method
+     *
+     * @param url The url of the endpoint
+     *
+     * @param params The parameters associated with the request
+     *
+     * @param headers The headers associated with the request
+     */
     @DELETE
     suspend fun<T>  requestDELETEMethod(
             @Url url: String,
@@ -40,6 +77,9 @@ interface RetrofitAPIs {
 
 
     companion object {
+        /**
+         * The initial invoke
+         */
         operator fun invoke(){
 
         }

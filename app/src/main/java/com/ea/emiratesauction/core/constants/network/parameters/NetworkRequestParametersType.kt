@@ -1,4 +1,4 @@
-package com.ea.emiratesauction.core.constants.network
+package com.ea.emiratesauction.core.constants.network.parameters
 
 typealias NetworkRequestParameters = Map<String, Any>
 

@@ -1,4 +1,4 @@
-package com.ea.emiratesauction.core.constants.network
+package com.ea.emiratesauction.core.constants.network.hosts
 
 import com.ea.emiratesauction.BuildConfig.BASE_URL
 

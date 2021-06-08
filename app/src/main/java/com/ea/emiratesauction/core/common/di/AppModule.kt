@@ -1,6 +1,6 @@
 package com.ea.emiratesauction.core.common.di
 
-import com.ea.emiratesauction.core.network.managers.defaultManager.NetworkManager
+import com.ea.emiratesauction.core.network.managers.networkManager.NetworkManager
 import com.ea.emiratesauction.core.network.managers.retrofitManager.RetrofitNetworkProvider
 import com.ea.emiratesauction.core.network.managers.retrofitManager.RetrofitAPIs
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory

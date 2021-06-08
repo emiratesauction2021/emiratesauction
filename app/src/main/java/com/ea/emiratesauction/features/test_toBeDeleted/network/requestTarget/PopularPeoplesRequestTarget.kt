@@ -1,9 +1,9 @@
 package com.ea.emiratesauction.features.test_toBeDeleted.network.requestTarget
 
-import com.ea.emiratesauction.core.network.request.BaseNetworkRequest
-import com.ea.emiratesauction.core.constants.network.RequestHTTPMethodType
+import com.ea.emiratesauction.core.network.request.networkRequest.BaseNetworkRequest
+import com.ea.emiratesauction.core.constants.network.httpMethods.RequestHTTPMethodType
 import com.ea.emiratesauction.core.constants.network.NetworkRequestParametersType
-import com.ea.emiratesauction.core.constants.network.Host
+import com.ea.emiratesauction.core.constants.network.hosts.Host
 
 class PopularPeoplesRequestTarget: BaseNetworkRequest(){
 

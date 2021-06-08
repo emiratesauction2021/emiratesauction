@@ -6,6 +6,7 @@ import com.ea.emiratesauction.core.analytics.profile.properties.BaseAnalyticsPro
 import com.ea.emiratesauction.core.constants.analytics.AnalyticsProviderIdentifier
 import com.ea.emiratesauction.core.analytics.providers.AnalyticsProviderInterface
 import com.ea.emiratesauction.core.analytics.screen.BaseAnalyticsScreen
+import java.lang.Exception
 
 /**
  * Analytics properties type alias -> Map<String, Any>
@@ -31,6 +32,8 @@ interface AnalyticsManagerInterface {
      * Note: It will throw an exception if one of the analytics providers used by the event isn't initialized yet by the manager
      *
      * @param event The event which has to be logged, it has to implement the BaseAnalyticsEvent
+     *
+     * @throws Exception When one of the analytics providers used by the event isn't initialized yet by the manager
      */
     fun logEvent(event: BaseAnalyticsEvent)
 
@@ -40,6 +43,8 @@ interface AnalyticsManagerInterface {
      * Note: It will throw an exception if one of the analytics providers used by the screen isn't initialized yet by the manager
      *
      * @param screen The screen which has to be tracked, it has to implement the BaseAnalyticsScreen
+     *
+     * @throws Exception When one of the analytics providers used by the event isn't initialized yet by the manager
      */
     fun trackScreen(screen: BaseAnalyticsScreen)
 
@@ -52,6 +57,8 @@ interface AnalyticsManagerInterface {
      *
      * @param profileIdentification The identification object which contains the IDs for the user in different provider(s), it has to
      * implement the BaseAnalyticsProfileIdentification
+     *
+     * @throws Exception When one of the analytics providers used by the event isn't initialized yet by the manager
      */
     fun setUpProfileIdentification(profileIdentification: BaseAnalyticsProfileIdentification)
 
@@ -64,6 +71,8 @@ interface AnalyticsManagerInterface {
      *
      * @param profileProperties The profile properties object which contains the default properties for the user in different provider(s), it has to
      * implement the BaseAnalyticsProfileProperties
+     *
+     * @throws Exception When one of the analytics providers used by the event isn't initialized yet by the manager
      */
     fun setProfileProperties(profileProperties: BaseAnalyticsProfileProperties)
 
@@ -71,6 +80,8 @@ interface AnalyticsManagerInterface {
      * Removes a provider from the pre-initialized providers
      *
      * @param providerID The provider ID to be deleted - it has to be from the AnalyticsProviderIdentifier enum
+     *
+     * @throws Exception When one of the analytics providers used by the event isn't initialized yet by the manager
      */
     fun removeProvider(providerID: AnalyticsProviderIdentifier)
 

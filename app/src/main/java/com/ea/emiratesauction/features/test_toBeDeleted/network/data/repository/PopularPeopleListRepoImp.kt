@@ -1,6 +1,6 @@
 package com.ea.emiratesauction.features.test_toBeDeleted.network.data.repository
 
-import com.ea.emiratesauction.core.network.managers.defaultManager.NetworkManager
+import com.ea.emiratesauction.core.network.managers.networkManager.NetworkManager
 import com.ea.emiratesauction.features.test_toBeDeleted.network.domain.model.FailData
 import com.ea.emiratesauction.core.network.result.RequestResult
 import com.ea.emiratesauction.features.test_toBeDeleted.network.domain.model.SuccessData

@@ -2,7 +2,7 @@ package com.ea.emiratesauction.core.common.di
 
 
 
-import com.ea.emiratesauction.core.network.managers.defaultManager.NetworkManager
+import com.ea.emiratesauction.core.network.managers.networkManager.NetworkManager
 import com.ea.emiratesauction.features.test_toBeDeleted.network.data.repository.PopularPeopleListRepoImp
 import com.ea.emiratesauction.features.test_toBeDeleted.network.domain.usecase.GetPopularPeopleListUseCase
 import dagger.Module
