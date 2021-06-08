@@ -1,8 +1,8 @@
 package com.ea.emiratesauction.core.network.managers.interfaces.validators
 
-import com.ea.emiratesauction.core.constants.network.NetworkRequestParametersType
 import com.ea.emiratesauction.core.constants.network.httpMethods.RequestHTTPMethodType
 import com.ea.emiratesauction.core.constants.network.encodings.RequestParameterEncoding
+import com.ea.emiratesauction.core.constants.network.parameters.NetworkRequestParametersType
 
 /**
  * Defines the network validation methods that every manager has to implement before processing the network request

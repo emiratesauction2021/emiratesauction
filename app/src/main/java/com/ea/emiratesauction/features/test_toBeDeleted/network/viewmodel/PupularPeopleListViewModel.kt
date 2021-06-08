@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import androidx.lifecycle.viewModelScope
-import com.ea.emiratesauction.core.constants.network.NetworkRequestParametersType
+import com.ea.emiratesauction.core.constants.network.parameters.NetworkRequestParametersType
 import com.ea.emiratesauction.core.network.result.RequestResult
 import com.ea.emiratesauction.features.test_toBeDeleted.network.requestTarget.PopularPeoplesRequestTarget
 import com.ea.emiratesauction.features.test_toBeDeleted.network.domain.usecase.GetPopularPeopleListUseCase

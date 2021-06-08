@@ -2,8 +2,8 @@ package com.ea.emiratesauction.core.network.request.networkRequest
 
 import com.ea.emiratesauction.core.constants.network.hosts.Host
 import com.ea.emiratesauction.core.constants.network.httpMethods.RequestHTTPMethodType
-import com.ea.emiratesauction.core.constants.network.NetworkRequestParametersType
 import com.ea.emiratesauction.core.constants.network.encodings.RequestParameterEncoding
+import com.ea.emiratesauction.core.constants.network.parameters.NetworkRequestParametersType
 import com.ea.emiratesauction.core.network.request.headers.defaultHeaders.DefaultNetworkRequestHeader
 import com.ea.emiratesauction.core.network.request.headers.normal.NetworkRequestHeaders
 

@@ -1,11 +1,12 @@
 package com.ea.emiratesauction.core.network.managers.retrofitManager
 
 import android.util.Log
-import com.ea.emiratesauction.core.constants.network.NetworkRequestParametersType
+
 import com.ea.emiratesauction.core.network.request.networkRequest.BaseNetworkRequest
 import com.ea.emiratesauction.core.network.internalError.errors.InternalNetworkError
 import com.ea.emiratesauction.core.network.internalError.interfaces.InternalNetworkErrorInterface
 import com.ea.emiratesauction.core.constants.network.httpMethods.RequestHTTPMethodType
+import com.ea.emiratesauction.core.constants.network.parameters.NetworkRequestParametersType
 import com.ea.emiratesauction.core.network.managers.interfaces.providers.NetworkProviderInterface
 import com.ea.emiratesauction.core.network.result.RequestResult
 import com.ea.emiratesauction.core.network.responseHandler.failure.ErrorHandler
