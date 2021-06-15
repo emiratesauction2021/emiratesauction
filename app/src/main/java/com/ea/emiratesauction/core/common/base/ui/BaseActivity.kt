@@ -1,6 +1,5 @@
 package com.ea.emiratesauction.core.common.base.ui
 
-import android.content.Context
 import android.os.Bundle
 import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
@@ -18,7 +17,6 @@ abstract class BaseActivity : AppCompatActivity(), BaseRetryActionCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_base)
         replaceFragment(savedInstanceState)
     }
@@ -38,14 +36,14 @@ abstract class BaseActivity : AppCompatActivity(), BaseRetryActionCallback {
 
 
     fun showProgress() {
-//        if (!this::progessDialog.isInitialized)
-//            progessDialog = LoadingDialog(this);
-//        progessDialog.showDialog()
+//        if (!this::progressDialog.isInitialized)
+//            progressDialog = LoadingDialog(this);
+//        progressDialog.showDialog()
     }
 
     fun hidProgress() {
-//        if(this::progessDialog.isInitialized){
-//            progessDialog.hideDialog()
+//        if(this::progressDialog.isInitialized){
+//            progressDialog.hideDialog()
 //        }
     }
 
@@ -105,14 +103,14 @@ abstract class BaseActivity : AppCompatActivity(), BaseRetryActionCallback {
 
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
-        loadResourceAndroid()
+        loadResourceConfiguration()
     }
 
     @Suppress("DEPRECATION")
-    fun loadResourceAndroid() {
+    fun loadResourceConfiguration() {
         val dm = resources.displayMetrics
         val conf = resources.configuration
-        val lang = "EN" // will be Replaced by App Language
+        val lang = "EN" //TODO("will be Replaced by App Language")
         conf.setLocale(Locale(lang))
         resources.updateConfiguration(conf, dm)
     }
