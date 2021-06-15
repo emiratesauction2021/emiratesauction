@@ -106,6 +106,7 @@ abstract class BaseActivity : AppCompatActivity(), BaseRetryActionCallback {
         loadResourceConfiguration()
     }
 
+    //TODO("To Be Enhanced to avoid Deprecation")
     @Suppress("DEPRECATION")
     fun loadResourceConfiguration() {
         val dm = resources.displayMetrics
