@@ -23,6 +23,10 @@ class PupularPeopleListFragment : BaseFragment() {
 
     }
 
+    override fun onRetry() {
+        //TODO("Not yet implemented")
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         TestSucBtn.setOnClickListener {
