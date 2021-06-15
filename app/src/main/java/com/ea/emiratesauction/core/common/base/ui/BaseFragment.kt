@@ -28,7 +28,6 @@ abstract class BaseFragment : Fragment(), BaseRetryActionCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         subscribeObservers()
-        loadResourceAndroid()
     }
 
 
@@ -97,14 +96,5 @@ abstract class BaseFragment : Fragment(), BaseRetryActionCallback {
 //                // show Login Screen
 //            })
 //        }
-    }
-
-    @Suppress("DEPRECATION")
-    fun loadResourceAndroid() {
-        val dm = resources.displayMetrics
-        val conf = resources.configuration
-        val lang = "EN" // will be Replaced by App Language
-        conf.setLocale(Locale(lang))
-        resources.updateConfiguration(conf, dm)
     }
 }
