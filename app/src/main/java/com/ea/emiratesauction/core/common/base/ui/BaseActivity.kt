@@ -1,14 +1,15 @@
 package com.ea.emiratesauction.core.common.base.ui
 
-import android.content.Context
-import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.ea.emiratesauction.R
-import com.ea.emiratesauction.core.network.internalError.interfaces.NetworkErrorStates
+import com.ea.emiratesauction.core.constants.loadingIndicators.LoadingIndicatorsTypes
+import com.ea.emiratesauction.core.constants.network.errors.NetworkErrors
+import com.ea.emiratesauction.features.test_toBeDeleted.network.ui.PupularPeopleListFragment
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
@@ -20,8 +21,12 @@ import java.util.*
 abstract class BaseActivity : AppCompatActivity(), BaseRetryActionCallback {
 
 
-    abstract var baseViewModel: BaseViewModel?
-    final val TAG = "BaseActivity -> "
+    private lateinit var baseViewModel: BaseViewModel
+
+    fun setViewModel(viewModel: BaseViewModel) {
+        baseViewModel = viewModel
+    }
+
 //    lateinit var progressDialog: LoadingDialog
 //    lateinit var noConnectionDialog: NoConnectionDialog
 //    lateinit var serverDownDialog: ServerDownDialog
@@ -30,7 +35,8 @@ abstract class BaseActivity : AppCompatActivity(), BaseRetryActionCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base)
-        replaceFragment(savedInstanceState)
+        loadResourceConfiguration()
+        replaceFragment(PupularPeopleListFragment())
     }
 
     override fun onBackPressed() {
@@ -39,53 +45,66 @@ abstract class BaseActivity : AppCompatActivity(), BaseRetryActionCallback {
         super.onBackPressed()
     }
 
-    private fun replaceFragment(savedInstanceState: Bundle?) =
+    private fun replaceFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, fragment())
+            .replace(R.id.fragmentContainer, fragment)
             .commit()
+    }
 
-    abstract fun fragment(): BaseFragment
 
-
-    fun showProgress() {
-        Log.d(TAG, "showProgress: ")
+    fun showProgress(loadingType: LoadingIndicatorsTypes) {
+        when (loadingType) {
+            LoadingIndicatorsTypes.BLOCKED_SCREEN -> {
+                Log.d("BaseActivity", "showProgress: ")
+            }
+            LoadingIndicatorsTypes.PROGRESS_BAR -> {
+                Log.d("BaseActivity", "showProgress: ")
+            }
+        }
 //        if (!this::progressDialog.isInitialized)
 //            progressDialog = LoadingDialog(this);
 //        progressDialog.showDialog()
     }
 
-    fun hidProgress() {
-        Log.d(TAG, "hidProgress: ")
-//        if(this::progressDialog.isInitialized){
-//            progressDialog.hideDialog()
-//        }
+    fun hidProgress(loadingType: LoadingIndicatorsTypes) {
+        when (loadingType) {
+            LoadingIndicatorsTypes.BLOCKED_SCREEN -> {
+                Log.d("BaseActivity", "hideProgress: ")
+            }
+            LoadingIndicatorsTypes.PROGRESS_BAR -> {
+                Log.d("BaseActivity", "hideProgress: ")
+            }
+        }
+//        if (!this::progressDialog.isInitialized)
+//            progressDialog = LoadingDialog(this);
+//        progressDialog.hideDialog()
     }
 
 
     fun showNoConnectionDialog() {
-        Log.d(TAG, "showNoConnectionDialog: ")
+        Log.d("BaseActivity", "showNoConnectionDialog: ")
 //        if (!this::noConnectionDialog.isInitialized)
 //            noConnectionDialog = NoConnectionDialog(this, this);
 //        noConnectionDialog.showDialog()
     }
 
-
     fun hideNoConnectionDialog() {
-        Log.d(TAG, "hideNoConnectionDialog: ")
+        Log.d("BaseActivity", "hideNoConnectionDialog: ")
 //        if(this::noConnectionDialog.isInitialized)
 //            noConnectionDialog.hideDialog()
     }
 
-    fun showServerDownDialog() {
-        Log.d(TAG, "showServerDownDialog: ")
+    //check ios
+    fun showServerErrorDialog() {
+        Log.d("BaseActivity", "showServerDownDialog: ")
 //        if (!this::serverDownDialog.isInitialized)
 //            serverDownDialog = ServerDownDialog(this, this);
 //        serverDownDialog.showDialog()
     }
 
 
-    fun hideServerDownDialog() {
-        Log.d(TAG, "hideServerDownDialog: ")
+    fun hideServerErrorDialog() {
+        Log.d("BaseActivity", "hideServerDownDialog: ")
         //  serverDownDialog.hideDialog()
     }
 
@@ -95,26 +114,7 @@ abstract class BaseActivity : AppCompatActivity(), BaseRetryActionCallback {
         observeBaseViewModel()
     }
 
-    /*
-    *  it.successMessage.observe(this, Observer {
-                    hidProgress()
-                })
-                it.errorMessage.observe(this, Observer {
-                    hidProgress()
-                })
-                it.networkError.observe(this, Observer {
-                    hidProgress()
-                    showNoConnectionDialog()
-                })
-                it.serverError.observe(this, Observer {
-                    hidProgress()
-                    showServerDownDialog()
-                })
-                it.authorizationError.observe(this, Observer {
-                    hidProgress()
-                    // show Login Screen
-                })
-    * */
+
     private fun observeBaseViewModel() {
         lifecycleScope.launch(IO) {
             baseViewModel?.let {
@@ -127,16 +127,13 @@ abstract class BaseActivity : AppCompatActivity(), BaseRetryActionCallback {
     private suspend fun manageNetworkErrorsStates(it: BaseViewModel) {
         it.networkStates.collect { states ->
             when (states) {
-                is NetworkErrorStates.NoInternetConnection -> {
-                    hidProgress()
+                NetworkErrors.NO_INTERNET_CONNECTION -> {
                     showNoConnectionDialog()
                 }
-                is NetworkErrorStates.ServerNotReachable -> {
-                    hidProgress()
-                    showServerDownDialog()
+                NetworkErrors.SERVER_NOT_REACHABLE -> {
+                    showServerErrorDialog()
                 }
-                is NetworkErrorStates.UnAuthorized -> {
-                    hidProgress()
+                NetworkErrors.UNAUTHORIZED -> {
                     //TODO: show Login Screen
                 }
                 else -> {
@@ -145,11 +142,11 @@ abstract class BaseActivity : AppCompatActivity(), BaseRetryActionCallback {
         }
     }
 
-    private suspend fun manageLoadingStates(it: BaseViewModel) {
-        it.showLoading?.collect { bool ->
+    open suspend fun manageLoadingStates(it: BaseViewModel) {
+        it.showLoading.collect { bool ->
             when (bool) {
-                true -> showProgress()
-                false -> hidProgress()
+                true -> showProgress(LoadingIndicatorsTypes.PROGRESS_BAR)
+                false -> hidProgress(LoadingIndicatorsTypes.PROGRESS_BAR)
             }
         }
     }

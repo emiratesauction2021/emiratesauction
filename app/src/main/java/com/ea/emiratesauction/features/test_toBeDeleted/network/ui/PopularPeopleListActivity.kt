@@ -1,7 +1,9 @@
 package com.ea.emiratesauction.features.test_toBeDeleted.network.ui
 
 
+import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.fragment.app.activityViewModels
 import com.ea.emiratesauction.core.common.base.ui.BaseActivity
 import com.ea.emiratesauction.core.common.base.ui.BaseFragment
 import com.ea.emiratesauction.core.common.base.ui.BaseViewModel
@@ -10,16 +12,15 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class PopularPeopleListActivity : BaseActivity() {
-    override var baseViewModel: BaseViewModel?
-        get() = null
-        set(value) {}
+    private val viewModel: PupularPeopleListViewModel by viewModels()
 
-    override fun fragment(): BaseFragment {
-        return PupularPeopleListFragment()
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+            setViewModel(viewModel)
     }
 
     override fun onRetry() {
         TODO("Not yet implemented")
     }
+
 }

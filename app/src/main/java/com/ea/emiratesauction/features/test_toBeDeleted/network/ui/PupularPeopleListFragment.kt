@@ -1,11 +1,14 @@
 package com.ea.emiratesauction.features.test_toBeDeleted.network.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import com.ea.emiratesauction.R
 import com.ea.emiratesauction.core.common.base.ui.BaseFragment
 import com.ea.emiratesauction.core.common.base.ui.BaseViewModel
+import com.ea.emiratesauction.core.constants.loadingIndicators.LoadingIndicatorsTypes
 import com.ea.emiratesauction.features.test_toBeDeleted.network.viewmodel.PupularPeopleListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_pupular_people_list.*
@@ -21,6 +24,7 @@ class PupularPeopleListFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setViewModel(viewModel)
 
     }
 
@@ -41,10 +45,4 @@ class PupularPeopleListFragment : BaseFragment() {
 
     override fun subscribeObservers() {
     }
-
-    override var baseViewModel: BaseViewModel?
-        get() = viewModel
-        set(value) {}
-
-
 }

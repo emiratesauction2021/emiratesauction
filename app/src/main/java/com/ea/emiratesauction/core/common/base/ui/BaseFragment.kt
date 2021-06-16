@@ -1,22 +1,18 @@
 package com.ea.emiratesauction.core.common.base.ui
 
 import android.os.Bundle
-import android.os.LocaleList
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.ea.emiratesauction.core.network.internalError.interfaces.NetworkErrorStates
+import com.ea.emiratesauction.core.constants.loadingIndicators.LoadingIndicatorsTypes
+import com.ea.emiratesauction.core.constants.network.errors.NetworkErrors
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.util.*
 
 
 @ExperimentalCoroutinesApi
@@ -24,8 +20,7 @@ abstract class BaseFragment : Fragment(), BaseRetryActionCallback {
     abstract fun layoutId(): Int
     abstract fun subscribeObservers()
 
-    abstract var baseViewModel: BaseViewModel?
-    final val TAG = "BaseFragment"
+    lateinit var baseViewModel: BaseViewModel
 //    lateinit var progressDialog: LoadingDialog
 //    lateinit var noConnectionDialog: NoConnectionDialog
 //    lateinit var serverDownDialog: ServerDownDialog
@@ -42,26 +37,42 @@ abstract class BaseFragment : Fragment(), BaseRetryActionCallback {
         subscribeObservers()
     }
 
-
-    open fun onBackPressed() {}
-
-    fun showProgress() {
-        Log.d(TAG, "showProgress: ")
-//        if (!this::progessDialog.isInitialized)
-//            progessDialog = LoadingDialog(this);
-//        progessDialog.showDialog()
+    fun setViewModel(baseViewModel: BaseViewModel){
+        this.baseViewModel = baseViewModel
     }
 
-    fun hidProgress() {
-        Log.d(TAG, "hidProgress: ")
-//        if(this::progessDialog.isInitialized){
-//            progessDialog.hideDialog()
-//        }
+    open fun onBackPressed() {}
+    open fun showProgress(loadingType: LoadingIndicatorsTypes) {
+        when (loadingType) {
+            LoadingIndicatorsTypes.BLOCKED_SCREEN -> {
+                Log.d("BaseFragment", "showProgress: ")
+            }
+            LoadingIndicatorsTypes.PROGRESS_BAR -> {
+                Log.d("BaseFragment", "showProgress: ")
+            }
+        }
+//        if (!this::progressDialog.isInitialized)
+//            progressDialog = LoadingDialog(this);
+//        progressDialog.showDialog()
+    }
+
+    open fun hidProgress(loadingType: LoadingIndicatorsTypes) {
+        when (loadingType) {
+            LoadingIndicatorsTypes.BLOCKED_SCREEN -> {
+                Log.d("BaseFragment", "hideProgress: ")
+            }
+            LoadingIndicatorsTypes.PROGRESS_BAR -> {
+                Log.d("BaseFragment", "hideProgress: ")
+            }
+        }
+//        if (!this::progressDialog.isInitialized)
+//            progressDialog = LoadingDialog(this);
+//        progressDialog.hideDialog()
     }
 
 
     fun showNoConnectionDialog() {
-        Log.d(TAG, "showNoConnectionDialog: ")
+        Log.d("BaseFragment", "showNoConnectionDialog: ")
 //        if (!this::noConnectionDialog.isInitialized)
 //            noConnectionDialog = NoConnectionDialog(this, this);
 //        noConnectionDialog.showDialog()
@@ -69,21 +80,21 @@ abstract class BaseFragment : Fragment(), BaseRetryActionCallback {
 
 
     fun hideNoConnectionDialog() {
-        Log.d(TAG, "hideNoConnectionDialog: ")
+        Log.d("BaseFragment", "hideNoConnectionDialog: ")
 //        if(this::noConnectionDialog.isInitialized)
 //            noConnectionDialog.hideDialog()
     }
 
-    fun showServerDownDialog() {
-        Log.d(TAG, "showServerDownDialog: ")
+    fun showServerErrorDialog() {
+        Log.d("BaseFragment", "showServerDownDialog: ")
 //        if (!this::serverDownDialog.isInitialized)
 //            serverDownDialog = ServerDownDialog(this, this);
 //        serverDownDialog.showDialog()
     }
 
 
-    fun hideServerDownDialog() {
-        Log.d(TAG, "hideServerDownDialog: ")
+    fun hideServerErrorDialog() {
+        Log.d("BaseFragment", "hideServerDownDialog: ")
         //  serverDownDialog.hideDialog()
     }
 
@@ -94,9 +105,7 @@ abstract class BaseFragment : Fragment(), BaseRetryActionCallback {
     }
 
     private fun observeBaseViewModel() {
-
         lifecycleScope.launch(Dispatchers.Main) {
-
             baseViewModel?.let {
                 manageLoadingStates(it)
                 manageNetworkErrorsStates(it)
@@ -107,16 +116,13 @@ abstract class BaseFragment : Fragment(), BaseRetryActionCallback {
     private suspend fun manageNetworkErrorsStates(it: BaseViewModel) {
         it.networkStates?.collect { states ->
             when (states) {
-                is NetworkErrorStates.NoInternetConnection -> {
-                    hidProgress()
+                NetworkErrors.NO_INTERNET_CONNECTION -> {
                     showNoConnectionDialog()
                 }
-                is NetworkErrorStates.ServerNotReachable -> {
-                    hidProgress()
-                    showServerDownDialog()
+                NetworkErrors.SERVER_NOT_REACHABLE -> {
+                    showServerErrorDialog()
                 }
-                is NetworkErrorStates.UnAuthorized -> {
-                    hidProgress()
+                NetworkErrors.UNAUTHORIZED -> {
                     //TODO: show Login Screen
                 }
                 else -> {
@@ -125,11 +131,11 @@ abstract class BaseFragment : Fragment(), BaseRetryActionCallback {
         }
     }
 
-    private suspend fun manageLoadingStates(it: BaseViewModel) {
-        it.showLoading?.collect { bool ->
+    open suspend fun manageLoadingStates(it: BaseViewModel) {
+        it.showLoading.collect { bool ->
             when (bool) {
-                true -> showProgress()
-                false -> hidProgress()
+                true -> showProgress(LoadingIndicatorsTypes.PROGRESS_BAR)
+                false -> hidProgress(LoadingIndicatorsTypes.PROGRESS_BAR)
             }
         }
     }
