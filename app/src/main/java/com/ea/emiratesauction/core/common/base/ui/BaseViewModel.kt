@@ -17,6 +17,8 @@ abstract class BaseViewModel : ViewModel() {
     private val _networkStates = MutableStateFlow<NetworkErrorStates>(Empty)
     val networkStates get() = _networkStates
 
+    val showLoading = MutableStateFlow(false)
+
     fun <E : InternalNetworkErrorInterface> validateError(responseError: RequestResult.Fail<E>): RequestResult.Fail<E>? {
         when (responseError.networkError.errorType) {
 

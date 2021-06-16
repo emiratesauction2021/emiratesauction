@@ -12,7 +12,10 @@ import com.ea.emiratesauction.core.network.internalError.interfaces.NetworkError
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 
 
@@ -21,8 +24,8 @@ abstract class BaseFragment : Fragment(), BaseRetryActionCallback {
     abstract fun layoutId(): Int
     abstract fun subscribeObservers()
 
-    abstract var baseViewModel : BaseViewModel?
-    final val TAG  = "BaseFragment"
+    abstract var baseViewModel: BaseViewModel?
+    final val TAG = "BaseFragment"
 //    lateinit var progressDialog: LoadingDialog
 //    lateinit var noConnectionDialog: NoConnectionDialog
 //    lateinit var serverDownDialog: ServerDownDialog
@@ -91,23 +94,42 @@ abstract class BaseFragment : Fragment(), BaseRetryActionCallback {
     }
 
     private fun observeBaseViewModel() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            baseViewModel?.networkStates?.collect { states ->
-                when (states) {
-                    is NetworkErrorStates.NoInternetConnection -> {
-                        hidProgress()
-                        showNoConnectionDialog()
-                    }
-                    is NetworkErrorStates.ServerNotReachable -> {
-                        hidProgress()
-                        showServerDownDialog()
-                    }
-                    is NetworkErrorStates.UnAuthorized -> {
-                        hidProgress()
-                        //TODO: show Login Screen
-                    }
-                    else -> {}
+
+        lifecycleScope.launch(Dispatchers.Main) {
+
+            baseViewModel?.let {
+                manageLoadingStates(it)
+                manageNetworkErrorsStates(it)
+            }
+        }
+    }
+
+    private suspend fun manageNetworkErrorsStates(it: BaseViewModel) {
+        it.networkStates?.collect { states ->
+            when (states) {
+                is NetworkErrorStates.NoInternetConnection -> {
+                    hidProgress()
+                    showNoConnectionDialog()
                 }
+                is NetworkErrorStates.ServerNotReachable -> {
+                    hidProgress()
+                    showServerDownDialog()
+                }
+                is NetworkErrorStates.UnAuthorized -> {
+                    hidProgress()
+                    //TODO: show Login Screen
+                }
+                else -> {
+                }
+            }
+        }
+    }
+
+    private suspend fun manageLoadingStates(it: BaseViewModel) {
+        it.showLoading?.collect { bool ->
+            when (bool) {
+                true -> showProgress()
+                false -> hidProgress()
             }
         }
     }
