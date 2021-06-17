@@ -61,10 +61,6 @@ abstract class BaseActivity : AppCompatActivity(), BaseRetryActionCallback {
         (this.application as MainApplication).deepLinkManager.setDeeplinkUrl(data)
     }
 
-    fun setViewModel(viewModel: BaseViewModel) {
-        baseViewModel = viewModel
-    }
-
     private fun replaceFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainer, fragment)
