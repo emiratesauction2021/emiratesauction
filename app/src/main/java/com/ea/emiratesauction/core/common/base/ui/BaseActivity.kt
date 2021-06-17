@@ -1,5 +1,6 @@
 package com.ea.emiratesauction.core.common.base.ui
 
+import android.net.Uri
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
@@ -7,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.ea.emiratesauction.R
+import com.ea.emiratesauction.core.common.di.MainApplication
 import com.ea.emiratesauction.core.constants.loadingIndicators.LoadingIndicatorsTypes
 import com.ea.emiratesauction.core.constants.network.errors.NetworkErrors
 import com.ea.emiratesauction.features.test_toBeDeleted.network.ui.PupularPeopleListFragment
@@ -23,10 +25,6 @@ abstract class BaseActivity : AppCompatActivity(), BaseRetryActionCallback {
 
     private lateinit var baseViewModel: BaseViewModel
 
-    fun setViewModel(viewModel: BaseViewModel) {
-        baseViewModel = viewModel
-    }
-
 //    lateinit var progressDialog: LoadingDialog
 //    lateinit var noConnectionDialog: NoConnectionDialog
 //    lateinit var serverDownDialog: ServerDownDialog
@@ -37,6 +35,15 @@ abstract class BaseActivity : AppCompatActivity(), BaseRetryActionCallback {
         setContentView(R.layout.activity_base)
         loadResourceConfiguration()
         replaceFragment(PupularPeopleListFragment())
+
+        val action: String? = intent?.action
+        val data: Uri? = intent?.data
+
+        (this.application as MainApplication).deepLinkManager.setDeeplinkUrl(data)
+    }
+
+    fun setViewModel(viewModel: BaseViewModel) {
+        baseViewModel = viewModel
     }
 
     override fun onBackPressed() {
