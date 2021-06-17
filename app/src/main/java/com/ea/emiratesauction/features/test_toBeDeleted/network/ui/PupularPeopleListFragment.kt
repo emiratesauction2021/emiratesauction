@@ -43,6 +43,4 @@ class PupularPeopleListFragment : BaseFragment() {
         }
     }
 
-    override fun subscribeObservers() {
-    }
 }
