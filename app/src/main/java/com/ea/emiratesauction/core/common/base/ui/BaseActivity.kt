@@ -18,21 +18,40 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.*
 
-
-@ExperimentalCoroutinesApi
+/** BaseActivity it will define the common behaviour in all activities**/
 abstract class BaseActivity : AppCompatActivity(), BaseRetryActionCallback {
+    /**
+     * Should override to bind the layout to activity
+     * To avoid doing extra stuff on different resources
+     */
+    abstract fun layoutId(): Int
 
-
+    /**
+     * @param baseViewModel is a private non-defined instance from BaseViewModel
+     * Every activity has to call setViewModel fun to pass owned viewModel to define the BaseViewModel
+     */
     private lateinit var baseViewModel: BaseViewModel
+    fun setViewModel(viewModel: BaseViewModel) {
+        baseViewModel = viewModel
+    }
 
+    /**
+     * @param progressDialog an instance from Common Loading dialog
+     */
 //    lateinit var progressDialog: LoadingDialog
+    /**
+     * @param noConnectionDialog an instance from Common Loading No Connection Dialog
+     */
 //    lateinit var noConnectionDialog: NoConnectionDialog
+    /**
+     * @param serverDownDialog an instance from Common Server Error Dialog
+     */
 //    lateinit var serverDownDialog: ServerDownDialog
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_base)
+        setContentView(layoutId())
         loadResourceConfiguration()
         replaceFragment(PupularPeopleListFragment())
 
@@ -46,48 +65,55 @@ abstract class BaseActivity : AppCompatActivity(), BaseRetryActionCallback {
         baseViewModel = viewModel
     }
 
-    override fun onBackPressed() {
-        (supportFragmentManager
-            .findFragmentById(R.id.fragmentContainer) as BaseFragment).onBackPressed()
-        super.onBackPressed()
-    }
-
     private fun replaceFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainer, fragment)
             .commit()
     }
 
-
+    /**
+     * To Define , Show Loading dialog by define dialog type
+     */
     fun showProgress(loadingType: LoadingIndicatorsTypes) {
         when (loadingType) {
             LoadingIndicatorsTypes.BLOCKED_SCREEN -> {
                 Log.d("BaseActivity", "showProgress: ")
+                //if (!this::progressDialog.isInitialized)
+                //progressDialog = LoadingDialog(this);
+                //progressDialog.showDialog()
             }
             LoadingIndicatorsTypes.PROGRESS_BAR -> {
                 Log.d("BaseActivity", "showProgress: ")
+                //if (!this::progressDialog.isInitialized)
+                //progressDialog = LoadingDialog(this);
+                //progressDialog.showDialog()
             }
         }
-//        if (!this::progressDialog.isInitialized)
-//            progressDialog = LoadingDialog(this);
-//        progressDialog.showDialog()
     }
 
+    /**
+     * To Hide Shown Loading dialog by define dialog type
+     */
     fun hidProgress(loadingType: LoadingIndicatorsTypes) {
         when (loadingType) {
             LoadingIndicatorsTypes.BLOCKED_SCREEN -> {
                 Log.d("BaseActivity", "hideProgress: ")
+                //if (!this::progressDialog.isInitialized)
+                //progressDialog = LoadingDialog(this);
+                //progressDialog.showDialog()
             }
             LoadingIndicatorsTypes.PROGRESS_BAR -> {
                 Log.d("BaseActivity", "hideProgress: ")
+                //if (!this::progressDialog.isInitialized)
+                //progressDialog = LoadingDialog(this);
+                //progressDialog.showDialog()
             }
         }
-//        if (!this::progressDialog.isInitialized)
-//            progressDialog = LoadingDialog(this);
-//        progressDialog.hideDialog()
     }
 
-
+    /**
+     * To Define , Show No Connection dialog
+     */
     fun showNoConnectionDialog() {
         Log.d("BaseActivity", "showNoConnectionDialog: ")
 //        if (!this::noConnectionDialog.isInitialized)
@@ -95,13 +121,18 @@ abstract class BaseActivity : AppCompatActivity(), BaseRetryActionCallback {
 //        noConnectionDialog.showDialog()
     }
 
+    /**
+     * To Hide Shown No Connection dialog
+     */
     fun hideNoConnectionDialog() {
         Log.d("BaseActivity", "hideNoConnectionDialog: ")
 //        if(this::noConnectionDialog.isInitialized)
 //            noConnectionDialog.hideDialog()
     }
 
-    //check ios
+    /**
+     * To Define , Show Server Error dialog
+     */
     fun showServerErrorDialog() {
         Log.d("BaseActivity", "showServerDownDialog: ")
 //        if (!this::serverDownDialog.isInitialized)
@@ -109,7 +140,9 @@ abstract class BaseActivity : AppCompatActivity(), BaseRetryActionCallback {
 //        serverDownDialog.showDialog()
     }
 
-
+    /**
+     * To Hide Shown Server Error dialog
+     */
     fun hideServerErrorDialog() {
         Log.d("BaseActivity", "hideServerDownDialog: ")
         //  serverDownDialog.hideDialog()
@@ -121,7 +154,10 @@ abstract class BaseActivity : AppCompatActivity(), BaseRetryActionCallback {
         observeBaseViewModel()
     }
 
-
+    /**
+     * Function that launch observation on Base viewModel in background thread
+     * Handle loading states and common network errors
+     */
     private fun observeBaseViewModel() {
         lifecycleScope.launch(IO) {
             baseViewModel?.let {
@@ -131,6 +167,10 @@ abstract class BaseActivity : AppCompatActivity(), BaseRetryActionCallback {
         }
     }
 
+    /**
+     * Function that handle all common network states
+     * Handle common changes on UI like : showConnectionDialog etc..
+     */
     private suspend fun manageNetworkErrorsStates(it: BaseViewModel) {
         it.networkStates.collect { states ->
             when (states) {
@@ -149,6 +189,10 @@ abstract class BaseActivity : AppCompatActivity(), BaseRetryActionCallback {
         }
     }
 
+    /**
+     * Function that handle all loading states with type of dialog
+     * Can be override in any child to handle it's own actions
+     */
     open suspend fun manageLoadingStates(it: BaseViewModel) {
         it.showLoading.collect { bool ->
             when (bool) {
@@ -158,11 +202,9 @@ abstract class BaseActivity : AppCompatActivity(), BaseRetryActionCallback {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
-        loadResourceConfiguration()
-    }
-
+    /**
+     * Function that handle resources configuration Like ChangeLanguage
+     */
     //TODO("To Be Enhanced to avoid Deprecation")
     @Suppress("DEPRECATION")
     fun loadResourceConfiguration() {

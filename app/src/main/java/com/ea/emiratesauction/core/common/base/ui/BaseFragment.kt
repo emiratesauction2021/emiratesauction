@@ -15,16 +15,35 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 
-@ExperimentalCoroutinesApi
+/** BaseFragment it will define the common behaviour in all fragments **/
 abstract class BaseFragment : Fragment(), BaseRetryActionCallback {
+    /**
+     * Should override to bind the layout to activity
+     * To avoid doing extra stuff on different resources
+     */
     abstract fun layoutId(): Int
-    abstract fun subscribeObservers()
 
-    lateinit var baseViewModel: BaseViewModel
+    /**
+     * @param baseViewModel is a private non-defined instance from BaseViewModel
+     * Every activity has to call setViewModel fun to pass owned viewModel to define the BaseViewModel
+     */
+    private lateinit var baseViewModel: BaseViewModel
+    fun setViewModel(viewModel: BaseViewModel) {
+        baseViewModel = viewModel
+    }
+
+    /**
+     * @param progressDialog an instance from Common Loading dialog
+     */
 //    lateinit var progressDialog: LoadingDialog
+    /**
+     * @param noConnectionDialog an instance from Common Loading No Connection Dialog
+     */
 //    lateinit var noConnectionDialog: NoConnectionDialog
+    /**
+     * @param serverDownDialog an instance from Common Server Error Dialog
+     */
 //    lateinit var serverDownDialog: ServerDownDialog
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,43 +53,52 @@ abstract class BaseFragment : Fragment(), BaseRetryActionCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        subscribeObservers()
     }
 
-    fun setViewModel(baseViewModel: BaseViewModel){
-        this.baseViewModel = baseViewModel
-    }
 
-    open fun onBackPressed() {}
-    open fun showProgress(loadingType: LoadingIndicatorsTypes) {
+    /**
+     * To Define , Show Loading dialog by define dialog type
+     */
+    fun showProgress(loadingType: LoadingIndicatorsTypes) {
         when (loadingType) {
             LoadingIndicatorsTypes.BLOCKED_SCREEN -> {
                 Log.d("BaseFragment", "showProgress: ")
+                //if (!this::progressDialog.isInitialized)
+                //progressDialog = LoadingDialog(this);
+                //progressDialog.showDialog()
             }
             LoadingIndicatorsTypes.PROGRESS_BAR -> {
                 Log.d("BaseFragment", "showProgress: ")
+                //if (!this::progressDialog.isInitialized)
+                //progressDialog = LoadingDialog(this);
+                //progressDialog.showDialog()
             }
         }
-//        if (!this::progressDialog.isInitialized)
-//            progressDialog = LoadingDialog(this);
-//        progressDialog.showDialog()
     }
 
-    open fun hidProgress(loadingType: LoadingIndicatorsTypes) {
+    /**
+     * To Hide Shown Loading dialog by define dialog type
+     */
+    fun hidProgress(loadingType: LoadingIndicatorsTypes) {
         when (loadingType) {
             LoadingIndicatorsTypes.BLOCKED_SCREEN -> {
                 Log.d("BaseFragment", "hideProgress: ")
+                //if (!this::progressDialog.isInitialized)
+                //progressDialog = LoadingDialog(this);
+                //progressDialog.showDialog()
             }
             LoadingIndicatorsTypes.PROGRESS_BAR -> {
                 Log.d("BaseFragment", "hideProgress: ")
+                //if (!this::progressDialog.isInitialized)
+                //progressDialog = LoadingDialog(this);
+                //progressDialog.showDialog()
             }
         }
-//        if (!this::progressDialog.isInitialized)
-//            progressDialog = LoadingDialog(this);
-//        progressDialog.hideDialog()
     }
 
-
+    /**
+     * To Define , Show No Connection dialog
+     */
     fun showNoConnectionDialog() {
         Log.d("BaseFragment", "showNoConnectionDialog: ")
 //        if (!this::noConnectionDialog.isInitialized)
@@ -78,13 +106,18 @@ abstract class BaseFragment : Fragment(), BaseRetryActionCallback {
 //        noConnectionDialog.showDialog()
     }
 
-
+    /**
+     * To Hide Shown No Connection dialog
+     */
     fun hideNoConnectionDialog() {
         Log.d("BaseFragment", "hideNoConnectionDialog: ")
 //        if(this::noConnectionDialog.isInitialized)
 //            noConnectionDialog.hideDialog()
     }
 
+    /**
+     * To Define , Show Server Error dialog
+     */
     fun showServerErrorDialog() {
         Log.d("BaseFragment", "showServerDownDialog: ")
 //        if (!this::serverDownDialog.isInitialized)
@@ -92,18 +125,23 @@ abstract class BaseFragment : Fragment(), BaseRetryActionCallback {
 //        serverDownDialog.showDialog()
     }
 
-
+    /**
+     * To Hide Shown Server Error dialog
+     */
     fun hideServerErrorDialog() {
         Log.d("BaseFragment", "hideServerDownDialog: ")
         //  serverDownDialog.hideDialog()
     }
-
 
     override fun onResume() {
         super.onResume()
         observeBaseViewModel()
     }
 
+    /**
+     * Function that launch observation on Base viewModel in background thread
+     * Handle loading states and common network errors
+     */
     private fun observeBaseViewModel() {
         lifecycleScope.launch(Dispatchers.Main) {
             baseViewModel?.let {
@@ -113,6 +151,10 @@ abstract class BaseFragment : Fragment(), BaseRetryActionCallback {
         }
     }
 
+    /**
+     * Function that handle all common network states
+     * Handle common changes on UI like : showConnectionDialog etc..
+     */
     private suspend fun manageNetworkErrorsStates(it: BaseViewModel) {
         it.networkStates?.collect { states ->
             when (states) {
@@ -131,6 +173,10 @@ abstract class BaseFragment : Fragment(), BaseRetryActionCallback {
         }
     }
 
+    /**
+     * Function that handle all loading states with type of dialog
+     * Can be override in any child to handle it's own actions
+     */
     open suspend fun manageLoadingStates(it: BaseViewModel) {
         it.showLoading.collect { bool ->
             when (bool) {
