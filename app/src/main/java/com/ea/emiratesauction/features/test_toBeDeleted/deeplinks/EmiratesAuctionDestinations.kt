@@ -3,7 +3,10 @@ package com.ea.emiratesauction.features.test_toBeDeleted.deeplinks
 import com.ea.emiratesauction.core.constants.deeplinks.DeepLinksDestinationModel
 import com.ea.emiratesauction.core.constants.deeplinks.DeepLinksDestinationsManager
 import com.ea.emiratesauction.features.test_toBeDeleted.network.ui.PopularPeopleListActivity
-
+/*
+* All available destinations which is related to the EA app
+* implements DeepLinksDestinationsManager to fill the list of
+* */
 class EmiratesAuctionDestinations : DeepLinksDestinationsManager {
     override val destinations: ArrayList<DeepLinksDestinationModel>
         get() = arrayListOf(PlatesDestination())
@@ -20,6 +23,7 @@ class PlatesDestination : DeepLinksDestinationModel {
         )
 
 }
+
 
 
 
