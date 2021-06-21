@@ -9,9 +9,11 @@ import com.ea.emiratesauction.R
 import com.ea.emiratesauction.core.common.base.ui.BaseFragment
 import com.ea.emiratesauction.core.common.base.ui.BaseViewModel
 import com.ea.emiratesauction.core.constants.loadingIndicators.LoadingIndicatorsTypes
+import com.ea.emiratesauction.core.crashlytics.manager.CrashesReportingManagerImp
 import com.ea.emiratesauction.features.test_toBeDeleted.network.viewmodel.PupularPeopleListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_pupular_people_list.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class PupularPeopleListFragment : BaseFragment() {
@@ -21,6 +23,7 @@ class PupularPeopleListFragment : BaseFragment() {
         return R.layout.fragment_pupular_people_list
     }
 
+    @Inject lateinit var crashesReportingManagerImp :CrashesReportingManagerImp
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +44,7 @@ class PupularPeopleListFragment : BaseFragment() {
         TestfailBtn.setOnClickListener {
             viewModel.getPopularPeopleList("fail")
         }
+
     }
 
 }

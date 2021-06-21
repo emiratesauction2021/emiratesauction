@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ea.emiratesauction">
+
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+    <!--
+     By default, Crashlytics automatically collects crash reports for all your app's users.
+     To give users more control over the data they send, you can enable opt-in reporting by
+     disabling automatic reporting and only sending data to Crashlytics
+    -->
+    <meta-data
+        android:name="firebase_crashlytics_collection_enabled"
+        android:value="false" />
 
     <application
-        android:allowBackup="true"
         android:name="com.ea.emiratesauction.core.common.di.MainApplication"
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -23,7 +32,9 @@
             </intent-filter>
         </activity>
 
-        <uses-library android:name="org.apache.http.legacy" android:required="false" />
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
     </application>
 
 </manifest>

@@ -1,5 +1,7 @@
 package com.ea.emiratesauction.core.common.di
 
+import com.ea.emiratesauction.core.crashlytics.manager.CrashesReportingManager
+import com.ea.emiratesauction.core.crashlytics.manager.CrashesReportingManagerImp
 import com.ea.emiratesauction.core.network.managers.networkManager.NetworkManager
 import com.ea.emiratesauction.core.network.managers.retrofitManager.RetrofitNetworkProvider
 import com.ea.emiratesauction.core.network.managers.retrofitManager.RetrofitAPIs
@@ -55,10 +57,10 @@ object AppModule {
     }
 
 
-
     @Singleton
     @Provides
-    fun provideNetworkManager(networkProvider: RetrofitNetworkProvider) = NetworkManager(networkProvider)
+    fun provideNetworkManager(networkProvider: RetrofitNetworkProvider) =
+        NetworkManager(networkProvider)
 
     @Singleton
     @Provides
@@ -73,4 +75,12 @@ object AppModule {
             mCallAdapter
         )
 
+
+    @Singleton
+    @Provides
+    fun provideCrashesReportingManager() = CrashesReportingManager
+
+    @Singleton
+    @Provides
+    fun provideCrashlyticsManagerImp(crashesReportingManager: CrashesReportingManager) = CrashesReportingManagerImp(crashesReportingManager)
 }
