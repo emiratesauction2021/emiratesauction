@@ -1,4 +1,4 @@
-package com.ea.emiratesauction.core.realTimeManager.provider
+package com.ea.emiratesauction.features.test_toBeDeleted.RTC
 
 import com.ea.emiratesauction.common.utils.BusinessConstants
 import com.pubnub.api.PNConfiguration

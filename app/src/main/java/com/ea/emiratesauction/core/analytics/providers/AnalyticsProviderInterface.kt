@@ -6,7 +6,7 @@ import com.ea.emiratesauction.core.analytics.defaultProperties.event.BaseAnalyti
 import com.ea.emiratesauction.core.analytics.defaultProperties.screen.BaseAnalyticsDefaultScreenProperties
 import com.ea.emiratesauction.core.analytics.profile.properties.BaseAnalyticsProfileProperties
 import com.ea.emiratesauction.core.analytics.screen.BaseAnalyticsScreen
-import com.ea.emiratesauction.core.constants.analytics.AnalyticsProviderIdentifier
+import com.ea.emiratesauction.core.constants.analytics.providers.AnalyticsProviderIdentifier
 
 /**
  * The interface which contains all the needed parameters and methods to be a supported analytics provider in the analytics manager

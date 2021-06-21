@@ -4,7 +4,7 @@ import com.ea.emiratesauction.core.analytics.event.BaseAnalyticsEvent
 import com.ea.emiratesauction.core.analytics.managers.interfaces.AnalyticsManagerInterface
 import com.ea.emiratesauction.core.analytics.profile.identification.BaseAnalyticsProfileIdentification
 import com.ea.emiratesauction.core.analytics.profile.properties.BaseAnalyticsProfileProperties
-import com.ea.emiratesauction.core.constants.analytics.AnalyticsProviderIdentifier
+import com.ea.emiratesauction.core.constants.analytics.providers.AnalyticsProviderIdentifier
 import com.ea.emiratesauction.core.analytics.providers.AnalyticsProviderInterface
 import com.ea.emiratesauction.core.analytics.screen.BaseAnalyticsScreen
 import java.lang.Exception

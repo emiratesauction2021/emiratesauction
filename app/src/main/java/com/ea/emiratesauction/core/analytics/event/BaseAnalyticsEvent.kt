@@ -1,7 +1,7 @@
 package com.ea.emiratesauction.core.analytics.event
 
 import com.ea.emiratesauction.core.analytics.managers.interfaces.AnalyticsProperties
-import com.ea.emiratesauction.core.constants.analytics.AnalyticsProviderIdentifier
+import com.ea.emiratesauction.core.constants.analytics.providers.AnalyticsProviderIdentifier
 
 /**
  * The base analytics event which is used by the analytics manager through out the whole app, it contains the different required information for an analytics event
@@ -22,6 +22,8 @@ abstract class BaseAnalyticsEvent {
      * The provider identifiers which that event is supporting, by default it contains all the identifiers
      *
      * Note: Only update it if you want specific providers to fire this event
+     *
+     * @see AnalyticsProviderIdentifier
      */
     open var providerIdentifiers: ArrayList<AnalyticsProviderIdentifier> = AnalyticsProviderIdentifier.values().toCollection(ArrayList())
 }
