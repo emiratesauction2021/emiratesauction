@@ -32,7 +32,7 @@ object RTCManager: RTMManagerInterface, RTCProviderCallBack {
     override fun connect() {
         // Check if the manager is already connected to the broadcaster or not
         if(!isConnected){
-            this.checkClientInitialization()
+            this.checkProviderInitialization()
             rtcProvider.connect()
             isConnected = true
         }else {
@@ -43,7 +43,7 @@ object RTCManager: RTMManagerInterface, RTCProviderCallBack {
     override fun disconnect() {
         // Check if the manager is already connected to the broadcaster or not
         if(isConnected){
-            this.checkClientInitialization()
+            this.checkProviderInitialization()
             rtcProvider.disconnect()
             isConnected = false
         }else {
@@ -53,14 +53,14 @@ object RTCManager: RTMManagerInterface, RTCProviderCallBack {
 
     override fun setRTCClient(rtcProvider: RTCProviderInterface) {
         // Check if the RTC is already initialized before or not
-        checkClientInitialization(true)
+        checkProviderInitialization(true)
         // Initialize the internal instance of the provider
         this.rtcProvider = rtcProvider
     }
 
     override fun addListener(listener: RTMManagerCallBack, event: RTCEventInterface) {
         // Check if the RTC is already initialized before or not
-        checkClientInitialization()
+        checkProviderInitialization()
 
         // Creating the complex key using the data of the event
         val tempKey = RTCComplexKey(event.name, event.channel.name)
@@ -85,7 +85,7 @@ object RTCManager: RTMManagerInterface, RTCProviderCallBack {
 
     override fun removeListener(listener: RTMManagerCallBack, event: RTCEventInterface) {
         // Check if the RTC is already initialized before or not
-        checkClientInitialization()
+        checkProviderInitialization()
 
         // Creating the complex key using the data of the event
         val tempKey = RTCComplexKey(event.name, event.channel.name)
@@ -119,20 +119,20 @@ object RTCManager: RTMManagerInterface, RTCProviderCallBack {
 
     override fun emit(event: RTCEventInterface) {
         // Check if the RTC is already initialized before or not
-        checkClientInitialization()
+        checkProviderInitialization()
 
         // Emits the event
         rtcProvider.emit(event)
     }
 
     /**
-     * Checks if the client is initialized or not
+     * Checks if the provider is initialized or not
      *
      * @param throwIfInitialized If it's true then it will throw an exception if the client is initialized otherwise it will throw if it's not initialized
      *
      * @throws Exception if the client is initialized and throwIfInitialized is true otherwise it will throw if it's not initialized
      */
-    private fun checkClientInitialization(throwIfInitialized: Boolean = false) {
+    private fun checkProviderInitialization(throwIfInitialized: Boolean = false) {
         if(!this::rtcProvider.isInitialized && !throwIfInitialized){
             throw Exception("RTC Client isn't initialized yet - Please call setRTCClient method before using the RTCManager")
         }else if(this::rtcProvider.isInitialized && throwIfInitialized) {
@@ -141,6 +141,7 @@ object RTCManager: RTMManagerInterface, RTCProviderCallBack {
     }
 
     /** The RTC provider callbacks */
+    /**************************************/
     override fun onDataReceived(channelName: String, eventName: String, result: Any) {
         // Creating the complex key using the data of the event
 
