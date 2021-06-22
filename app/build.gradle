@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-android-extensions'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs'
 }
 
 android {
@@ -165,9 +166,10 @@ private static setupKTX(configuration) {
 }
 
 private static setupNavigation(configuration) {
-    def navigation_version = "1.0.0"
+    def navigation_version = "2.3.5"
     configuration.implementation "android.arch.navigation:navigation-fragment:$navigation_version"
     configuration.implementation "android.arch.navigation:navigation-ui:$navigation_version"
     configuration.implementation "android.arch.navigation:navigation-fragment-ktx:$navigation_version"
     configuration.implementation "android.arch.navigation:navigation-ui-ktx:$navigation_version"
+    configuration.implementation "androidx.navigation:navigation-dynamic-features-fragment:$navigation_version"
 }

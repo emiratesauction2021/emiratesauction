@@ -1,5 +1,7 @@
 package com.ea.emiratesauction.features.test_toBeDeleted.deeplinks
 
+import kotlin.properties.ReadWriteProperty
+import kotlin.reflect.KProperty
 
 enum class EmiratesAuctionDestinationsType(val destination: String) {
     HOME("GeneralList"),

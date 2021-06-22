@@ -10,7 +10,6 @@ import androidx.lifecycle.lifecycleScope
 import com.ea.emiratesauction.core.constants.loadingIndicators.LoadingIndicatorsTypes
 import com.ea.emiratesauction.core.constants.network.errors.NetworkErrors
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -45,6 +44,7 @@ abstract class BaseFragment : Fragment(), BaseRetryActionCallback {
      */
 //    lateinit var serverDownDialog: ServerDownDialog
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -54,7 +54,6 @@ abstract class BaseFragment : Fragment(), BaseRetryActionCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
     }
-
 
     /**
      * To Define , Show Loading dialog by define dialog type

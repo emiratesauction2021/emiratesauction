@@ -1,5 +1,6 @@
 package com.ea.emiratesauction.core.common.base.ui
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.PersistableBundle
@@ -7,6 +8,8 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import com.ea.emiratesauction.R
 import com.ea.emiratesauction.core.common.di.MainApplication
 import com.ea.emiratesauction.core.constants.loadingIndicators.LoadingIndicatorsTypes
@@ -48,24 +51,36 @@ abstract class BaseActivity : AppCompatActivity(), BaseRetryActionCallback {
      */
 //    lateinit var serverDownDialog: ServerDownDialog
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layoutId())
         loadResourceConfiguration()
-        replaceFragment(PupularPeopleListFragment())
+        initDeepLinkIntentData()
+        setNavControllerToDeepLinkManager()
+    }
 
+    /**
+    * DeeplinkManager uses the nav graph controller to manage the destinations
+    * */
+    private fun setNavControllerToDeepLinkManager() {
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
+        if (navHostFragment != null) {
+            val navController = navHostFragment.navController
+            (this.application as MainApplication).deepLinkManager.setNavController(navController)
+            (this.application as MainApplication).deepLinkManager.mangeDestinations()
+        }
+    }
+
+    /**
+    *   Detect Received data from deeplink or notifications and pass it to DeeplinkManager
+    * */
+    private fun initDeepLinkIntentData() {
         val action: String? = intent?.action
         val data: Uri? = intent?.data
-
         (this.application as MainApplication).deepLinkManager.setDeeplinkUrl(data)
     }
 
-    private fun replaceFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, fragment)
-            .commit()
-    }
 
     /**
      * To Define , Show Loading dialog by define dialog type
@@ -209,5 +224,10 @@ abstract class BaseActivity : AppCompatActivity(), BaseRetryActionCallback {
         val lang = "EN" //TODO("will be Replaced by App Language")
         conf.setLocale(Locale(lang))
         resources.updateConfiguration(conf, dm)
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        (this.application as MainApplication).deepLinkManager.mangeDestinations()
+        super.onNewIntent(intent)
     }
 }

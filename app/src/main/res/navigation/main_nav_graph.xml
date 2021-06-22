@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_nav_graph"
+    app:startDestination="@id/pupularPeopleListFragment">
+
+    <fragment
+        android:id="@+id/pupularPeopleListFragment"
+        android:name="com.ea.emiratesauction.features.test_toBeDeleted.network.ui.PupularPeopleListFragment"
+        android:label="PupularPeopleListFragment">
+        <action
+            android:id="@+id/moveToFragmentOne"
+            app:destination="@id/fragmentTestOne" />
+        <action
+            android:id="@+id/action_pupularPeopleListFragment_to_fragmentTestTwo"
+            app:destination="@id/fragmentTestTwo" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentTestOne"
+        android:name="com.ea.emiratesauction.features.test_toBeDeleted.navFragments.FragmentTestOne"
+        android:label="FragmentTestOne">
+        <action
+            android:id="@+id/moveToFragmentTwo"
+            app:destination="@id/moveToFragmentTwo" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentTestTwo"
+        android:name="com.ea.emiratesauction.features.test_toBeDeleted.navFragments.FragmentTestTwo"
+        android:label="FragmentTestTwo" />
+</navigation>
