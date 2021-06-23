@@ -1,7 +1,6 @@
 package com.ea.emiratesauction.core.common.base.ui
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -9,9 +8,13 @@ import androidx.lifecycle.lifecycleScope
 import com.ea.emiratesauction.R
 import com.ea.emiratesauction.core.constants.loadingIndicators.LoadingIndicatorsTypes
 import com.ea.emiratesauction.core.constants.network.errors.NetworkErrors
+import com.ea.emiratesauction.core.crashlytics.client.CrashModel
+import com.ea.emiratesauction.core.crashlytics.client.InstaBugClient
+import com.ea.emiratesauction.core.crashlytics.client.MixPanelClient
+import com.ea.emiratesauction.core.crashlytics.manager.CrashesReportingManager
+import com.ea.emiratesauction.core.crashlytics.provider.CrashProviders
 import com.ea.emiratesauction.features.test_toBeDeleted.network.ui.PupularPeopleListFragment
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.*
@@ -52,6 +55,7 @@ abstract class BaseActivity : AppCompatActivity(), BaseRetryActionCallback {
         setContentView(layoutId())
         loadResourceConfiguration()
         replaceFragment(PupularPeopleListFragment())
+        initCrashReporting()
     }
 
     private fun replaceFragment(fragment: Fragment) {
@@ -202,5 +206,19 @@ abstract class BaseActivity : AppCompatActivity(), BaseRetryActionCallback {
         val lang = "EN" //TODO("will be Replaced by App Language")
         conf.setLocale(Locale(lang))
         resources.updateConfiguration(conf, dm)
+    }
+
+
+    /**
+     * Start Crash Reporting
+     * add clients to start initiation
+     */
+    private fun initCrashReporting() {
+        val crashReportingClients = arrayListOf(InstaBugClient(), MixPanelClient())
+        CrashesReportingManager.setProviders(crashReportingClients)
+        CrashesReportingManager.startCrashesReportingWithCustomKeys(CrashModel().apply {
+            crashProviderClients = arrayListOf(CrashProviders.INSTABUG, CrashProviders.MIXPANEL)
+            crashReportingCustomKeyValue = Pair("Ahmed", "Ali")
+        })
     }
 }

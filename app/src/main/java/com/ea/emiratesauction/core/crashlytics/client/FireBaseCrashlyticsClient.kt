@@ -1,18 +1,35 @@
 package com.ea.emiratesauction.core.crashlytics.client
 
-import com.ea.emiratesauction.core.crashlytics.manager.CrashesReportingManager
+import android.util.Log
+import com.ea.emiratesauction.core.crashlytics.manager.CrashesReportingManagerInterface
+import com.ea.emiratesauction.core.crashlytics.provider.CrashProviders
+import com.ea.emiratesauction.core.crashlytics.provider.CrashReportClientInterface
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import javax.inject.Inject
 
 
 /**
  * Class that initialize FireBase Crashlytics , will provided in dependencies
  */
-class FireBaseCrashlyticsClient : CrashesReportingManager {
+class FireBaseCrashlyticsClient : CrashReportClientInterface() {
+
+    /**
+     * Have to call this function while init Class
+     */
+    init {
+        initCrashesReportingProvider()
+    }
+
+    /**
+     * Define Client as a Type of CrashProvider
+     */
+    override val type: CrashProviders
+        get() = CrashProviders.FIREBASE
 
     /**
      * init FireBase Crashlytics
      */
-    override fun initCrashesReporting() {
+    override fun initCrashesReportingProvider() {
         FirebaseCrashlytics.getInstance()
     }
 
@@ -22,7 +39,7 @@ class FireBaseCrashlyticsClient : CrashesReportingManager {
      * Then use the custom keys to search and filter crash reports in the Firebase console.
      * You can search for issues that match a custom key.
      */
-    override fun startCrashesReportingWithCustomKeys(customKey: String, customValue: String) {
+    fun startCrashesReportingWithCustomKeys(customKey: String, customValue: String) {
         FirebaseCrashlytics.getInstance().setCustomKey(customKey, customValue);
     }
 
@@ -30,7 +47,7 @@ class FireBaseCrashlyticsClient : CrashesReportingManager {
      * To give yourself more context for the events leading up to a crash, you can add custom Crashlytics logs to your app.
      * Crashlytics associates the logs with your crash data and displays them in the Crashlytics page
      */
-    override fun addCrashesReportingCustomLogMessage(customMessage: String) {
+    fun addCrashesReportingCustomLogMessage(customMessage: String) {
         FirebaseCrashlytics.getInstance().log(customMessage)
     }
 
@@ -39,7 +56,7 @@ class FireBaseCrashlyticsClient : CrashesReportingManager {
      * Crashlytics includes a way to anonymously identify users in your crash reports.
      * To add user IDs to your reports, assign each user a unique identifier in the form of an ID number, token, or hashed value
      */
-    override fun setCrashesReportingUserId(userId: String) {
+    fun setCrashesReportingUserId(userId: String) {
         FirebaseCrashlytics.getInstance().setUserId(userId);
     }
 
@@ -48,7 +65,7 @@ class FireBaseCrashlyticsClient : CrashesReportingManager {
      * In addition to automatically reporting your app’s crashes,
      * Crashlytics lets you record non-fatal exceptions and sends them to you the next time your app launches.
      */
-    override fun reportNonFatalExceptions(methodThatThrows: () -> Unit) {
+    fun reportNonFatalExceptions(methodThatThrows: () -> Unit) {
         try {
             methodThatThrows()
         } catch (e: Exception) {
@@ -67,8 +84,27 @@ class FireBaseCrashlyticsClient : CrashesReportingManager {
      * To opt out of automatic crash reporting, pass false as the override value. When set to false,
      * The new value does not apply until the next run of the app.
      */
-    override fun enableCrashesReportingOPTReporting(isEnabled: Boolean) {
+    fun enableCrashesReportingOPTReporting(isEnabled: Boolean) {
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(isEnabled)
     }
 
+
+    override fun startCrashesReportingWithCustomKeys(crashModel: CrashModel) {
+        Log.e(
+            "startCrashes",
+            "FireBase" + crashModel.crashReportingCustomKeyValue?.second.toString()
+        )
+        startCrashesReportingWithCustomKeys(
+            crashModel.crashReportingCustomKeyValue?.first.toString(),
+            crashModel.crashReportingCustomKeyValue?.second.toString()
+        )
+    }
+
+    override fun startCrashesReportingCustomLogMessage(crashModel: CrashModel) {
+        addCrashesReportingCustomLogMessage(crashModel.crashReportingCustomLogMessage.toString())
+    }
+
+    override fun startCrashesReportingUserId(crashModel: CrashModel) {
+        setCrashesReportingUserId(crashModel.crashReportingUserId.toString())
+    }
 }
