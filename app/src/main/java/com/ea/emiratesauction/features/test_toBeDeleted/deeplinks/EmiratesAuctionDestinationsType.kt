@@ -31,6 +31,12 @@ enum class EmiratesAuctionDestinationsType(val destination: String) {
     MY_ORDER_DETAILS("my_order_details"),
 }
 
+enum class ScreensName(val screen: String) {
+    FragmentOne("FragmentTestOne"),
+    FragmentTwo("FragmentTestTwo"),
+    THREE("PopularFragmnet"),
+}
+
 enum class Temp(num: Int) {
     OTHERS(0),
     GENERAL_PLATES(100),

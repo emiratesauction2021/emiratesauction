@@ -1,6 +1,9 @@
 package com.ea.emiratesauction.core.constants.deeplinks
 
+import android.os.Bundle
+import android.os.Parcelable
 import com.ea.emiratesauction.features.test_toBeDeleted.deeplinks.EmiratesAuctionDestinationsType
+import kotlinx.android.parcel.Parcelize
 
 /**
  * DeepLinksDestinationsManager  has arraylist of DeepLinksDestinationModel that contains
@@ -19,5 +22,15 @@ interface DeepLinksDestinationsManager {
      * @param destination it an enum which hold all key for screens
      * @return arrayList of Fragments Ids base on sent key
      */
-    fun getNavGraphDestinationBack(destination: EmiratesAuctionDestinationsType?): ArrayList<Int>
+    fun getNavGraphDestinationBackStackFlow(
+        destination: EmiratesAuctionDestinationsType?,
+        deepLinkModel: DeepLinkModel
+    ): ArrayList<Pair<Int, Bundle?>>?
 }
+
+@Parcelize
+data class DeepLinkModel(
+    val id: Long? = 0,
+    val list: String? = "",
+    val details: String? = ""
+) : Parcelable

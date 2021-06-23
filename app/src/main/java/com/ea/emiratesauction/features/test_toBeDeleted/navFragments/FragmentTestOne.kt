@@ -31,7 +31,7 @@ class FragmentTestOne : BaseFragment() {
         }
 
         arguments?.let {
-            tv_test.text = it.getString("PLATES","no data")
+            tv_test.text = it.getString("id","no data")
         }
 
     }

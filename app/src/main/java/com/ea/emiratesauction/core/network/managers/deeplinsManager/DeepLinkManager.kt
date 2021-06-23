@@ -4,10 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Bundle
 import android.util.Log
 import androidx.core.app.TaskStackBuilder
 import androidx.navigation.NavController
+import com.ea.emiratesauction.core.constants.deeplinks.DeepLinkModel
 import com.ea.emiratesauction.core.constants.deeplinks.DeepLinksDestinationsManager
 import com.ea.emiratesauction.core.utilities.deeplinks.DeepLinksUtilities
 import com.ea.emiratesauction.features.test_toBeDeleted.deeplinks.EmiratesAuctionDestinationsType
@@ -97,18 +97,19 @@ class DeepLinkManager @Inject constructor(@ApplicationContext val context: Conte
             segment = getUrlSegments()?.get(getUrlSegments()?.size ?: 0 - 1)
         }
         if (segment?.isNotEmpty() == true) {
-            val screen = destinationManger.getNavGraphDestinationBack(
+            val navStack = destinationManger.getNavGraphDestinationBackStackFlow(
                 EmiratesAuctionDestinationsType.values().find {
                     it.destination == segment
-                }
+                },
+                DeepLinkModel(5, "plates", "details")
             )
-            screen.map { id ->
-                val bundle = Bundle()
-                bundle.putString("PLATES", segment)
-                navController?.let {
-                    it.navigate(id, bundle)
+            navStack?.map {
+                val (id, bundle) = it
+                navController?.let { nav ->
+                    nav.navigate(id, bundle)
                 }
             }
+
 
             //  manageActivityBackStack(segment)
         }
