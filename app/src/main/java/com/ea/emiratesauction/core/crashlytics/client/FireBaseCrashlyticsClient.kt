@@ -1,18 +1,18 @@
 package com.ea.emiratesauction.core.crashlytics.client
 
-import com.ea.emiratesauction.core.crashlytics.provider.CrashlyticsProvider
+import com.ea.emiratesauction.core.crashlytics.manager.CrashesReportingManager
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 
 
 /**
  * Class that initialize FireBase Crashlytics , will provided in dependencies
  */
-class FireBaseCrashlyticsClient  : CrashlyticsProvider {
+class FireBaseCrashlyticsClient : CrashesReportingManager {
 
     /**
      * init FireBase Crashlytics
      */
-    override fun initCrashlytics() {
+    override fun initCrashesReporting() {
         FirebaseCrashlytics.getInstance()
     }
 
@@ -22,7 +22,7 @@ class FireBaseCrashlyticsClient  : CrashlyticsProvider {
      * Then use the custom keys to search and filter crash reports in the Firebase console.
      * You can search for issues that match a custom key.
      */
-    override fun startCrashlyticsWithCustomKeys(customKey: String, customValue: String) {
+    override fun startCrashesReportingWithCustomKeys(customKey: String, customValue: String) {
         FirebaseCrashlytics.getInstance().setCustomKey(customKey, customValue);
     }
 
@@ -30,7 +30,7 @@ class FireBaseCrashlyticsClient  : CrashlyticsProvider {
      * To give yourself more context for the events leading up to a crash, you can add custom Crashlytics logs to your app.
      * Crashlytics associates the logs with your crash data and displays them in the Crashlytics page
      */
-    override fun addCrashlyticsCustomLogMessage(customMessage: String) {
+    override fun addCrashesReportingCustomLogMessage(customMessage: String) {
         FirebaseCrashlytics.getInstance().log(customMessage)
     }
 
@@ -39,9 +39,10 @@ class FireBaseCrashlyticsClient  : CrashlyticsProvider {
      * Crashlytics includes a way to anonymously identify users in your crash reports.
      * To add user IDs to your reports, assign each user a unique identifier in the form of an ID number, token, or hashed value
      */
-    override fun setCrashlyticsUserId(userId: String) {
+    override fun setCrashesReportingUserId(userId: String) {
         FirebaseCrashlytics.getInstance().setUserId(userId);
     }
+
 
     /**
      * In addition to automatically reporting your app’s crashes,
@@ -66,7 +67,7 @@ class FireBaseCrashlyticsClient  : CrashlyticsProvider {
      * To opt out of automatic crash reporting, pass false as the override value. When set to false,
      * The new value does not apply until the next run of the app.
      */
-    override fun enableCrashlyticsOPTReporting(isEnabled: Boolean) {
+    override fun enableCrashesReportingOPTReporting(isEnabled: Boolean) {
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(isEnabled)
     }
 
