@@ -7,6 +7,7 @@ import com.ea.emiratesauction.core.crashlytics.provider.CrashReportClientInterfa
 /**
  * Crash Reporting Client
  */
+// TODO : to be deleted
 class InstaBugClient : CrashReportClientInterface() {
     /**
      * Have to call this function while init Class
