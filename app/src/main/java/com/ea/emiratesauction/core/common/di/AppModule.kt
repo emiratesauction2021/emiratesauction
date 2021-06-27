@@ -1,8 +1,7 @@
 package com.ea.emiratesauction.core.common.di
 
-import com.ea.emiratesauction.core.network.managers.defaultManager.NetworkManager
+import com.ea.emiratesauction.core.network.managers.networkManager.NetworkManager
 import com.ea.emiratesauction.core.network.managers.retrofitManager.RetrofitNetworkProvider
-import com.ea.emiratesauction.core.network.managers.defaultManager.NetworkProvider
 import com.ea.emiratesauction.core.network.managers.retrofitManager.RetrofitAPIs
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Module
@@ -59,13 +58,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideNetworkManager(networkProvider: NetworkProvider) = NetworkManager(networkProvider)
-
-    @Singleton
-    @Provides
-    fun provideNetworkProvider(networkProvider: RetrofitNetworkProvider) =
-        NetworkProvider(networkProvider)
-
+    fun provideNetworkManager(networkProvider: RetrofitNetworkProvider) = NetworkManager(networkProvider)
 
     @Singleton
     @Provides

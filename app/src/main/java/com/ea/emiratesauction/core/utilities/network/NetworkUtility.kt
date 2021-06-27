@@ -1,6 +1,6 @@
 package com.ea.emiratesauction.core.utilities.network
-import com.ea.emiratesauction.core.constants.network.NetworkRequestParametersType
-import com.ea.emiratesauction.core.constants.network.NetworkRequestParameters
+
+import com.ea.emiratesauction.core.constants.network.parameters.NetworkRequestParameters
 import java.net.URLEncoder
 
 /**

@@ -1,9 +1,9 @@
 package com.ea.emiratesauction.core.utilities.network
 
-import com.ea.emiratesauction.core.constants.network.NetworkRequestParametersType
-import com.ea.emiratesauction.core.constants.network.RequestHTTPMethodType
-import com.ea.emiratesauction.core.constants.network.RequestParameterEncoding
-import com.ea.emiratesauction.core.network.request.BaseNetworkRequest
+import com.ea.emiratesauction.core.constants.network.httpMethods.RequestHTTPMethodType
+import com.ea.emiratesauction.core.constants.network.encodings.RequestParameterEncoding
+import com.ea.emiratesauction.core.constants.network.parameters.NetworkRequestParametersType
+import com.ea.emiratesauction.core.network.request.networkRequest.BaseNetworkRequest
 
 /**
  * this class is used to make check on request Target data

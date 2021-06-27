@@ -2,8 +2,8 @@ package com.ea.emiratesauction.core.common.base.ui
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.ea.emiratesauction.core.network.internalError.InternalNetworkErrorInterface
-import com.ea.emiratesauction.core.constants.network.NetworkErrors
+import com.ea.emiratesauction.core.network.internalError.interfaces.InternalNetworkErrorInterface
+import com.ea.emiratesauction.core.constants.network.errors.NetworkErrors
 import com.ea.emiratesauction.core.network.result.RequestResult
 
 abstract class BaseViewModel : ViewModel() {

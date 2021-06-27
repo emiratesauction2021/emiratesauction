@@ -3,6 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".features.test_toBeDeleted.ui.PopularPeopleListActivity">
+    tools:context=".features.test_toBeDeleted.network.ui.PopularPeopleListActivity">
 
 </androidx.constraintlayout.widget.ConstraintLayout>
