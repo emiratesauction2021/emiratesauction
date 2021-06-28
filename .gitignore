@@ -48,3 +48,46 @@ Thumbs.db
 *.mov
 *.wmv
 
+# Generated files
+bin/
+gen/
+out/
+
+# Gradle files
+.gradle/
+build/
+
+# fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+fastlane/readme.md
+
+# Windows thumbnail db
+Thumbs.db
+
+# Windows desktop.ini
+desktop.ini
+
+# Linux configuration file
+.directory
+
+# OSX files
+.DS_Store
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+.gradle/6.5/gc.properties
+.gradle/6.5/executionHistory/executionHistory.lock
+.gradle/6.5/fileChanges/last-build.bin
+.gradle/6.5/fileHashes/fileHashes.bin
+.gradle/6.5/fileHashes/fileHashes.lock
+.gradle/buildOutputCleanup/buildOutputCleanup.lock
+.gradle/buildOutputCleanup/cache.properties
+.gradle/buildOutputCleanup/outputFiles.bin
+.gradle/checksums/checksums.lock
+.gradle/checksums/md5-checksums.bin
+.gradle/checksums/sha1-checksums.bin
+.gradle/vcs-1/gc.properties
