@@ -1,5 +1,8 @@
 package com.ea.emiratesauction.core.common.di
 
+import com.ea.emiratesauction.core.deviceData.providers.DataPersistenceProvider
+import com.ea.emiratesauction.core.deviceData.providers.SecureSharedPreferencesProvider
+import com.ea.emiratesauction.core.deviceData.providers.SharedPreferencesProvider
 import com.ea.emiratesauction.core.network.managers.networkManager.NetworkManager
 import com.ea.emiratesauction.core.network.managers.retrofitManager.RetrofitNetworkProvider
 import com.ea.emiratesauction.core.network.managers.retrofitManager.RetrofitAPIs
@@ -55,10 +58,10 @@ object AppModule {
     }
 
 
-
     @Singleton
     @Provides
-    fun provideNetworkManager(networkProvider: RetrofitNetworkProvider) = NetworkManager(networkProvider)
+    fun provideNetworkManager(networkProvider: RetrofitNetworkProvider) =
+        NetworkManager(networkProvider)
 
     @Singleton
     @Provides
@@ -73,4 +76,16 @@ object AppModule {
             mCallAdapter
         )
 
+
+    @Singleton
+    @Provides
+    fun provideSharedPreferencesProvider(): DataPersistenceProvider {
+        return SharedPreferencesProvider()
+    }
+
+    @Singleton
+    @Provides
+    fun provideSecuredSharedPreferencesProvider(): DataPersistenceProvider {
+        return SecureSharedPreferencesProvider()
+    }
 }
