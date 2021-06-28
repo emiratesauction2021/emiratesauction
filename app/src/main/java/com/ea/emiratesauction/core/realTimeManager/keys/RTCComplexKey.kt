@@ -6,6 +6,10 @@ import java.util.*
 
 /**
  * The complex key which is used to distinguish the events and channels - used mainly by the RTCManager
+ *
+ * @property eventName The event name
+ *
+ * @property channelName The channel name
  */
 class RTCComplexKey (val eventName: RTCEvent, val channelName: RTCChannel){
 

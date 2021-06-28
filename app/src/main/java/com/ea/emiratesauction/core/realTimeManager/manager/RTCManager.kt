@@ -144,7 +144,6 @@ object RTCManager: RTMManagerInterface, RTCProviderCallBack {
     /**************************************/
     override fun onDataReceived(channelName: String, eventName: String, result: Any) {
         // Creating the complex key using the data of the event
-
         val tempKey = RTCComplexKey(eventName.asEnum(RTCEvent.UNKNOWN), eventName.asEnum(RTCChannel.UNKNOWN))
 
         // Trying to find a key which matches the complex key

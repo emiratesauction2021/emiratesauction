@@ -57,6 +57,8 @@ interface RTMManagerInterface {
     /**
      * Emit event data to the provider
      *
+     * @param event The event to be emitted
+     *
      * @throws Exception if the provider isn't been initialized yet - call setRTCClient first
      */
     fun emit(event: RTCEventInterface)

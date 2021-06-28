@@ -9,42 +9,42 @@ import com.ea.emiratesauction.core.realTimeManager.event.RTCEventInterface
  */
 abstract class RTCProviderInterface(var listener: RTCProviderCallBack, var connectionConfiguration: RTCConnectionConfigurationsInterface)  {
     /**
-     * Start the connection
+     * Starts the connection
      */
     abstract fun connect()
 
     /**
-     * Subscribe to a channel
+     * Subscribes to a channel
      *
-     * @param channel the channel name and its details
+     * @param channel The channel name and its details
      */
     abstract fun subscribeToChannel(channel: RTCChannelInterface)
 
     /**
      * Unsubscribe from a channel
      *
-     * @param channel the channel name and its details
+     * @param channel The channel name and its details
      */
     abstract fun unsubscribeFromChannel(channel: RTCChannelInterface)
 
     /**
      * Sends data to the server
      *
-     * @param event the event name and its data
+     * @param event The event name and its data
      */
     abstract fun emit(event: RTCEventInterface)
 
     /**
      * Starts listening on a specific event
      *
-     * @param event the event name and its data
+     * @param event The event name and its data
      */
     abstract fun startListenToEvent( event: RTCEventInterface)
 
     /**
      * Stops listening on a specific event
      *
-     * @param event the event name and its data
+     * @param event The event name and its data
      */
     abstract fun stopListenToEvent(event: RTCEventInterface)
 

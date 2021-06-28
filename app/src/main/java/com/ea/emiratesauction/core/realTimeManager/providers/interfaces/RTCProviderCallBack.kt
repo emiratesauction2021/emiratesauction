@@ -16,7 +16,9 @@ interface RTCProviderCallBack {
     fun onDataReceived(channelName:String, eventName:String, result:Any)
 
     /**
-     * The manager did receive an error from the server
+     * The provider did receive an error from the server
+     *
+     * @param error The error data which is received by the provider
      *
      * @param channelName The channel name which received the error
      *
