@@ -1,27 +1,50 @@
 package com.ea.emiratesauction.core.deviceData.providers
 
-import android.util.Log
+import android.content.SharedPreferences
+import com.ea.emiratesauction.common.utils.BusinessConstants
+import com.google.gson.Gson
 import javax.inject.Inject
 
-class SharedPreferencesProvider @Inject constructor(): DataPersistenceProvider {
+
+/**
+ * haredPreferencesProvider which use the normal sharedPrefs
+ * */
+class SharedPreferencesProvider @Inject constructor(
+    private val sharedPreferences: SharedPreferences
+) : DataPersistenceProvider {
+
     override fun save(key: String, obj: Any) {
-        Log.d("SharedPreferences", "save: ")
+        with(sharedPreferences.edit()) {
+            putString(key, Gson().toJson(obj))
+            apply()
+        }
     }
 
-    override fun get(key: String): Any {
-        Log.d("SharedPreferences", "get: ")
-        return ""
+    override suspend fun get(key: String): Any? {
+        return with(sharedPreferences) {
+            this.all[key]
+        }
     }
 
     override fun update(key: String, obj: Any) {
-        Log.d("SharedPreferences", "update: ")
+        with(sharedPreferences.edit()) {
+            putString(key, Gson().toJson(obj))
+            apply()
+        }
     }
 
     override fun delete(key: String) {
-        Log.d("SharedPreferences", "delete: ")
+        with(sharedPreferences.edit()) {
+            remove(key)
+            apply()
+        }
     }
 
     override fun clear() {
-        Log.d("SharedPreferences", "clear: ")
+        with(sharedPreferences.edit()) {
+            remove(BusinessConstants.EA_SHARED_PREFERENCE)
+            apply()
+        }
     }
+
 }

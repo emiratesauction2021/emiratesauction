@@ -42,7 +42,7 @@ android {
             buildConfigField "String", "PubNUB_SECRETE_KEY", '"sec-c-MWQ1ZjlkNmYtYzllZC00ZWQ5LWI1YjMtNDIxMzE1NWMyZjY5"'
 
         }
-        Live  {
+        Live {
             dimension "default"
             applicationId "com.eanew.emiratesauction"
             versionNameSuffix "-Live"
@@ -99,6 +99,7 @@ dependencies { configuration ->
     setupKotlinCoroutines(configuration)
     setupKTX(configuration)
     setupHilt(configuration)
+    setupJetPackDataStore(configuration)
 }
 
 
@@ -170,4 +171,9 @@ private static setupNavigation(configuration) {
     configuration.implementation "android.arch.navigation:navigation-ui:$navigation_version"
     configuration.implementation "android.arch.navigation:navigation-fragment-ktx:$navigation_version"
     configuration.implementation "android.arch.navigation:navigation-ui-ktx:$navigation_version"
+}
+
+private static setupJetPackDataStore(configuration) {
+    def data_store_version = "1.0.0-alpha08"
+    configuration.implementation("androidx.datastore:datastore-preferences:$data_store_version")
 }
