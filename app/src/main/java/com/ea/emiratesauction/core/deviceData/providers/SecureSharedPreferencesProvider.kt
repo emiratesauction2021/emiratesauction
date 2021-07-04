@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.ea.emiratesauction.common.utils.BusinessConstants.Companion.SECURE_PREFERENCES_NAME
 import com.google.gson.Gson
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
@@ -15,17 +16,17 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
-* SecureSharedPreferencesProvider which use the jetpack dataStore as secure data
-* */
+ * SecureSharedPreferencesProvider which use the jetpack dataStore as secure data
+ * */
 class SecureSharedPreferencesProvider @Inject constructor(
     @ApplicationContext val context: Context
 ) : DataPersistenceProvider {
-    private val PREFERENCES_NAME = "preferences"
 
-    private val Context.dataStore by preferencesDataStore(
-        name = PREFERENCES_NAME
-    )
+    private val Context.dataStore by preferencesDataStore(name = SECURE_PREFERENCES_NAME)
 
+    /**
+    * All data will be saved as Json String
+    * */
     override fun save(key: String, obj: Any) {
         CoroutineScope(IO + Job()).launch {
             context.dataStore.edit { preferences ->
@@ -34,13 +35,12 @@ class SecureSharedPreferencesProvider @Inject constructor(
         }
     }
 
-    override suspend fun get(key: String) :Any?{
+    override suspend fun get(key: String): Any? {
         val counterKey = stringPreferencesKey(key)
         return context.dataStore.data.map {
             it[counterKey] ?: ""
         }.first()
     }
-
 
     override fun update(key: String, obj: Any) {
         save(key, obj)
@@ -49,14 +49,14 @@ class SecureSharedPreferencesProvider @Inject constructor(
     override fun delete(key: String) {
         CoroutineScope(IO + Job()).launch {
             context.dataStore.edit { preferences ->
-                preferences.remove(key =stringPreferencesKey(key) )
+                preferences.remove(key = stringPreferencesKey(key))
             }
         }
     }
 
     override fun clear() {
         CoroutineScope(IO + Job()).launch {
-            context.dataStore.edit {preferences->
+            context.dataStore.edit { preferences ->
                 preferences.clear()
             }
         }

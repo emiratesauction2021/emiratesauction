@@ -1,8 +1,12 @@
 package com.ea.emiratesauction.core.deviceData.manager
 
+import android.annotation.SuppressLint
+import android.util.Log
 import com.ea.emiratesauction.core.deviceData.providers.SecureSharedPreferencesProvider
 import com.ea.emiratesauction.core.deviceData.providers.SharedPreferencesProvider
 import com.google.gson.Gson
+import com.google.gson.JsonSyntaxException
+import java.lang.Exception
 import javax.inject.Inject
 
 
@@ -39,19 +43,26 @@ class DevicePersistenceManager @Inject constructor(
      *  this.get<String or Any class>
      * }
      * */
+    @SuppressLint("LogNotTimber")
     suspend inline fun <reified T : Any> get(key: String, type: PersistenceType): T? {
-        return when (type) {
-            PersistenceType.NORMAL -> {
-                val data = normalDataPersistence.get(key).toString()
-                ConvertType<T>()
-                    .convert(data, T::class.java)
+        try {
+            return when (type) {
+                PersistenceType.NORMAL -> {
+                    val data = normalDataPersistence.get(key).toString()
+                    ConvertType<T>()
+                        .convert(data, T::class.java)
+                }
+                PersistenceType.SECURE -> {
+                    val data = secureDataPersistence.get(key).toString()
+                    ConvertType<T>()
+                        .convert(data, T::class.java)
+                }
             }
-            PersistenceType.SECURE -> {
-                val data = secureDataPersistence.get(key).toString()
-                ConvertType<T>()
-                    .convert(data, T::class.java)
-            }
+        } catch (e: JsonSyntaxException) {
+            Log.e("TAG_GetData", "${e.message}")
+            return null
         }
+
     }
 
     /**

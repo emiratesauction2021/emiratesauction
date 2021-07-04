@@ -5,6 +5,9 @@ import com.ea.emiratesauction.core.common.base.ui.BaseActivity
 import com.ea.emiratesauction.core.common.base.ui.BaseFragment
 import com.ea.emiratesauction.core.deviceData.manager.DevicePersistenceManager
 import com.ea.emiratesauction.core.deviceData.manager.PersistenceType
+import com.ea.emiratesauction.core.logger.Emojis
+import com.ea.emiratesauction.core.logger.LogType
+import com.ea.emiratesauction.core.logger.printMessage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
@@ -47,6 +50,16 @@ class PopularPeopleListActivity : BaseActivity() {
                     // Whatever...
                 }.show()
         }
+        printMessage(
+            messageTxt = "${user}\n$str\n$strN\nNum = $num",
+            type = LogType.v,
+            tag = "MyCustomTag",
+            emojiUnicode = 0x1F525,
+            emoji = Emojis.Sad
+
+        )
+
+
     }
 
     private fun setData() {
