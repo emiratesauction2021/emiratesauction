@@ -8,6 +8,12 @@ import com.ea.emiratesauction.core.deviceData.manager.PersistenceType
 import com.ea.emiratesauction.core.logger.Emojis
 import com.ea.emiratesauction.core.logger.LogType
 import com.ea.emiratesauction.core.logger.printMessage
+import com.ea.emiratesauction.core.validation.rules.EmailValidatorRules
+import com.ea.emiratesauction.core.validation.results.ValidationResource
+import com.ea.emiratesauction.core.validation.manager.ValidationManager
+import com.ea.emiratesauction.core.validation.manager.ValidationStyle
+import com.ea.emiratesauction.core.validation.rules.NumericValidatorRules
+import com.ea.emiratesauction.core.validation.rules.StringsRules
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
@@ -21,6 +27,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class PopularPeopleListActivity : BaseActivity() {
 
+    @Inject lateinit var validationManager: ValidationManager
     @Inject lateinit var manager: DevicePersistenceManager
     override fun fragment(): BaseFragment {
 
@@ -29,6 +36,31 @@ class PopularPeopleListActivity : BaseActivity() {
             delay(1000)
             showData()
         }
+
+        val validationResult = validationManager.validate(
+            "test@", arrayListOf(
+                StringsRules(),
+                EmailValidatorRules(),
+                NumericValidatorRules()
+            ), ValidationStyle.Group
+        )
+//        printMessage(messageObj = (validationResult as ValidationResource.SingleResult).result)
+        printMessage(messageObj = (validationResult as ValidationResource.GroupResult).results)
+
+//        when (validationResult) {
+//            is GeneralValidationResult.GroupResult -> {
+//                printMessage(messageObj = validationResult.results)
+//            }
+//            is GeneralValidationResult.SingleResult -> {
+//                printMessage(messageObj = validationResult.result)
+//            }
+//            else -> {
+//                printMessage(messageObj = "Input Is Valid")
+//            }
+//
+//        }
+
+
         return PupularPeopleListFragment()
     }
 

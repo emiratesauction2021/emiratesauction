@@ -14,7 +14,6 @@ fun Any.printMessage(
 ) {
 
     val builder = StringBuilder()
-    builder.append("\n")
     val _tag = setTagStyle(tag, messageTxt, builder, messageObj)
 
     checkLoggerIsEmpty(builder)
@@ -63,7 +62,6 @@ private fun setDebugMessage(
         "-----------------${getEmoji(Emojis.Fire.unicode)}EmiratesAuction${getEmoji(Emojis.Fire.unicode)}-----------------: : "
     )
     Log.v(_tag, "   $builder ${getEmoji(emojiUnicode)}")
-    Log.v(_tag, "   $builder ${getEmoji(emoji.unicode)}")
     Log.v(
         _tag,
         "-----------------${getEmoji(Emojis.Fire.unicode)}EmiratesAuction${getEmoji(Emojis.Fire.unicode)}-----------------: : "
