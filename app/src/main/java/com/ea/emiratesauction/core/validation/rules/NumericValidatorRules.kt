@@ -1,6 +1,7 @@
 package com.ea.emiratesauction.core.validation.rules
 
 import com.ea.emiratesauction.core.validation.isNumeric
+import com.ea.emiratesauction.core.validation.results.RulesError
 import com.ea.emiratesauction.core.validation.results.ValidationResults
 
 /**
@@ -11,6 +12,6 @@ class NumericValidatorRules : ValidationRule {
         return if (input.isNumeric())
             ValidationResults.Valid
         else
-            ValidationResults.InValid("input is not numbers")
+            ValidationResults.InValid(RulesError.PasswordError)
     }
 }

@@ -1,5 +1,6 @@
 package com.ea.emiratesauction.core.validation.manager
 
+import com.ea.emiratesauction.core.validation.results.RulesError
 import com.ea.emiratesauction.core.validation.results.ValidationResource
 import com.ea.emiratesauction.core.validation.results.ValidationResults
 import com.ea.emiratesauction.core.validation.rules.ValidationRule
@@ -12,7 +13,8 @@ import javax.inject.Inject
  * Or
  * GroupResult {return all invalid cases result }
  * */
-class ValidationManager @Inject constructor() : ValidationManagerInterface {
+class ValidationManager @Inject constructor() :
+    ValidationManagerInterface<ValidationStyle, ValidationResource> {
 
     /**
      * @param input the entered value from editText
@@ -22,12 +24,12 @@ class ValidationManager @Inject constructor() : ValidationManagerInterface {
      *          Group  {return all invalid cases together GroupResult}
      * @return  GeneralValidationResult{Single or Group} based on the style
      **/
-    override fun validate(
+    override fun <s : ValidationStyle, v : ValidationResource> validate(
         input: String,
         rules: List<ValidationRule>,
         style: ValidationStyle
-    ): ValidationResource {
-        return getGeneralRes(input, rules, style)
+    ): v {
+        return getGeneralRes(input, rules, style) as v
     }
 
     /**
@@ -56,10 +58,10 @@ class ValidationManager @Inject constructor() : ValidationManagerInterface {
         rules: List<ValidationRule>,
         input: String
     ): ValidationResource {
-        val results = arrayListOf<String>()
+        val results = arrayListOf<RulesError>()
         rules.forEach { rule ->
             when (val res = rule.apply(input)) {
-                is ValidationResults.InValid -> results.add(res.error)
+                is ValidationResults.InValid -> results.add(res.en)
             }
         }
         return ValidationResource.GroupResult(
@@ -81,7 +83,7 @@ class ValidationManager @Inject constructor() : ValidationManagerInterface {
         rules.first { rule ->
             when (val res = rule.apply(input)) {
                 is ValidationResults.InValid -> {
-                    result = ValidationResource.SingleResult(res.error)
+                    result = ValidationResource.SingleResult(res.en)
                     true
                 }
                 else -> false
@@ -90,4 +92,6 @@ class ValidationManager @Inject constructor() : ValidationManagerInterface {
 
         return result
     }
+
+
 }

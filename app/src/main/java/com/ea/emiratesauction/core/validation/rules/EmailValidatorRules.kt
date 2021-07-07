@@ -2,6 +2,7 @@ package com.ea.emiratesauction.core.validation.rules
 
 import com.ea.emiratesauction.core.validation.results.ValidationResults
 import com.ea.emiratesauction.core.validation.isEmailFormValid
+import com.ea.emiratesauction.core.validation.results.RulesError
 
 /**
 * EmailValidatorRules which hold email validation cases and regex
@@ -11,7 +12,7 @@ class EmailValidatorRules : ValidationRule {
         return if (input.isEmailFormValid())
             ValidationResults.Valid
         else
-            ValidationResults.InValid("email is not valid")
+            ValidationResults.InValid(RulesError.EmailError)
 
     }
 }

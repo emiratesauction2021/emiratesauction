@@ -12,6 +12,8 @@ import com.ea.emiratesauction.core.validation.rules.EmailValidatorRules
 import com.ea.emiratesauction.core.validation.results.ValidationResource
 import com.ea.emiratesauction.core.validation.manager.ValidationManager
 import com.ea.emiratesauction.core.validation.manager.ValidationStyle
+import com.ea.emiratesauction.core.validation.results.RulesError
+import com.ea.emiratesauction.core.validation.results.ValidationResults
 import com.ea.emiratesauction.core.validation.rules.NumericValidatorRules
 import com.ea.emiratesauction.core.validation.rules.StringsRules
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,15 +39,28 @@ class PopularPeopleListActivity : BaseActivity() {
             showData()
         }
 
-        val validationResult = validationManager.validate(
-            "test@", arrayListOf(
-                StringsRules(),
-                EmailValidatorRules(),
-                NumericValidatorRules()
-            ), ValidationStyle.Group
-        )
+        val validationResult =
+            validationManager.validate<ValidationStyle.Group, ValidationResource.GroupResult>(
+                "test@", arrayListOf(
+                    StringsRules(),
+                    EmailValidatorRules(),
+                    NumericValidatorRules()
+                ), ValidationStyle.Group
+            )
+        val messages = arrayListOf<String>()
+        validationResult.results.map {
+            when (it) {
+                RulesError.EmailError -> {
+                    messages.add("Mail Invalid")
+                }
+                RulesError.PasswordError -> {
+                    messages.add("Password Invalid")
+                }
+            }
+        }
+        printMessage(messageObj = messages)
 //        printMessage(messageObj = (validationResult as ValidationResource.SingleResult).result)
-        printMessage(messageObj = (validationResult as ValidationResource.GroupResult).results)
+
 
 //        when (validationResult) {
 //            is GeneralValidationResult.GroupResult -> {

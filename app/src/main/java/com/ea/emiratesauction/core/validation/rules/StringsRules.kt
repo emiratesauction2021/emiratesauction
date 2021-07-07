@@ -1,6 +1,7 @@
 package com.ea.emiratesauction.core.validation.rules
 
 import com.ea.emiratesauction.core.validation.isInRange
+import com.ea.emiratesauction.core.validation.results.RulesError
 import com.ea.emiratesauction.core.validation.results.ValidationResults
 
 /**
@@ -11,6 +12,6 @@ class StringsRules : ValidationRule {
         return if (input.isInRange(10, 100))
             ValidationResults.Valid
         else
-            ValidationResults.InValid("input length not in range")
+            ValidationResults.InValid(RulesError.PasswordError)
     }
 }

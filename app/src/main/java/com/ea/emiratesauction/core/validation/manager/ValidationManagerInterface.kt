@@ -3,13 +3,13 @@ package com.ea.emiratesauction.core.validation.manager
 import com.ea.emiratesauction.core.validation.results.ValidationResource
 import com.ea.emiratesauction.core.validation.rules.ValidationRule
 
-interface ValidationManagerInterface {
+interface ValidationManagerInterface<in S : ValidationStyle, V : ValidationResource> {
 
-    fun validate(
+    fun<s:S,v:V> validate(
         input: String,
         rules: List<ValidationRule>,
         style: ValidationStyle
-    ): ValidationResource?
+    ): v
 
     fun getGeneralRes(
         input: String,

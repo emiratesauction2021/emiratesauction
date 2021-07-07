@@ -3,6 +3,7 @@ package com.ea.emiratesauction.core.validation
 import androidx.core.util.PatternsCompat
 import com.ea.emiratesauction.core.validation.InputsConstants.EMAIL_PATTERN
 import com.ea.emiratesauction.core.validation.InputsConstants.PASSWORD_PATTERN
+import com.ea.emiratesauction.core.validation.InputsConstants.PHONE_PATTERN
 import java.util.regex.Pattern
 
 /**
@@ -40,8 +41,29 @@ fun String.isEmailFormValid() = PatternsCompat.EMAIL_ADDRESS.matcher(this).match
  * */
 fun String.isWebUrlFormValid() = PatternsCompat.WEB_URL.matcher(this).matches()
 
+fun String.isNull() = this.isBlank()
+
+fun String.isEqual(st: String) = this == st
+
+fun String.isContains(value: String, start: Int, end: Int, isSensitive: Boolean = false): Boolean {
+    val length = this.length
+    if (end <= length) {
+        val subStr = this.substring(start, end) ?: ""
+        return subStr.contains(value, !isSensitive)
+    }
+    return false
+}
+
+fun String.isContains(str: String, isSensitive: Boolean = false) =
+    this.contains(str, isSensitive)
+
+
+fun String.isPhoneValid() = this.isPatternMatches(PHONE_PATTERN)
+
 object InputsConstants {
     const val PASSWORD_PATTERN = "[a-zA-Z0-9\\!\\@\\#\\$]{5,20}"
+    const val PHONE_PATTERN =
+        "^\\s*(?:\\+?(\\d{1,3}))?[-. (]*(\\d{3})[-. )]*(\\d{3})[-. ]*(\\d{4})(?: *x(\\d+))?\\s*\$\n"
     const val EMAIL_PATTERN =
         "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
                 "\\@" +
