@@ -12,6 +12,6 @@ class NumericValidatorRules : ValidationRule {
         return if (input.isNumeric())
             ValidationResults.Valid
         else
-            ValidationResults.InValid(RulesError.PasswordError)
+            ValidationResults.InValid(RulesError.NumericError)
     }
 }

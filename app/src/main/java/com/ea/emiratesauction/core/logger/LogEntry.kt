@@ -19,7 +19,6 @@ fun Any.printMessage(
     checkLoggerIsEmpty(builder)
 
     when (type) {
-
         LogType.v -> {
             setDebugMessage(_tag, builder, emojiUnicode, emoji)
         }
@@ -61,7 +60,7 @@ private fun setDebugMessage(
         _tag,
         "-----------------${getEmoji(Emojis.Fire.unicode)}EmiratesAuction${getEmoji(Emojis.Fire.unicode)}-----------------: : "
     )
-    Log.v(_tag, "   $builder ${getEmoji(emojiUnicode)}")
+    Log.v(_tag, "   $builder ${Emojis.Fire}")
     Log.v(
         _tag,
         "-----------------${getEmoji(Emojis.Fire.unicode)}EmiratesAuction${getEmoji(Emojis.Fire.unicode)}-----------------: : "

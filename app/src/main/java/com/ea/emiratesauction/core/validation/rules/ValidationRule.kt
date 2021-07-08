@@ -7,7 +7,7 @@ import com.ea.emiratesauction.core.validation.results.ValidationResults
 interface ValidationRule {
     /**
      * @param input {user input}
-     * @return ValidationResults which will be Valid or Invalid
+     * @return ValidationResult which will be Valid or Invalid
      * */
     fun apply(input: String): ValidationResults
 }

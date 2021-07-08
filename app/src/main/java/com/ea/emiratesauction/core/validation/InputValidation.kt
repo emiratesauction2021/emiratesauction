@@ -55,7 +55,7 @@ fun String.isContains(value: String, start: Int, end: Int, isSensitive: Boolean 
 }
 
 fun String.isContains(str: String, isSensitive: Boolean = false) =
-    this.contains(str, isSensitive)
+    this.contains(str, !isSensitive)
 
 
 fun String.isPhoneValid() = this.isPatternMatches(PHONE_PATTERN)

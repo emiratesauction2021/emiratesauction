@@ -12,6 +12,6 @@ class StringsRules : ValidationRule {
         return if (input.isInRange(10, 100))
             ValidationResults.Valid
         else
-            ValidationResults.InValid(RulesError.PasswordError)
+            ValidationResults.InValid(RulesError.StringsError)
     }
 }

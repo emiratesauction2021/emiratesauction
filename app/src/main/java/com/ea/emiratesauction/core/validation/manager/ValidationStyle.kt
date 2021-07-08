@@ -6,9 +6,9 @@ package com.ea.emiratesauction.core.validation.manager
  * */
 sealed class ValidationStyle {
     /**
-     * Single this type get first rule result in case of invalid input
+     * Ordered this type get first rule result in case of invalid input
      * */
-    object Single : ValidationStyle()
+    object Ordered : ValidationStyle()
 
     /**
      * Group this type get all results from the rules together

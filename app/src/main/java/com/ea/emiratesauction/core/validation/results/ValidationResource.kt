@@ -12,7 +12,7 @@ sealed class ValidationResource {
     /**
      * Get First Result for The First Invalid Rul
      * */
-    data class SingleResult(val result: RulesError) : ValidationResource()
+    data class OrderedResult(val result: RulesError) : ValidationResource()
 
     /**
      * Empty In Case Of Valid Result

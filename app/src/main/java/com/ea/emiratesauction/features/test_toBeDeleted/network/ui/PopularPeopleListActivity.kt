@@ -8,12 +8,11 @@ import com.ea.emiratesauction.core.deviceData.manager.PersistenceType
 import com.ea.emiratesauction.core.logger.Emojis
 import com.ea.emiratesauction.core.logger.LogType
 import com.ea.emiratesauction.core.logger.printMessage
-import com.ea.emiratesauction.core.validation.rules.EmailValidatorRules
-import com.ea.emiratesauction.core.validation.results.ValidationResource
 import com.ea.emiratesauction.core.validation.manager.ValidationManager
 import com.ea.emiratesauction.core.validation.manager.ValidationStyle
 import com.ea.emiratesauction.core.validation.results.RulesError
-import com.ea.emiratesauction.core.validation.results.ValidationResults
+import com.ea.emiratesauction.core.validation.results.ValidationResource
+import com.ea.emiratesauction.core.validation.rules.EmailValidatorRules
 import com.ea.emiratesauction.core.validation.rules.NumericValidatorRules
 import com.ea.emiratesauction.core.validation.rules.StringsRules
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,12 +38,37 @@ class PopularPeopleListActivity : BaseActivity() {
             showData()
         }
 
+        //validateInputWithGroupOfRules()
+        validateListOfInputsWithGroupOfRules()
+        validateInputWithGroupOfRules()
+//        printMessage(messageObj = (validationResult as ValidationResource.OrderedResult).result)
+
+
+//        when (validationResult) {
+//            is GeneralValidationResult.GroupResult -> {
+//                printMessage(messageObj = validationResult.results)
+//            }
+//            is GeneralValidationResult.OrderedResult -> {
+//                printMessage(messageObj = validationResult.result)
+//            }
+//            else -> {
+//                printMessage(messageObj = "Input Is Valid")
+//            }
+//
+//        }
+
+
+        return PupularPeopleListFragment()
+    }
+
+
+    private fun validateListOfInputsWithGroupOfRules() {
         val validationResult =
             validationManager.validate<ValidationStyle.Group, ValidationResource.GroupResult>(
-                "test@", arrayListOf(
-                    StringsRules(),
-                    EmailValidatorRules(),
-                    NumericValidatorRules()
+                arrayListOf(
+                    Pair("abc", StringsRules()),
+                    Pair("abc.com", EmailValidatorRules()),
+                    Pair("12t3", NumericValidatorRules())
                 ), ValidationStyle.Group
             )
         val messages = arrayListOf<String>()
@@ -56,27 +80,39 @@ class PopularPeopleListActivity : BaseActivity() {
                 RulesError.PasswordError -> {
                     messages.add("Password Invalid")
                 }
+
+                RulesError.NumericError -> {
+                    messages.add("number Invalid")
+                }
+                RulesError.StringsError -> {
+                    messages.add("string Invalid")
+                }else->{}
             }
         }
         printMessage(messageObj = messages)
-//        printMessage(messageObj = (validationResult as ValidationResource.SingleResult).result)
+    }
 
-
-//        when (validationResult) {
-//            is GeneralValidationResult.GroupResult -> {
-//                printMessage(messageObj = validationResult.results)
+    private fun validateInputWithGroupOfRules() {
+        val validationResult =
+            validationManager.validate<ValidationStyle.Ordered, ValidationResource.OrderedResult>(
+                "test@ss.com", arrayListOf(
+                    //StringsRules(),
+                   // NumericValidatorRules(),
+                    EmailValidatorRules()
+                ), ValidationStyle.Ordered
+            )
+        val messages = arrayListOf<String>()
+//        validationResult.results.map {
+//            when (it) {
+//                RulesError.EmailError -> {
+//                    messages.add("Mail Invalid")
+//                }
+//                RulesError.PasswordError -> {
+//                    messages.add("Password Invalid")
+//                }else->{}
 //            }
-//            is GeneralValidationResult.SingleResult -> {
-//                printMessage(messageObj = validationResult.result)
-//            }
-//            else -> {
-//                printMessage(messageObj = "Input Is Valid")
-//            }
-//
 //        }
-
-
-        return PupularPeopleListFragment()
+        printMessage(messageObj = validationResult.result)
     }
 
     private suspend fun showData() {
