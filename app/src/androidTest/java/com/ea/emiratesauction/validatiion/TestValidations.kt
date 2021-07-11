@@ -1,4 +1,4 @@
-package com.ea.emiratesauction
+package com.ea.emiratesauction.validatiion
 
 import com.ea.emiratesauction.core.validation.manager.ValidationManager
 import com.ea.emiratesauction.core.validation.manager.ValidationStyle
@@ -16,7 +16,7 @@ import org.junit.Test
 import javax.inject.Inject
 
 @HiltAndroidTest
-class TestRuleOne {
+class TestValidations {
 
     @get:Rule var hiltRule = HiltAndroidRule(this)
 

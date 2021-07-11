@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * SecureSharedPreferencesProvider which use the jetpack dataStore as secure data
@@ -21,8 +22,6 @@ import javax.inject.Inject
 class SecureSharedPreferencesProvider @Inject constructor(
     @ApplicationContext val context: Context
 ) : DataPersistenceProvider {
-
-    private val Context.dataStore by preferencesDataStore(name = SECURE_PREFERENCES_NAME)
 
     /**
     * All data will be saved as Json String
@@ -62,3 +61,4 @@ class SecureSharedPreferencesProvider @Inject constructor(
         }
     }
 }
+private val Context.dataStore by preferencesDataStore(name = SECURE_PREFERENCES_NAME)

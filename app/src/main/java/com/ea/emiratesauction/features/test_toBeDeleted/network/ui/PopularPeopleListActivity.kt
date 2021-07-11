@@ -89,7 +89,7 @@ class PopularPeopleListActivity : BaseActivity() {
                 }else->{}
             }
         }
-        printMessage(messageObj = messages)
+        printMessage(message = messages)
     }
 
     private fun validateInputWithGroupOfRules() {
@@ -112,7 +112,7 @@ class PopularPeopleListActivity : BaseActivity() {
 //                }else->{}
 //            }
 //        }
-        printMessage(messageObj = validationResult.result)
+        printMessage(message = validationResult.result)
     }
 
     private suspend fun showData() {
@@ -134,7 +134,7 @@ class PopularPeopleListActivity : BaseActivity() {
                 }.show()
         }
         printMessage(
-            messageTxt = "${user}\n$str\n$strN\nNum = $num",
+            message = "${user}\n$str\n$strN\nNum = $num",
             type = LogType.v,
             tag = "MyCustomTag",
             emojiUnicode = 0x1F525,
