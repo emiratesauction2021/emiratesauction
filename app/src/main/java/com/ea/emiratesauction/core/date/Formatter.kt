@@ -5,30 +5,40 @@ import org.joda.time.DateTimeZone
 import org.joda.time.chrono.ISOChronology
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.format.DateTimeFormatter
-import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class Formatter {
     fun getFormattedDate(
         date: String,
         toFormat: String,
-        local: Locale =  Locale("ar")
+        local: Locale =  Locale.ENGLISH
 
     ): String? {
 
-            list.forEach { fromFormat ->
-                try {
-                    var df = SimpleDateFormat(fromFormat)
-                    val newDate = df.parse(date)
+        list.forEach { fromFormat ->
+            try {
+                var df = SimpleDateFormat(fromFormat)
+                val newDate = df.parse(date)
 
-                    df = SimpleDateFormat(toFormat, Locale.ENGLISH)
-                    return df.format(newDate)
-                }catch (e:Exception){ }
+                df = SimpleDateFormat(toFormat, local)
+                return df.format(newDate)
+            }catch (e:Exception){ }
 
-            }
+        }
 
         return ""
+    }
+
+    fun getFormattedDate(
+        date: ASDate,
+        toFormat: String = "yyyy-MM-dd",
+        local: Locale =  Locale("ar")
+
+    ): String? {
+        val df = SimpleDateFormat(toFormat, Locale.US)
+        return df.format(Date(date.getTime))
     }
 
 val to = "yyyy.MM.dd G 'at' HH:mm:ss z"
@@ -57,7 +67,7 @@ val TAG = "TAGTAG"
                         var df = SimpleDateFormat(f1)
                         val newDate = df.parse(date)
 
-                        df = SimpleDateFormat(fromFormat, Locale("ar"))
+                        df = SimpleDateFormat(fromFormat)
 
                         Log.d(TAG, ": ${df.format(newDate)}")
 
@@ -65,15 +75,6 @@ val TAG = "TAGTAG"
 
             }
         }
-
-
-
-
-//
-//        Log.d(TAG, ": $v1")
-//        Log.d(TAG, ": $v2")
-//        Log.d(TAG, ": $v3")
-
 
         testLib()
     }
@@ -85,7 +86,61 @@ val TAG = "TAGTAG"
             .withLocale(Locale.US)
             .withChronology(ISOChronology.getInstance())
 
+       for (i in 0 until(100)){
+//           val v = getFormattedDate(ASDate.LongDate(Calendar.getInstance().timeInMillis))
+//           val v = getFormattedDate(ASDate.StringDate("28-10-1990", "dd-MM-yyyy"))
+//           val v = getFormattedDate(ASDate.Date(Date()))
+           val v = getFormattedDate(ASDate.StringBuilderDate(
+               listOf(
+                   DayStyle.zeroPaddedNumber,
+                   Separator.dash,
+                   MonthStyle.zeroPaddedNumber,
+                   Separator.dash,
+                   YearStyle.fourDigits
+               )
+               ,"28-10-1990"))
+           Log.d(TAG, "testLibtestLib:$i $v")
+       }
 
+    }
+
+
+    sealed class ASDate{
+        abstract var getTime: Long
+        class Date(val date: java.util.Date): ASDate(){
+           override var getTime: Long = date.time
+        }
+        class LongDate(date: Long): ASDate(){
+            override var getTime: Long = date
+        }
+        class StringDate(val date: String, val fromFormat: String): ASDate(){
+            override var getTime: Long = 0
+            get() {
+                    try {
+                        var df = SimpleDateFormat(fromFormat)
+                        val newDate = df.parse(date)
+
+                        return newDate.time
+                    }catch (e:Exception){ }
+
+                return 0
+            }
+        }
+        class StringBuilderDate(val formateList: List<ASDateStyleProtocol>, val date: String): ASDate(){
+            override var getTime: Long = 0
+            get() {
+
+                val formate = formateList.joinToString(
+                    transform = { it.value },
+                    separator = ""
+                )
+
+                var df = SimpleDateFormat(formate)
+                val newDate = df.parse(date)
+                return newDate.time
+
+            }
+        }
     }
 
 
@@ -93,6 +148,10 @@ val TAG = "TAGTAG"
 
 val list by lazy {
     listOf(
+        "yyyy-MM-dd'T'HH:mm:ss",
+        "dd MMMM yyyy",
+        "yyyyMMdd_HHmmss",
+        "yyyy-MM-dd hh:mm:ss z",
         "EEE, d MMM yyyy HH:mm:ss Z",
         "EEE, MMM d, ''yy",
         "yyyy-MM-dd'T'HH:mm:ssZZZZZ",
@@ -103,11 +162,11 @@ val list by lazy {
         "yyyy-MM-dd HH:mm:ss",
         "dd-MM-yyyy HH:mm:ss",
         "yyyy-MM-dd HH:mm",
-        "yyyy-MM-dd",
         "h:mm:ss A",
         "h:mm A",
         "dd-MM-yyyy",
         "MM-dd-yyyy",
+        "yyyy-MM-dd",
         "MMMM d, yyyy",
         "MMMM d, yyyy LT",
         "dddd, MMMM D, yyyy LT",
