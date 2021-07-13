@@ -5,8 +5,8 @@ import android.util.Log
 import com.ea.emiratesauction.core.common.base.ui.BaseActivity
 import com.ea.emiratesauction.core.common.base.ui.BaseFragment
 import com.ea.emiratesauction.core.date.date_format.ASDate
-import com.ea.emiratesauction.core.date.fate_formatter.DateFormatterInterface
-import com.ea.emiratesauction.core.date.fate_formatter.Formatter
+import com.ea.emiratesauction.core.date.date_formatter.DateFormatterInterface
+import com.ea.emiratesauction.core.date.date_formatter.Formatter
 import com.ea.emiratesauction.core.date.style.*
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*

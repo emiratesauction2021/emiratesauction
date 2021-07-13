@@ -1,4 +1,4 @@
-package com.ea.emiratesauction.core.date.fate_formatter
+package com.ea.emiratesauction.core.date.date_formatter
 
 import android.util.Log
 import com.ea.emiratesauction.core.date.date_format.ASDate
@@ -28,7 +28,7 @@ class Formatter: DateFormatterInterface {
     }
 
     override fun isBefore(date1: ASDate, date2: ASDate): Boolean {
-        return date1.getTimeInMS > date2.getTimeInMS
+        return date1.getTimeInMS < date2.getTimeInMS
     }
 
     override fun isBetween(date1: ASDate, date2: ASDate, date3: ASDate): Boolean {

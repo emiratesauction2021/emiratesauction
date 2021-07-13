@@ -1,4 +1,4 @@
-package com.ea.emiratesauction.core.date.fate_formatter
+package com.ea.emiratesauction.core.date.date_formatter
 
 import com.ea.emiratesauction.core.date.date_format.ASDate
 import java.util.*
