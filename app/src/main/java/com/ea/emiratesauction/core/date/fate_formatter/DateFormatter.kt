@@ -1,80 +1,45 @@
-package com.ea.emiratesauction.core.date
+package com.ea.emiratesauction.core.date.fate_formatter
 
 import android.util.Log
+import com.ea.emiratesauction.core.date.date_format.ASDate
+import com.ea.emiratesauction.core.date.style.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class Formatter {
-    fun getFormattedDate(
-        date: String,
-        toFormat: String,
-        local: Locale =  Locale.ENGLISH
+class Formatter: DateFormatterInterface {
+    val TAG = "TAGTAG"
 
-    ): String? {
-
-        list.forEach { fromFormat ->
-            try {
-                var df = SimpleDateFormat(fromFormat)
-                val newDate = df.parse(date)
-
-                df = SimpleDateFormat(toFormat, local)
-                return df.format(newDate)
-            }catch (e:Exception){ }
-
-        }
-
-        return ""
-    }
-
-    fun getFormattedDate(
+    override fun getFormattedDate(
         date: ASDate,
-        toFormat: String = "yyyy-MM-dd",
-        local: Locale =  Locale.US
+        toFormat: String, // TODO: 7/13/2021 add to enum
+        local: Locale
 
     ): String? {
         val df = SimpleDateFormat(toFormat, local)
-        return df.format(Date(date.getTimeInMS))
+        return df.format(date.getDateValue())
     }
 
-val to = "yyyy.MM.dd G 'at' HH:mm:ss z"
-val TAG = "TAGTAG"
+    override fun getDate(date: ASDate): Date {
+        return date.getDateValue()
+    }
+
+    override fun isAfter(date1: ASDate, date2: ASDate): Boolean {
+        return date1.getTimeInMS > date2.getTimeInMS
+    }
+
+    override fun isBefore(date1: ASDate, date2: ASDate): Boolean {
+        return date1.getTimeInMS > date2.getTimeInMS
+    }
+
+    override fun isBetween(date1: ASDate, date2: ASDate, date3: ASDate): Boolean {
+        return date1.getTimeInMS < date2.getTimeInMS && date2.getTimeInMS > date3.getTimeInMS
+    }
+
     init {
-        val v1 = getFormattedDate(
-            "Wed, Jul 4, '01",
-            "yyyy.MM.dd G 'at' HH:mm:ss z"
-        )
-
-        val v2 = getFormattedDate(
-            "02001.July.04 AD 12:08 PM",
-            "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"
-        )
-
-
-     val v3 = getFormattedDate(
-            "Wed, 4 Jul 2001 12:08:56 -0700",
-            "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"
-        )
-
-        list.forEach {f1->
-            val date = "Wed, 4 Jul 2001 12:08:56 -0700"
-                list.forEach { fromFormat ->
-                    try {
-                        var df = SimpleDateFormat(f1)
-                        val newDate = df.parse(date)
-
-                        df = SimpleDateFormat(fromFormat)
-
-                        Log.d(TAG, ": ${df.format(newDate)}")
-
-                    }catch (e:Exception){ }
-
-            }
-        }
-
         testLib()
     }
 
-    private fun testLib() {
+    private  fun testLib() {
 //           val v = getFormattedDate(ASDate.LongDate(Calendar.getInstance().timeInMillis))
 //           val v = getFormattedDate(ASDate.StringDate("28-10-1990", "dd-MM-yyyy"))
 //           val v = getFormattedDate(ASDate.Date(Date()))

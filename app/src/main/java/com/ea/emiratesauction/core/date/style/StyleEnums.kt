@@ -1,10 +1,6 @@
-package com.ea.emiratesauction.core.date
+package com.ea.emiratesauction.core.date.style
 
-interface ASDateStyleInterface{
-    var value: String
-}
-
-enum class DayStyle (rawValue: String): ASDateStyleInterface{
+enum class DayStyle (rawValue: String): ASDateStyleInterface {
 
     /// The day of the month. A single d will use 1 for January 1st. example 1
     number ("d"),
@@ -31,7 +27,7 @@ enum class DayStyle (rawValue: String): ASDateStyleInterface{
 
 }
 
-enum class HourStyle(rawValue: String): ASDateStyleInterface{
+enum class HourStyle(rawValue: String): ASDateStyleInterface {
 
     /// The 12-hour hour. example 4
     twelveHour("h"),
@@ -51,7 +47,7 @@ enum class HourStyle(rawValue: String): ASDateStyleInterface{
     override var value: String = rawValue
 }
 
-enum class MinuteStyle(rawValue: String): ASDateStyleInterface{
+enum class MinuteStyle(rawValue: String): ASDateStyleInterface {
 
     /// The minute, with no padding for zeroes. example 5
     number("m"),
@@ -62,7 +58,7 @@ enum class MinuteStyle(rawValue: String): ASDateStyleInterface{
     override var value: String = rawValue
 }
 
-enum class MonthStyle(rawValue: String): ASDateStyleInterface{
+enum class MonthStyle(rawValue: String): ASDateStyleInterface {
 
     /// The numeric month of the year. A single M will use '1' for January.
     number("M"),
@@ -83,7 +79,7 @@ enum class MonthStyle(rawValue: String): ASDateStyleInterface{
 }
 
 
-enum class QuarterStyle(rawValue: String): ASDateStyleInterface{
+enum class QuarterStyle(rawValue: String): ASDateStyleInterface {
 
     /// The quarter of the year. example 4
     number("Q"),

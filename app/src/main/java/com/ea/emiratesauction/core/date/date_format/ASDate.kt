@@ -1,11 +1,11 @@
-package com.ea.emiratesauction.core.date
+package com.ea.emiratesauction.core.date.date_format
 
+import com.ea.emiratesauction.core.date.style.ASDateStyleInterface
 import java.text.SimpleDateFormat
 import java.util.*
 
-sealed class ASDate {
-    abstract var getTimeInMS: Long
-    abstract fun getDateValue(): java.util.Date
+
+sealed class ASDate : ASDateInterface{
 
     class Date(val date: java.util.Date) : ASDate() {
         override var getTimeInMS: Long = date.time
