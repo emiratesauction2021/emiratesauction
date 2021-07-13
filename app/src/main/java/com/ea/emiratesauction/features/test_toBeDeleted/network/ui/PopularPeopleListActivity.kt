@@ -7,7 +7,8 @@ import com.ea.emiratesauction.core.deviceData.manager.DevicePersistenceManager
 import com.ea.emiratesauction.core.deviceData.manager.PersistenceType
 import com.ea.emiratesauction.core.logger.Emojis
 import com.ea.emiratesauction.core.logger.LogType
-import com.ea.emiratesauction.core.logger.printMessage
+import com.ea.emiratesauction.core.logger.LoggingManager
+import com.ea.emiratesauction.core.logger.log
 import com.ea.emiratesauction.core.validation.manager.ValidationManager
 import com.ea.emiratesauction.core.validation.manager.ValidationStyle
 import com.ea.emiratesauction.core.validation.results.RulesError
@@ -89,7 +90,7 @@ class PopularPeopleListActivity : BaseActivity() {
                 }else->{}
             }
         }
-        printMessage(message = messages)
+        log.debug(message = messages)
     }
 
     private fun validateInputWithGroupOfRules() {
@@ -112,7 +113,7 @@ class PopularPeopleListActivity : BaseActivity() {
 //                }else->{}
 //            }
 //        }
-        printMessage(message = validationResult.result)
+        log.debug(message = validationResult.result)
     }
 
     private suspend fun showData() {
@@ -133,9 +134,8 @@ class PopularPeopleListActivity : BaseActivity() {
                     // Whatever...
                 }.show()
         }
-        printMessage(
+        log.debug(
             message = "${user}\n$str\n$strN\nNum = $num",
-            type = LogType.v,
             tag = "MyCustomTag",
             emojiUnicode = 0x1F525,
             emoji = Emojis.Sad

@@ -1,5 +1,6 @@
 package com.ea.emiratesauction.validatiion
 
+import com.ea.emiratesauction.BaseHiltTest
 import com.ea.emiratesauction.core.validation.manager.ValidationManager
 import com.ea.emiratesauction.core.validation.manager.ValidationStyle
 import com.ea.emiratesauction.core.validation.results.RulesError
@@ -16,16 +17,9 @@ import org.junit.Test
 import javax.inject.Inject
 
 @HiltAndroidTest
-class TestValidations {
-
-    @get:Rule var hiltRule = HiltAndroidRule(this)
-
+class TestValidations :BaseHiltTest(){
     @Inject lateinit var manager: ValidationManager
 
-    @Before
-    fun init() {
-        hiltRule.inject()
-    }
 
     @Test
     fun validationGroupOfInputsWithInvalidResults() {

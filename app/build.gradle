@@ -114,17 +114,17 @@ private static setupUnitTest(configuration) {
 }
 
 private static setupHilt(configuration) {
-    configuration.implementation 'com.google.dagger:hilt-android:2.28.1-alpha'
+    configuration.implementation 'com.google.dagger:hilt-android:2.35.1'
     configuration.implementation "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha01"
-    configuration.kapt 'com.google.dagger:hilt-android-compiler:2.28.1-alpha'
+    configuration.kapt 'com.google.dagger:hilt-android-compiler:2.35.1'
     configuration.kapt 'androidx.hilt:hilt-compiler:1.0.0-alpha01'
     //Timber
     configuration.implementation 'com.jakewharton.timber:timber:4.7.1'
-    configuration.testImplementation("com.google.dagger:hilt-android-testing:2.28.1-alpha")
-    configuration.kaptTest("com.google.dagger:hilt-android-compiler:2.28.1-alpha")
-    configuration.testAnnotationProcessor("com.google.dagger:hilt-android-compiler:2.28.1-alpha")
-    configuration.androidTestImplementation("com.google.dagger:hilt-android-testing:2.28.1-alpha")
-    configuration.kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.28.1-alpha")
+    configuration.testImplementation("com.google.dagger:hilt-android-testing:2.35.1")
+    configuration.kaptTest("com.google.dagger:hilt-android-compiler:2.35.1")
+    configuration.testAnnotationProcessor("com.google.dagger:hilt-android-compiler:2.35.1")
+    configuration.androidTestImplementation("com.google.dagger:hilt-android-testing:2.35.1")
+    configuration.kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.35.1")
 
 }
 

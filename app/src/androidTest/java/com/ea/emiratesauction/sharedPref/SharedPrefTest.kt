@@ -1,5 +1,6 @@
 package com.ea.emiratesauction.sharedPref
 
+import com.ea.emiratesauction.BaseHiltTest
 import com.ea.emiratesauction.core.deviceData.manager.DevicePersistenceManager
 import com.ea.emiratesauction.core.deviceData.manager.PersistenceType
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -15,16 +16,10 @@ import org.junit.Rule
 import org.junit.Test
 import javax.inject.Inject
 @HiltAndroidTest
-class SharedPrefTest {
+class SharedPrefTest :BaseHiltTest(){
     @Inject lateinit var manager: DevicePersistenceManager
 
-    @get:Rule var hiltRule = HiltAndroidRule(this)
 
-
-    @Before
-    fun init() {
-        hiltRule.inject()
-    }
 
     @Test
     fun normal_shared_pref_data_save_normal_object_data() = runBlocking(IO + Job()) {
