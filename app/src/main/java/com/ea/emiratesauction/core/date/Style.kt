@@ -1,10 +1,10 @@
 package com.ea.emiratesauction.core.date
 
-interface ASDateStyleProtocol{
+interface ASDateStyleInterface{
     var value: String
 }
 
-enum class DayStyle (rawValue: String): ASDateStyleProtocol{
+enum class DayStyle (rawValue: String): ASDateStyleInterface{
 
     /// The day of the month. A single d will use 1 for January 1st. example 1
     number ("d"),
@@ -31,7 +31,7 @@ enum class DayStyle (rawValue: String): ASDateStyleProtocol{
 
 }
 
-enum class HourStyle(rawValue: String): ASDateStyleProtocol{
+enum class HourStyle(rawValue: String): ASDateStyleInterface{
 
     /// The 12-hour hour. example 4
     twelveHour("h"),
@@ -51,7 +51,7 @@ enum class HourStyle(rawValue: String): ASDateStyleProtocol{
     override var value: String = rawValue
 }
 
-enum class MinuteStyle(rawValue: String): ASDateStyleProtocol{
+enum class MinuteStyle(rawValue: String): ASDateStyleInterface{
 
     /// The minute, with no padding for zeroes. example 5
     number("m"),
@@ -62,7 +62,7 @@ enum class MinuteStyle(rawValue: String): ASDateStyleProtocol{
     override var value: String = rawValue
 }
 
-enum class MonthStyle(rawValue: String): ASDateStyleProtocol{
+enum class MonthStyle(rawValue: String): ASDateStyleInterface{
 
     /// The numeric month of the year. A single M will use '1' for January.
     number("M"),
@@ -83,7 +83,7 @@ enum class MonthStyle(rawValue: String): ASDateStyleProtocol{
 }
 
 
-enum class QuarterStyle(rawValue: String): ASDateStyleProtocol{
+enum class QuarterStyle(rawValue: String): ASDateStyleInterface{
 
     /// The quarter of the year. example 4
     number("Q"),
@@ -102,7 +102,7 @@ enum class QuarterStyle(rawValue: String): ASDateStyleProtocol{
 
 
 
-enum class SecondStyle(rawValue: String): ASDateStyleProtocol {
+enum class SecondStyle(rawValue: String): ASDateStyleInterface {
 
     /// The seconds, with no padding for zeroes. example 1
     number("s"),
@@ -117,7 +117,7 @@ enum class SecondStyle(rawValue: String): ASDateStyleProtocol {
 
 }
 
-enum class Separator(rawValue: String): ASDateStyleProtocol {
+enum class Separator(rawValue: String): ASDateStyleInterface {
 
     /// dash separator  `-`
     dash("-"),
@@ -134,7 +134,7 @@ enum class Separator(rawValue: String): ASDateStyleProtocol {
     override var value: String = rawValue
 }
 
-enum class TimeZoneStyle(rawValue: String): ASDateStyleProtocol {
+enum class TimeZoneStyle(rawValue: String): ASDateStyleInterface {
 
     /// The 3 letter name of the time zone. Falls back to GMT-08:00 (hour offset) if the name is not known. example CST
     threeLetterName("zzz"),
@@ -155,7 +155,7 @@ enum class TimeZoneStyle(rawValue: String): ASDateStyleProtocol {
 }
 
 
-enum class YearStyle(rawValue: String): ASDateStyleProtocol {
+enum class YearStyle(rawValue: String): ASDateStyleInterface {
     /// Year, no padding. example 2008
     noPadding("y"),
 
@@ -167,3 +167,5 @@ enum class YearStyle(rawValue: String): ASDateStyleProtocol {
 
     override var value: String = rawValue
 }
+
+data class CustomStyle(override var value: String): ASDateStyleInterface

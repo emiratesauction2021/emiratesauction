@@ -1,13 +1,8 @@
 package com.ea.emiratesauction.core.date
 
 import android.util.Log
-import org.joda.time.DateTimeZone
-import org.joda.time.chrono.ISOChronology
-import org.joda.time.format.DateTimeFormat
-import org.joda.time.format.DateTimeFormatter
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class Formatter {
     fun getFormattedDate(
@@ -34,11 +29,11 @@ class Formatter {
     fun getFormattedDate(
         date: ASDate,
         toFormat: String = "yyyy-MM-dd",
-        local: Locale =  Locale("ar")
+        local: Locale =  Locale.US
 
     ): String? {
-        val df = SimpleDateFormat(toFormat, Locale.US)
-        return df.format(Date(date.getTime))
+        val df = SimpleDateFormat(toFormat, local)
+        return df.format(Date(date.getTimeInMS))
     }
 
 val to = "yyyy.MM.dd G 'at' HH:mm:ss z"
@@ -80,68 +75,26 @@ val TAG = "TAGTAG"
     }
 
     private fun testLib() {
-        val rfc3339Formatter1: DateTimeFormatter = DateTimeFormat
-            .forPattern("yyyy'-'MM'-'dd'T'HH':'mm':'ss.SSSZ") //                                                        .withZone(DateTimeZone.getDefault())
-            .withZone(DateTimeZone.UTC)
-            .withLocale(Locale.US)
-            .withChronology(ISOChronology.getInstance())
-
-       for (i in 0 until(100)){
 //           val v = getFormattedDate(ASDate.LongDate(Calendar.getInstance().timeInMillis))
 //           val v = getFormattedDate(ASDate.StringDate("28-10-1990", "dd-MM-yyyy"))
 //           val v = getFormattedDate(ASDate.Date(Date()))
-           val v = getFormattedDate(ASDate.StringBuilderDate(
-               listOf(
-                   DayStyle.zeroPaddedNumber,
-                   Separator.dash,
-                   MonthStyle.zeroPaddedNumber,
-                   Separator.dash,
-                   YearStyle.fourDigits
-               )
-               ,"28-10-1990"))
-           Log.d(TAG, "testLibtestLib:$i $v")
-       }
+        val v = getFormattedDate(
+            ASDate.StringBuilderDate(
+                listOf(
+                    MonthStyle.zeroPaddedNumber,
+                    Separator.dash,
+                    DayStyle.zeroPaddedNumber,
+                    CustomStyle("-"), // same as @Separator.dash
+                    YearStyle.fourDigits
+                ), "10-28-1990"
+            )
+        )
+
+        Log.d(TAG, "testLibtestLib: $v")
 
     }
 
 
-    sealed class ASDate{
-        abstract var getTime: Long
-        class Date(val date: java.util.Date): ASDate(){
-           override var getTime: Long = date.time
-        }
-        class LongDate(date: Long): ASDate(){
-            override var getTime: Long = date
-        }
-        class StringDate(val date: String, val fromFormat: String): ASDate(){
-            override var getTime: Long = 0
-            get() {
-                    try {
-                        var df = SimpleDateFormat(fromFormat)
-                        val newDate = df.parse(date)
-
-                        return newDate.time
-                    }catch (e:Exception){ }
-
-                return 0
-            }
-        }
-        class StringBuilderDate(val formateList: List<ASDateStyleProtocol>, val date: String): ASDate(){
-            override var getTime: Long = 0
-            get() {
-
-                val formate = formateList.joinToString(
-                    transform = { it.value },
-                    separator = ""
-                )
-
-                var df = SimpleDateFormat(formate)
-                val newDate = df.parse(date)
-                return newDate.time
-
-            }
-        }
-    }
 
 
 }
