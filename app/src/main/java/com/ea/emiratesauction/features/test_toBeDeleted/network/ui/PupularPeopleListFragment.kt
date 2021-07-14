@@ -33,7 +33,6 @@ class PupularPeopleListFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         TestSucBtn.setOnClickListener {
             viewModel.getPopularPeopleList("asdasd")
-            log.error("${5/0}")
         }
 
         TestfailBtn.setOnClickListener {
