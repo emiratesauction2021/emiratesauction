@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ea.emiratesauction">
+
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!--
+     By default, Crashlytics automatically collects crash reports for all your app's users.
+     To give users more control over the data they send, you can enable opt-in reporting by
+     disabling automatic reporting and only sending data to Crashlytics
+    -->
+    <meta-data
+        android:name="firebase_crashlytics_collection_enabled"
+        android:value="false" />
 
     <application
         android:allowBackup="true"
@@ -11,14 +24,37 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EmiratesAuctionV2">
-        <activity android:name="com.ea.emiratesauction.features.test_toBeDeleted.network.ui.PopularPeopleListActivity">
+        <activity android:name=".features.test_toBeDeleted.deeplinks.DeepLinkActivityTestTwo"></activity>
+        <activity android:name=".features.test_toBeDeleted.deeplinks.DeepLinkActivityTestOne" />
+        <activity android:name=".features.test_toBeDeleted.network.ui.PopularPeopleListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "http://www.example.com/gizmos” -->
+                <data
+                    android:host="www.example.com"
+                    android:pathPrefix="/go"
+                    android:scheme="http" />
+                <data
+                    android:host="www.example.com"
+                    android:pathPrefix="/go"
+                    android:scheme="https" />
+                <data
+                    android:host="www.example.com"
+                    android:pathPrefix="/"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
 
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
     </application>
 
 </manifest>

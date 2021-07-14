@@ -1,6 +1,9 @@
 package com.ea.emiratesauction.features.test_toBeDeleted.network.ui
 
+import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import com.ea.emiratesauction.R
 import com.ea.emiratesauction.core.common.base.ui.BaseActivity
 import com.ea.emiratesauction.core.common.base.ui.BaseFragment
 import com.ea.emiratesauction.core.deviceData.manager.DevicePersistenceManager
@@ -16,6 +19,7 @@ import com.ea.emiratesauction.core.validation.results.ValidationResource
 import com.ea.emiratesauction.core.validation.rules.EmailValidatorRules
 import com.ea.emiratesauction.core.validation.rules.NumericValidatorRules
 import com.ea.emiratesauction.core.validation.rules.StringsRules
+import com.ea.emiratesauction.features.test_toBeDeleted.network.viewmodel.PupularPeopleListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
@@ -29,10 +33,15 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class PopularPeopleListActivity : BaseActivity() {
 
-    @Inject lateinit var validationManager: ValidationManager
-    @Inject lateinit var manager: DevicePersistenceManager
-    override fun fragment(): BaseFragment {
 
+    private val viewModel: PupularPeopleListViewModel by viewModels()
+    override fun layoutId(): Int {
+        return R.layout.activity_base
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setViewModel(viewModel)
         GlobalScope.launch(IO) {
             setData()
             delay(1000)
@@ -42,22 +51,11 @@ class PopularPeopleListActivity : BaseActivity() {
         //validateInputWithGroupOfRules()
         validateListOfInputsWithGroupOfRules()
         validateInputWithGroupOfRules()
-//        printMessage(messageObj = (validationResult as ValidationResource.OrderedResult).result)
 
-
-//        when (validationResult) {
-//            is GeneralValidationResult.GroupResult -> {
-//                printMessage(messageObj = validationResult.results)
-//            }
-//            is GeneralValidationResult.OrderedResult -> {
-//                printMessage(messageObj = validationResult.result)
-//            }
-//            else -> {
-//                printMessage(messageObj = "Input Is Valid")
-//            }
-//
-//        }
-
+    }
+    @Inject lateinit var validationManager: ValidationManager
+    @Inject lateinit var manager: DevicePersistenceManager
+    fun fragment(): BaseFragment {
 
         return PupularPeopleListFragment()
     }
@@ -87,7 +85,9 @@ class PopularPeopleListActivity : BaseActivity() {
                 }
                 RulesError.StringsError -> {
                     messages.add("string Invalid")
-                }else->{}
+                }
+                else -> {
+                }
             }
         }
         log.debug(message = messages)
@@ -98,7 +98,7 @@ class PopularPeopleListActivity : BaseActivity() {
             validationManager.validate<ValidationStyle.Ordered, ValidationResource.OrderedResult>(
                 "test@ss.com", arrayListOf(
                     //StringsRules(),
-                   // NumericValidatorRules(),
+                    // NumericValidatorRules(),
                     EmailValidatorRules()
                 ), ValidationStyle.Ordered
             )
@@ -153,4 +153,9 @@ class PopularPeopleListActivity : BaseActivity() {
     }
 
     data class User(val id: Int = 5, val name: String = "EmiratesAuction")
+
+
+    override fun onRetry() {
+
+    }
 }

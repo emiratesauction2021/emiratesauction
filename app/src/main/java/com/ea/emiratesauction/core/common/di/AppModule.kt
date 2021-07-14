@@ -1,5 +1,8 @@
 package com.ea.emiratesauction.core.common.di
 
+import com.ea.emiratesauction.core.crashlytics.provider.CrashReportClientInterface
+import com.ea.emiratesauction.core.crashlytics.client.InstaBugClient
+import com.ea.emiratesauction.core.crashlytics.manager.CrashesReportingManager
 import android.content.Context
 import android.content.SharedPreferences
 import com.ea.emiratesauction.common.utils.BusinessConstants.Companion.EA_SHARED_PREFERENCE
