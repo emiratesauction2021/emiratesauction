@@ -1,69 +1,156 @@
 package com.ea.emiratesauction.features.test_toBeDeleted.network.ui
 
-
-import android.annotation.TargetApi
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
-import android.os.Build
-import android.os.Bundle
-import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
-import com.ea.emiratesauction.R
+import androidx.appcompat.app.AlertDialog
 import com.ea.emiratesauction.core.common.base.ui.BaseActivity
-import com.ea.emiratesauction.features.test_toBeDeleted.network.viewmodel.PupularPeopleListViewModel
+import com.ea.emiratesauction.core.common.base.ui.BaseFragment
+import com.ea.emiratesauction.core.deviceData.manager.DevicePersistenceManager
+import com.ea.emiratesauction.core.deviceData.manager.PersistenceType
+import com.ea.emiratesauction.core.logger.Emojis
+import com.ea.emiratesauction.core.logger.LogType
+import com.ea.emiratesauction.core.logger.LoggingManager
+import com.ea.emiratesauction.core.logger.log
+import com.ea.emiratesauction.core.validation.manager.ValidationManager
+import com.ea.emiratesauction.core.validation.manager.ValidationStyle
+import com.ea.emiratesauction.core.validation.results.RulesError
+import com.ea.emiratesauction.core.validation.results.ValidationResource
+import com.ea.emiratesauction.core.validation.rules.EmailValidatorRules
+import com.ea.emiratesauction.core.validation.rules.NumericValidatorRules
+import com.ea.emiratesauction.core.validation.rules.StringsRules
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class PopularPeopleListActivity : BaseActivity() {
-    private val viewModel: PupularPeopleListViewModel by viewModels()
-    override fun layoutId(): Int {
-        return R.layout.activity_base
+
+    @Inject lateinit var validationManager: ValidationManager
+    @Inject lateinit var manager: DevicePersistenceManager
+    override fun fragment(): BaseFragment {
+
+        GlobalScope.launch(IO) {
+            setData()
+            delay(1000)
+            showData()
+        }
+
+        //validateInputWithGroupOfRules()
+        validateListOfInputsWithGroupOfRules()
+        validateInputWithGroupOfRules()
+//        printMessage(messageObj = (validationResult as ValidationResource.OrderedResult).result)
+
+
+//        when (validationResult) {
+//            is GeneralValidationResult.GroupResult -> {
+//                printMessage(messageObj = validationResult.results)
+//            }
+//            is GeneralValidationResult.OrderedResult -> {
+//                printMessage(messageObj = validationResult.result)
+//            }
+//            else -> {
+//                printMessage(messageObj = "Input Is Valid")
+//            }
+//
+//        }
+
+
+        return PupularPeopleListFragment()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setViewModel(viewModel)
 
-        show_Notification()
+    private fun validateListOfInputsWithGroupOfRules() {
+        val validationResult =
+            validationManager.validate<ValidationStyle.Group, ValidationResource.GroupResult>(
+                arrayListOf(
+                    Pair("abc", StringsRules()),
+                    Pair("abc.com", EmailValidatorRules()),
+                    Pair("12t3", NumericValidatorRules())
+                ), ValidationStyle.Group
+            )
+        val messages = arrayListOf<String>()
+        validationResult.results.map {
+            when (it) {
+                RulesError.EmailError -> {
+                    messages.add("Mail Invalid")
+                }
+                RulesError.PasswordError -> {
+                    messages.add("Password Invalid")
+                }
 
+                RulesError.NumericError -> {
+                    messages.add("number Invalid")
+                }
+                RulesError.StringsError -> {
+                    messages.add("string Invalid")
+                }else->{}
+            }
+        }
+        log.debug(message = messages)
     }
 
-    /**
-    * This is notifications test method will be removed
-    * it just to make sure that is deeplink manager works with notifications
-    * */
-    @TargetApi(Build.VERSION_CODES.O) @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN) fun show_Notification() {
-        val intent = Intent(applicationContext, this::class.java)
-        intent.setAction(Intent.ACTION_VIEW);
-        intent.data = Uri.parse("www.example.com/plates");
-        val CHANNEL_ID = "MYCHANNEL"
-        val notificationChannel =
-            NotificationChannel(CHANNEL_ID, "name", NotificationManager.IMPORTANCE_LOW)
-        val pendingIntent = PendingIntent.getActivity(applicationContext, 1, intent, 0)
-        val notification = Notification.Builder(
-            applicationContext, CHANNEL_ID
+    private fun validateInputWithGroupOfRules() {
+        val validationResult =
+            validationManager.validate<ValidationStyle.Ordered, ValidationResource.OrderedResult>(
+                "test@ss.com", arrayListOf(
+                    //StringsRules(),
+                   // NumericValidatorRules(),
+                    EmailValidatorRules()
+                ), ValidationStyle.Ordered
+            )
+        val messages = arrayListOf<String>()
+//        validationResult.results.map {
+//            when (it) {
+//                RulesError.EmailError -> {
+//                    messages.add("Mail Invalid")
+//                }
+//                RulesError.PasswordError -> {
+//                    messages.add("Password Invalid")
+//                }else->{}
+//            }
+//        }
+        log.debug(message = validationResult.result)
+    }
+
+    private suspend fun showData() {
+        val str = manager.get<String>("EA", PersistenceType.SECURE)
+        val strN = manager.get<String>("EA", PersistenceType.NORMAL)
+        val num = manager.get<Int>("EA_INT", PersistenceType.SECURE)
+        val user = manager.get<User>("User", PersistenceType.SECURE)
+        withContext(Main) {
+            AlertDialog.Builder(this@PopularPeopleListActivity)
+                .setTitle("SharedPreferences")
+                .setMessage(
+                    "${user}\n$str\n$strN\nNum = $num"
+                )
+                .setCancelable(false)
+                .setPositiveButton(
+                    "ok"
+                ) { dialog, which ->
+                    // Whatever...
+                }.show()
+        }
+        log.debug(
+            message = "${user}\n$str\n$strN\nNum = $num",
+            tag = "MyCustomTag",
+            emojiUnicode = 0x1F525,
+            emoji = Emojis.Sad
+
         )
-            .setContentText("Heading")
-            .setContentTitle("subheading")
-            .setContentIntent(pendingIntent)
-            .addAction(android.R.drawable.sym_action_chat, "Title", pendingIntent)
-            .setChannelId(CHANNEL_ID)
-            .setSmallIcon(android.R.drawable.sym_action_chat)
-            .build()
-        val notificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.createNotificationChannel(notificationChannel)
-        notificationManager.notify(1, notification)
+
+
     }
 
-    override fun onRetry() {
-        TODO("Not yet implemented")
+    private fun setData() {
+        manager.update("EA", "Secure String", PersistenceType.SECURE)
+        manager.update("EA", "Normal String ", PersistenceType.NORMAL)
+        manager.save("EA_INT", 2021, PersistenceType.SECURE)
+        manager.save("User", User(), PersistenceType.SECURE)
     }
 
+    data class User(val id: Int = 5, val name: String = "EmiratesAuction")
 }

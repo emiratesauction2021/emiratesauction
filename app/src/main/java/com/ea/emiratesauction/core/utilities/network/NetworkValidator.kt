@@ -6,11 +6,21 @@ import com.ea.emiratesauction.core.constants.network.parameters.NetworkRequestPa
 import com.ea.emiratesauction.core.network.request.networkRequest.BaseNetworkRequest
 
 /**
- * this class is used to make check on request Target data
- * @see BaseNetworkRequest
+ * The class which is encapsulating most of the network validations
  */
 class NetworkValidator {
     companion object {
+        /**
+         * Validates the http comon usage of a specific request
+         *
+         * @param parametersType The type of the parameter
+         *
+         * @param method The HTTP method of the request
+         *
+         * @param encoding The encoding which will be used to encode the parameters
+         *
+         * @throws Exception if the passed values violates the proper construction of the request
+         */
         fun httpMethodValidator(parametersType: NetworkRequestParametersType, method: RequestHTTPMethodType, encoding: RequestParameterEncoding) {
             when (parametersType) {
                 is NetworkRequestParametersType.Standard -> {

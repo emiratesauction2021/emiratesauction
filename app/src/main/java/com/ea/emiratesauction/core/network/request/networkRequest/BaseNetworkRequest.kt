@@ -10,7 +10,7 @@ import com.ea.emiratesauction.core.network.request.headers.normal.NetworkRequest
 /**
  * The abstract class of the network request which encapsulate all the required information about a specific request to be used by the network manager
  *
- * Some of the its variable will have default implementation which you can override if needed such as headers, encoding ...etc
+ * Some of its variables will have default implementation which you can override if needed such as headers, encoding ...etc
  *
  */
 abstract class BaseNetworkRequest {
@@ -31,11 +31,15 @@ abstract class BaseNetworkRequest {
 
     /**
      * The headers of the request, by default it's DefaultNetworkRequestHeader
+     *
+     * @see DefaultNetworkRequestHeader
      */
     open var headers: NetworkRequestHeaders = DefaultNetworkRequestHeader()
 
     /**
      * The encoding of the request, by default it's URL if the HTTP method is GET and JSON if the HTTP method is POST
+     *
+     * @see RequestParameterEncoding
      */
     open var encoding: RequestParameterEncoding = RequestParameterEncoding.JSON
         get() {
@@ -52,6 +56,8 @@ abstract class BaseNetworkRequest {
 
     /**
      * The base URL of the request, by default it's Host.DEFAULT_BASE
+     *
+     * @see Host
      */
     open var baseURL: Host = Host.DEFAULT_BASE
 

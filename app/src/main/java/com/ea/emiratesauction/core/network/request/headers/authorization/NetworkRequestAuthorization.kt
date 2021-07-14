@@ -7,5 +7,5 @@ interface NetworkRequestAuthorization{
     /**
      * The Authorization headers used by a request
      */
-    val auth : ArrayList<Pair<String, Any>>
+    val auth : Map<String, Any>
 }

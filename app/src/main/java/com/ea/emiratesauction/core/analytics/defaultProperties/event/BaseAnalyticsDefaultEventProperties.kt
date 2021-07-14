@@ -5,6 +5,7 @@ import com.ea.emiratesauction.core.analytics.managers.interfaces.AnalyticsProper
 /**
  * The abstract class which contains all the default parameters and properties for an analytics event
  */
+
 abstract class BaseAnalyticsDefaultEventProperties {
     /**
      * The default properties of an Event

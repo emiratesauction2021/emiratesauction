@@ -8,9 +8,9 @@ import com.ea.emiratesauction.core.network.request.headers.normal.NetworkRequest
  * The default headers which will be used by any request initially, which you can update or override
  */
 class DefaultNetworkRequestHeader: NetworkRequestHeaders {
-    override val headers: ArrayList<Pair<String, Any>>
-        get() = arrayListOf(HTTPHeaderField.CONTENT_TYPE.value to ContentType.JSON.value)
-    override val auth: ArrayList<Pair<String, Any>>
-        get() = arrayListOf()
+    override val headers: Map<String, Any>
+        get() = mapOf(HTTPHeaderField.CONTENT_TYPE.value to ContentType.JSON.value)
+    override val auth: Map<String, Any>
+        get() = mapOf()
 
 }

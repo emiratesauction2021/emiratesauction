@@ -9,7 +9,7 @@ interface NetworkRequestHeaders: NetworkRequestAuthorization {
     /**
      * The headers used by a request
      */
-    val headers:ArrayList<Pair<String, Any>>
+    val headers:Map<String, Any>
 
     /**
      * Retrieves all the headers combined together - Auth Headers & HTTP Headers
@@ -17,10 +17,10 @@ interface NetworkRequestHeaders: NetworkRequestAuthorization {
      * @return A map with all the headers combined
      */
     fun getAllHeaders():Map<String, Any>{
-        val all = HashMap<String, Any>()
-        all.putAll(headers)
-        all.putAll(auth)
-        return all
+        val allHeaders = HashMap<String, Any>()
+        allHeaders.putAll(headers)
+        allHeaders.putAll(auth)
+        return allHeaders
     }
 }
 

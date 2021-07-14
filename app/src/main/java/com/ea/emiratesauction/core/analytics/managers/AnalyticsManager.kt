@@ -4,7 +4,7 @@ import com.ea.emiratesauction.core.analytics.event.BaseAnalyticsEvent
 import com.ea.emiratesauction.core.analytics.managers.interfaces.AnalyticsManagerInterface
 import com.ea.emiratesauction.core.analytics.profile.identification.BaseAnalyticsProfileIdentification
 import com.ea.emiratesauction.core.analytics.profile.properties.BaseAnalyticsProfileProperties
-import com.ea.emiratesauction.core.constants.analytics.AnalyticsProviderIdentifier
+import com.ea.emiratesauction.core.constants.analytics.providers.AnalyticsProviderIdentifier
 import com.ea.emiratesauction.core.analytics.providers.AnalyticsProviderInterface
 import com.ea.emiratesauction.core.analytics.screen.BaseAnalyticsScreen
 import java.lang.Exception
@@ -12,7 +12,7 @@ import java.lang.Exception
 /**
  * The Analytics Manager - it's the middle layer between the app and the analytics providers
  *
- * it's a singleton instance which is used across the whole app
+ * it's a Orderedton instance which is used across the whole app
  */
 object AnalyticsManager : AnalyticsManagerInterface{
     // Define analytics providers

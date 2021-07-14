@@ -4,15 +4,23 @@ import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import com.ea.emiratesauction.core.common.base.ui.BaseViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import androidx.lifecycle.viewModelScope
+import com.ea.emiratesauction.core.common.base.domain.BaseUseCase
 import com.ea.emiratesauction.core.constants.network.parameters.NetworkRequestParametersType
+import com.ea.emiratesauction.core.logger.log
 import com.ea.emiratesauction.core.network.result.RequestResult
 import com.ea.emiratesauction.features.test_toBeDeleted.network.requestTarget.PopularPeoplesRequestTarget
 import com.ea.emiratesauction.features.test_toBeDeleted.network.domain.usecase.GetPopularPeopleListUseCase
-import kotlinx.coroutines.flow.*
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-
-class PupularPeopleListViewModel @ViewModelInject constructor(private val getPopularPeopleListUseCase: GetPopularPeopleListUseCase) :
+@HiltViewModel
+class PupularPeopleListViewModel @Inject constructor(
+    private val getPopularPeopleListUseCase: GetPopularPeopleListUseCase
+) :
     BaseViewModel() {
     val PupTAG = "Pupular"
 
@@ -29,17 +37,16 @@ class PupularPeopleListViewModel @ViewModelInject constructor(private val getPop
             PopularPeoplesRequestTarget().apply {
                 this.parameters = NetworkRequestParametersType.Standard(requestParams)
             }
-        ).onStart {
-            showLoading.value = true
-        }.onCompletion {
-            showLoading.value = false
-        }.catch {
-            showLoading.value = false
-        }.flowOn(Dispatchers.IO).onEach {
+        )
+            .flowOn(Dispatchers.IO)
+            .onEach {
+
                 when (it) {
                     is RequestResult.Success -> {
                         val n = it.value.list
                         Log.e(PupTAG, "Success Response with return data of list ${n!!.size}")
+                        log.report(useCase = getPopularPeopleListUseCase as BaseUseCase<Any, Any>)
+
                     }
 
                     is RequestResult.Fail -> {
