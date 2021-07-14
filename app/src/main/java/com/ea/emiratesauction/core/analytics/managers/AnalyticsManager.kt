@@ -12,7 +12,7 @@ import java.lang.Exception
 /**
  * The Analytics Manager - it's the middle layer between the app and the analytics providers
  *
- * it's a singleton instance which is used across the whole app
+ * it's a Orderedton instance which is used across the whole app
  */
 object AnalyticsManager : AnalyticsManagerInterface{
     // Define analytics providers

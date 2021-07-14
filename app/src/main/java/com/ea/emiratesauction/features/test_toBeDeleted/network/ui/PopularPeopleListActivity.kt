@@ -1,42 +1,156 @@
 package com.ea.emiratesauction.features.test_toBeDeleted.network.ui
 
-
-import android.util.Log
+import androidx.appcompat.app.AlertDialog
 import com.ea.emiratesauction.core.common.base.ui.BaseActivity
 import com.ea.emiratesauction.core.common.base.ui.BaseFragment
-import com.ea.emiratesauction.core.date.date_format.ASDate
-import com.ea.emiratesauction.core.date.date_formatter.DateFormatterInterface
-import com.ea.emiratesauction.core.date.date_formatter.Formatter
-import com.ea.emiratesauction.core.date.style.*
+import com.ea.emiratesauction.core.deviceData.manager.DevicePersistenceManager
+import com.ea.emiratesauction.core.deviceData.manager.PersistenceType
+import com.ea.emiratesauction.core.logger.Emojis
+import com.ea.emiratesauction.core.logger.LogType
+import com.ea.emiratesauction.core.logger.LoggingManager
+import com.ea.emiratesauction.core.logger.log
+import com.ea.emiratesauction.core.validation.manager.ValidationManager
+import com.ea.emiratesauction.core.validation.manager.ValidationStyle
+import com.ea.emiratesauction.core.validation.results.RulesError
+import com.ea.emiratesauction.core.validation.results.ValidationResource
+import com.ea.emiratesauction.core.validation.rules.EmailValidatorRules
+import com.ea.emiratesauction.core.validation.rules.NumericValidatorRules
+import com.ea.emiratesauction.core.validation.rules.StringsRules
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class PopularPeopleListActivity : BaseActivity() {
 
+    @Inject lateinit var validationManager: ValidationManager
+    @Inject lateinit var manager: DevicePersistenceManager
     override fun fragment(): BaseFragment {
-        testDateUtil()
-        return PupularPeopleListFragment()
 
+        GlobalScope.launch(IO) {
+            setData()
+            delay(1000)
+            showData()
+        }
+
+        //validateInputWithGroupOfRules()
+        validateListOfInputsWithGroupOfRules()
+        validateInputWithGroupOfRules()
+//        printMessage(messageObj = (validationResult as ValidationResource.OrderedResult).result)
+
+
+//        when (validationResult) {
+//            is GeneralValidationResult.GroupResult -> {
+//                printMessage(messageObj = validationResult.results)
+//            }
+//            is GeneralValidationResult.OrderedResult -> {
+//                printMessage(messageObj = validationResult.result)
+//            }
+//            else -> {
+//                printMessage(messageObj = "Input Is Valid")
+//            }
+//
+//        }
+
+
+        return PupularPeopleListFragment()
     }
 
-    private fun testDateUtil() {
-        val formatter: DateFormatterInterface = Formatter()
-        val v1 = formatter.getFormattedDate(ASDate.LongDate(Calendar.getInstance().timeInMillis))
-        val v2 = formatter.getFormattedDate(ASDate.Date(Date()))
-        val v3 = formatter.getFormattedDate(ASDate.StringDate("28-10-1990", "dd-MM-yyyy"))
-        val v4 = formatter.getFormattedDate(
-            ASDate.StringBuilderDate(
-                listOf(
-                    MonthStyle.zeroPaddedNumber,
-                    Separator.dash,
-                    DayStyle.zeroPaddedNumber,
-                    CustomStyle("-"), // same as @Separator.dash
-                    YearStyle.fourDigits
-                ), "10-28-1990"
+
+    private fun validateListOfInputsWithGroupOfRules() {
+        val validationResult =
+            validationManager.validate<ValidationStyle.Group, ValidationResource.GroupResult>(
+                arrayListOf(
+                    Pair("abc", StringsRules()),
+                    Pair("abc.com", EmailValidatorRules()),
+                    Pair("12t3", NumericValidatorRules())
+                ), ValidationStyle.Group
             )
+        val messages = arrayListOf<String>()
+        validationResult.results.map {
+            when (it) {
+                RulesError.EmailError -> {
+                    messages.add("Mail Invalid")
+                }
+                RulesError.PasswordError -> {
+                    messages.add("Password Invalid")
+                }
+
+                RulesError.NumericError -> {
+                    messages.add("number Invalid")
+                }
+                RulesError.StringsError -> {
+                    messages.add("string Invalid")
+                }else->{}
+            }
+        }
+        log.debug(message = messages)
+    }
+
+    private fun validateInputWithGroupOfRules() {
+        val validationResult =
+            validationManager.validate<ValidationStyle.Ordered, ValidationResource.OrderedResult>(
+                "test@ss.com", arrayListOf(
+                    //StringsRules(),
+                   // NumericValidatorRules(),
+                    EmailValidatorRules()
+                ), ValidationStyle.Ordered
+            )
+        val messages = arrayListOf<String>()
+//        validationResult.results.map {
+//            when (it) {
+//                RulesError.EmailError -> {
+//                    messages.add("Mail Invalid")
+//                }
+//                RulesError.PasswordError -> {
+//                    messages.add("Password Invalid")
+//                }else->{}
+//            }
+//        }
+        log.debug(message = validationResult.result)
+    }
+
+    private suspend fun showData() {
+        val str = manager.get<String>("EA", PersistenceType.SECURE)
+        val strN = manager.get<String>("EA", PersistenceType.NORMAL)
+        val num = manager.get<Int>("EA_INT", PersistenceType.SECURE)
+        val user = manager.get<User>("User", PersistenceType.SECURE)
+        withContext(Main) {
+            AlertDialog.Builder(this@PopularPeopleListActivity)
+                .setTitle("SharedPreferences")
+                .setMessage(
+                    "${user}\n$str\n$strN\nNum = $num"
+                )
+                .setCancelable(false)
+                .setPositiveButton(
+                    "ok"
+                ) { dialog, which ->
+                    // Whatever...
+                }.show()
+        }
+        log.debug(
+            message = "${user}\n$str\n$strN\nNum = $num",
+            tag = "MyCustomTag",
+            emojiUnicode = 0x1F525,
+            emoji = Emojis.Sad
+
         )
 
-        Log.d("TAGTAG date", "test: \n $v1 \n $v2 \n $v3 \n $v4 ")
+
     }
+
+    private fun setData() {
+        manager.update("EA", "Secure String", PersistenceType.SECURE)
+        manager.update("EA", "Normal String ", PersistenceType.NORMAL)
+        manager.save("EA_INT", 2021, PersistenceType.SECURE)
+        manager.save("User", User(), PersistenceType.SECURE)
+    }
+
+    data class User(val id: Int = 5, val name: String = "EmiratesAuction")
 }
